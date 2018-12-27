@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\ArduboyTones\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\ATMlib\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\Arduboy-TinyFont\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\ArdBitmap\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\ArdVoice\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\Arduboy2\\src",
+                "C:\\Users\\Guillaume\\Documents\\Arduino\\libraries\\Arduboy\\src",
+                "C:\\Users\\Guillaume\\AppData\\Local\\Arduino15\\packages\\arduboy\\hardware\\avr\\1.0.0\\**",
+                "C:/Users/Guillaume/Documents/Arduino/libraries/Arduboy2/src"
+            ],
+            "forcedInclude": [],
+            "intelliSenseMode": "msvc-x64",
+            "compilerPath": "C:\\Users\\Guillaume\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\4.8.1-arduino5\\bin\\avr-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}

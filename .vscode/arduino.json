@@ -1,0 +1,7 @@
+{
+    "board": "arduboy:avr:arduboy",
+    "port": "COM4",
+	"sketch": "TheQuestForTruth.ino",
+    "output": "../build",
+    "debugger": "jlink"
+}

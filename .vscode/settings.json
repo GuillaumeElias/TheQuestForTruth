@@ -1,0 +1,13 @@
+{
+	"C_Cpp.intelliSenseEngineFallback": "Disabled",
+	"C_Cpp.intelliSenseEngine": "Tag Parser",
+	"arduino.path": "C:/Program Files (x86)/Arduino",
+    "arduino.logLevel": "info",
+    "arduino.enableUSBDetection": true,
+    "arduino.disableTestingOpen": false,
+    "arduino.skipHeaderProvider": false,
+    "arduino.additionalUrls": [
+        "https://arduboy.github.io/board-support/package_arduboy_index.json"
+    ],
+    "arduino.defaultBaudRate": 115200
+}
