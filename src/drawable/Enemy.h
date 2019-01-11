@@ -3,8 +3,8 @@
 
 #include <Arduboy2.h>
 
-#include "Movable.h"
-#include "Constants.h"
+#include "../abstract/Movable.h"
+#include "../Constants.h"
 #include "Map.h"
 
 class Enemy : public Drawable, public Movable

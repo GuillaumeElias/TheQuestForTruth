@@ -3,8 +3,8 @@
 
 #include <Arduboy2.h>
 
-#include "Player.h"
-#include "Map.h"
+#include "drawable/Player.h"
+#include "drawable/Map.h"
 #include "EntitiesManager.h"
 
 class Game

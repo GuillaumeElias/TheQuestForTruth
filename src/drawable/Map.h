@@ -3,9 +3,9 @@
 
 #include <Arduboy2.h>
 
-#include "Constants.h"
-#include "Drawable.h"
-#include "Levels.h"
+#include "../Constants.h"
+#include "../abstract/Drawable.h"
+#include "../Levels.h"
 
 class Map : public Drawable
 {

@@ -1,7 +1,7 @@
 #ifndef _MOVABLE_H_
 #define _MOVABLE_H_
 
-#include "Constants.h"
+#include "../Constants.h"
 
 /** Interface for all movable objects */
 class Movable

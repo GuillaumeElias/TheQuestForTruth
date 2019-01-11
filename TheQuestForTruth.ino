@@ -3,9 +3,9 @@
 */
 
 #include <Arduboy2.h>
-#include "MemoryFree.h"
+#include "src/lib/MemoryFree.h"
 
-#include "Game.h"
+#include "src/Game.h"
 
 Game game;
 

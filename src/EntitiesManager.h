@@ -2,8 +2,8 @@
 #define _ENTITIES_MANAGER_H_
 
 #include <Arduboy2.h>
-#include "Map.h"
-#include "Enemy.h"
+#include "drawable/Map.h"
+#include "drawable/Enemy.h"
 
 class EntitiesManager
 {

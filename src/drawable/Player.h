@@ -3,11 +3,11 @@
 
 #include <Arduboy2.h>
 
-#include "Constants.h"
-#include "Drawable.h"
-#include "Movable.h"
+#include "../Constants.h"
+#include "../abstract/Drawable.h"
+#include "../abstract/Movable.h"
+#include "../EntitiesManager.h"
 #include "Map.h"
-#include "EntitiesManager.h"
 
 class Player : public Drawable, public Movable, public HitTaker
 {

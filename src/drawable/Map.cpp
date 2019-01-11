@@ -1,5 +1,5 @@
 #include "Map.h"
-#include "Tiles.h"
+#include "../Tiles.h"
 
 //=============================================================
 Map::Map(const Position & playerPos)
