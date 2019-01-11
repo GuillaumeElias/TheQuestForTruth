@@ -27,6 +27,8 @@ Player::Player()
     , displaySpriteA( true )
     , facingRight( true )
     , yVelocity( 0.0f )
+    , animFrameCounter(0)
+    , hitFrameCounter(0)
 {
 
 }
@@ -147,16 +149,31 @@ void Player::draw( Arduboy2 * arduboy )
     }
 
     animFrameCounter++;
-    hitFrameCounter++;
+
+    if(beingHit)
+    {
+        if(hitFrameCounter > PLAYER_HIT_NB_FRAMES)
+        {
+            beingHit = false;
+            hitFrameCounter = 0;
+        }
+        else
+        {
+            hitFrameCounter++;
+        }
+    }
 }
 
 //==========================================================
 void Player::takeHit()
 {
-    if(hitFrameCounter > PLAYER_HIT_NB_FRAMES)
+    Serial.print("takeHit");
+    Serial.println(hitFrameCounter);
+
+    if(!beingHit)
     {
+        beingHit = true;
         life--;
-        hitFrameCounter = 0;
     }
 }
 

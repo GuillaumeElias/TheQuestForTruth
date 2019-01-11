@@ -37,6 +37,7 @@ class Player : public Drawable, public Movable, public HitTaker
         EntitiesManager * entitiesManager;
         float yVelocity;
         bool jumping;
+        bool beingHit;
 
         bool displaySpriteA;
         bool facingRight;
