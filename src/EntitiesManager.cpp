@@ -35,7 +35,6 @@ void EntitiesManager::spawnEnemies(Map * map)
             levels::Tile tile = levels::getTile(map->getCurrentLevel(), i, j);
             if(tile == levels::Tile::_ENEMY)
             {
-                enemies[enemies_number].setMap(map);
                 enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
                 enemies_number++;
             }

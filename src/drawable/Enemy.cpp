@@ -12,6 +12,7 @@ PROGMEM static const byte BITMAP_A[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3
   0xa2, 0x85, 0x00, 0xff, 0x03, 0x01, 0x01, 0x03, 
   0x01, 0x03, 0x01, 0x01, 0x03, 0x01};
 
+static Map * Enemy::Lvl_Map = nullptr;
 static HitTaker * Enemy::Hit_Taker = nullptr;
 
 //==========================================================
@@ -50,11 +51,11 @@ void Enemy::move( Arduboy2 * arduboy )
     }
 
     int8 diffX = pos.x - initPos.x;
-    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(map->getPlayerPosition(), {pos.x + ENEMY_MOVE, pos.y}))
+    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Lvl_Map->getPlayerPosition(), {pos.x + ENEMY_MOVE, pos.y}))
     {
         facingRight = false;
     }
-    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(map->getPlayerPosition(), {pos.x - ENEMY_MOVE, pos.y}))
+    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Lvl_Map->getPlayerPosition(), {pos.x - ENEMY_MOVE, pos.y}))
     {
         facingRight = true;
     }
@@ -74,22 +75,22 @@ void Enemy::draw( Arduboy2 * arduboy )
 {
     if(dead) return;
 
-    short screenX = pos.x - map->getScrollX();
-    short screenY = pos.y - map->getScrollY(); 
+    short screenX = pos.x - Lvl_Map->getScrollX();
+    short screenY = pos.y - Lvl_Map->getScrollY(); 
     
     arduboy->drawBitmap(screenX, screenY, BITMAP_A, ENEMY_WIDTH, ENEMY_HEIGHT);
-}
-
-//==========================================================
-void Enemy::setMap(Map * mp)
-{
-    this->map = mp;
 }
 
 //==========================================================
 const Position & Enemy::getPos() const
 {
     return pos;
+}
+
+//==========================================================
+static void Enemy::setLevelMap(Map * map)
+{
+    Lvl_Map = map;
 }
 
 //==========================================================

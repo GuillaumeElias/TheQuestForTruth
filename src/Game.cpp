@@ -5,7 +5,8 @@ Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
 {
-        Enemy::setHitTaker(&player);
+    Enemy::setLevelMap(&map);
+    Enemy::setHitTaker(&player);
 }
 
 //==========================================================
