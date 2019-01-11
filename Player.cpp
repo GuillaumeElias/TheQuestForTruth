@@ -23,6 +23,7 @@ PROGMEM static const byte BITMAP_B_LEFT[] = {0x20, 0x20, 0x40, 0x5c, 0x92, 0xe1,
 //==========================================================
 Player::Player()
     : pos(0, SCREEN_HEIGHT - PLAYER_HEIGHT)
+    , life(PLAYER_LIFE)
     , displaySpriteA( true )
     , facingRight( true )
     , yVelocity( 0.0f )
@@ -107,7 +108,7 @@ void Player::move( Arduboy2 * arduboy )
     }
 
     //if no collision -> apply new position
-    if( !map->checkCollision(newX, newY - 1, PLAYER_WIDTH, PLAYER_HEIGHT) )
+    if( !map->checkCollision(newX, newY - 1, PLAYER_WIDTH, PLAYER_HEIGHT) && !checkCollisionWithEntities({newX, newY}))
     {
         pos.x = newX;
         pos.y = newY;
@@ -146,6 +147,17 @@ void Player::draw( Arduboy2 * arduboy )
     }
 
     animFrameCounter++;
+    hitFrameCounter++;
+}
+
+//==========================================================
+void Player::takeHit()
+{
+    if(hitFrameCounter > PLAYER_HIT_NB_FRAMES)
+    {
+        life--;
+        hitFrameCounter = 0;
+    }
 }
 
 //==========================================================
@@ -155,17 +167,43 @@ void Player::setMap( Map * map )
 }
 
 //==========================================================
+void Player::setEntitiesManager( EntitiesManager * entitiesManager)
+{
+    this->entitiesManager = entitiesManager;
+}
+
+//==========================================================
+int8 Player::getLife() const
+{
+    return life;
+}
+
+//==========================================================
 bool Player::isFalling() const
 {
-    short playerY = pos.y + PLAYER_HEIGHT + ( (yVelocity > 1.01f) ? ceil(yVelocity) : 1); //"below" Y depends on yVelocity //TODO find better way to handle it
+    short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
+    short playerY = pos.y + PLAYER_HEIGHT + extraY;
 
     return playerY < map->getLevelHeight() * TILE_LENGTH
         && !map->checkCollisionForPoint(pos.x, playerY )
-        && !map->checkCollisionForPoint(pos.x + PLAYER_WIDTH, playerY );
+        && !map->checkCollisionForPoint(pos.x + PLAYER_WIDTH, playerY )
+        && !checkCollisionWithEntities({pos.x, pos.y + extraY});
 }
 
 //==========================================================
 bool Player::somethingIsAbove() const
 {
     return map->checkCollisionForPoint(pos.x, pos.y) || map->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y);
+}
+
+//===========================================================
+bool Player::checkCollisionWithEntities(Position position)
+{
+    const CollisionCheckResult result = entitiesManager->collisionCheck(position);
+    if(result == HIT_ENEMY)
+    {
+        //takeHit() is called in Enemy.cpp
+        return true;
+    }
+    return result != FREE;
 }

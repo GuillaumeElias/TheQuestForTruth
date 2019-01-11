@@ -5,7 +5,7 @@
 
 #include "Player.h"
 #include "Map.h"
-#include "Enemy.h"
+#include "EntitiesManager.h"
 
 class Game
 {
@@ -14,13 +14,7 @@ class Game
 
 		Player player;
 		Map map;
-        
-        Enemy enemies[MAX_ENEMIES_PER_LEVEL];
-        short enemies_number;
-
-        void drawEnemies() const;
-        void spawnEnemies();
-        void moveEnemies();
+		EntitiesManager entitiesManager;
         
 	public:	
 		Game();

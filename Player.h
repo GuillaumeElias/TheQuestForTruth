@@ -7,8 +7,9 @@
 #include "Drawable.h"
 #include "Movable.h"
 #include "Map.h"
+#include "EntitiesManager.h"
 
-class Player : public Drawable, public Movable
+class Player : public Drawable, public Movable, public HitTaker
 {
     public:
         Player();
@@ -16,23 +17,31 @@ class Player : public Drawable, public Movable
 
         void move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
+        void takeHit() override;
 
         inline Position & getPos() {return pos; }
 
         void setMap( Map * map );
+        void setEntitiesManager( EntitiesManager * entitiesManager );
+        int8 getLife() const;
     private:
 
         bool isFalling() const;
         bool somethingIsAbove() const;
+        bool checkCollisionWithEntities(Position pos); //return true if there is a collision
+
+        int8 life;
+        Position pos;
 
         Map * map;
-        Position pos;
+        EntitiesManager * entitiesManager;
         float yVelocity;
         bool jumping;
 
         bool displaySpriteA;
         bool facingRight;
         int8 animFrameCounter;
+        int8 hitFrameCounter;
 
 };
 
