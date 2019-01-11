@@ -15,7 +15,8 @@ namespace levels
         FIRTREE_UPRIGHT = 6,
         FIRTREE_DOWNLEFT = 7,
         FIRTREE_DOWNRIGHT = 8,
-        _ENEMY = 9
+        _ENEMY = 51,
+        _CHARACTER = 61
     } Tile;
     
     PROGMEM static const Tile LEVEL_TILES[2][10][26] = 
@@ -29,7 +30,7 @@ namespace levels
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {0, 0, 0, 0, 0, 0, 0,51, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}
         },
         { //LEVEL 2

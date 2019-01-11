@@ -5,8 +5,7 @@ Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
 {
-    Enemy::setLevelMap(&map);
-    Enemy::setHitTaker(&player);
+    
 }
 
 //==========================================================
@@ -15,8 +14,6 @@ void Game::init()
     arduboy.begin();
     arduboy.clear();
 
-    player.setMap( &map );
-    player.setEntitiesManager( &entitiesManager );
     map.startLevel();
     player.levelStart();
     entitiesManager.spawnEnemies( &map );

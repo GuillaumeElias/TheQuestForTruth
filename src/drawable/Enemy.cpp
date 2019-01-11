@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "../Utils.h"
+#include "Player.h"
 
 namespace
 {
@@ -11,9 +12,6 @@ PROGMEM static const byte BITMAP_A[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3
   0x1c, 0xe0, 0xff, 0x05, 0x82, 0xa5, 0xd0, 0x55, 
   0xa2, 0x85, 0x00, 0xff, 0x03, 0x01, 0x01, 0x03, 
   0x01, 0x03, 0x01, 0x01, 0x03, 0x01};
-
-static Map * Enemy::Lvl_Map = nullptr;
-static HitTaker * Enemy::Hit_Taker = nullptr;
 
 //==========================================================
 Enemy::Enemy()
@@ -51,11 +49,11 @@ void Enemy::move( Arduboy2 * arduboy )
     }
 
     int8 diffX = pos.x - initPos.x;
-    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Lvl_Map->getPlayerPosition(), {pos.x + ENEMY_MOVE, pos.y}))
+    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Map::instance()->getPlayerPosition(), {pos.x + ENEMY_MOVE, pos.y}))
     {
         facingRight = false;
     }
-    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Lvl_Map->getPlayerPosition(), {pos.x - ENEMY_MOVE, pos.y}))
+    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Map::instance()->getPlayerPosition(), {pos.x - ENEMY_MOVE, pos.y}))
     {
         facingRight = true;
     }
@@ -75,8 +73,8 @@ void Enemy::draw( Arduboy2 * arduboy )
 {
     if(dead) return;
 
-    short screenX = pos.x - Lvl_Map->getScrollX();
-    short screenY = pos.y - Lvl_Map->getScrollY(); 
+    short screenX = pos.x - Map::instance()->getScrollX();
+    short screenY = pos.y - Map::instance()->getScrollY(); 
     
     arduboy->drawBitmap(screenX, screenY, BITMAP_A, ENEMY_WIDTH, ENEMY_HEIGHT);
 }
@@ -88,23 +86,11 @@ const Position & Enemy::getPos() const
 }
 
 //==========================================================
-static void Enemy::setLevelMap(Map * map)
-{
-    Lvl_Map = map;
-}
-
-//==========================================================
-static void Enemy::setHitTaker(HitTaker * hitTaker)
-{
-    Hit_Taker = hitTaker;
-}
-
-//==========================================================
 bool Enemy::checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition)
 {
     if(rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {enemyPosition, ENEMY_WIDTH, ENEMY_HEIGHT}))
     {
-        Hit_Taker->takeHit();
+        Player::instance()->takeHit();
         return true;
     }
     return false;

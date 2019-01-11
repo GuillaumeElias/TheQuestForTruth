@@ -21,11 +21,6 @@ typedef enum __attribute__ ((packed))
     HIT_TRIGGER
 } CollisionCheckResult;
 
-class HitTaker
-{
-    public: virtual void takeHit() = 0;
-};
-
 static const short SCREEN_HEIGHT = 64;
 static const short SCREEN_WIDTH = 128;
 static const short MID_WIDTH = SCREEN_WIDTH / 2;

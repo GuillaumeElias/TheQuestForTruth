@@ -6,10 +6,11 @@
 #include "../Constants.h"
 #include "../abstract/Drawable.h"
 #include "../abstract/Movable.h"
+#include "../abstract/Singleton.h"
 #include "../EntitiesManager.h"
 #include "Map.h"
 
-class Player : public Drawable, public Movable, public HitTaker
+class Player : public Drawable, public Movable, public Singleton<Player>
 {
     public:
         Player();
@@ -17,12 +18,10 @@ class Player : public Drawable, public Movable, public HitTaker
 
         void move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
-        void takeHit() override;
+        void takeHit();
 
         inline Position & getPos() {return pos; }
 
-        void setMap( Map * map );
-        void setEntitiesManager( EntitiesManager * entitiesManager );
         int8 getLife() const;
     private:
 
@@ -33,8 +32,6 @@ class Player : public Drawable, public Movable, public HitTaker
         int8 life;
         Position pos;
 
-        Map * map;
-        EntitiesManager * entitiesManager;
         float yVelocity;
         bool jumping;
         bool beingHit;

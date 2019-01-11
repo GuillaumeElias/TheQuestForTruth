@@ -18,8 +18,6 @@ class Enemy : public Drawable, public Movable
         
         const Position & getPos() const;
 
-        static void setLevelMap(Map * mp);
-        static void setHitTaker(HitTaker * hitTaker);
         static bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition);
     private:
         Position pos;
@@ -31,9 +29,6 @@ class Enemy : public Drawable, public Movable
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
-
-        static Map * Lvl_Map;
-        static HitTaker * Hit_Taker;
 
 };
 

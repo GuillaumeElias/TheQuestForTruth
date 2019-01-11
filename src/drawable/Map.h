@@ -5,9 +5,10 @@
 
 #include "../Constants.h"
 #include "../abstract/Drawable.h"
+#include "../abstract/Singleton.h"
 #include "../Levels.h"
 
-class Map : public Drawable
+class Map : public Drawable, public Singleton<Map>
 {
     public:
         Map(const Position & playerPos);

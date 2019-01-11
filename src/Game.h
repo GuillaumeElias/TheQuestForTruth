@@ -3,9 +3,9 @@
 
 #include <Arduboy2.h>
 
+#include "EntitiesManager.h"
 #include "drawable/Player.h"
 #include "drawable/Map.h"
-#include "EntitiesManager.h"
 
 class Game
 {

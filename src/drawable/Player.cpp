@@ -30,14 +30,13 @@ Player::Player()
     , animFrameCounter(0)
     , hitFrameCounter(0)
 {
-
 }
 
 //==========================================================
 void Player::levelStart()
 {
     pos.x = 0;
-    pos.y = map->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT;
+    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT;
 }
 
 
@@ -110,7 +109,7 @@ void Player::move( Arduboy2 * arduboy )
     }
 
     //if no collision -> apply new position
-    if( !map->checkCollision(newX, newY - 1, PLAYER_WIDTH, PLAYER_HEIGHT) && !checkCollisionWithEntities({newX, newY}))
+    if( !Map::instance()->checkCollision(newX, newY - 1, PLAYER_WIDTH, PLAYER_HEIGHT) && !checkCollisionWithEntities({newX, newY}))
     {
         pos.x = newX;
         pos.y = newY;
@@ -122,8 +121,8 @@ void Player::move( Arduboy2 * arduboy )
 //==========================================================
 void Player::draw( Arduboy2 * arduboy )
 {
-    short screenX = pos.x - map->getScrollX();
-    short screenY = pos.y - map->getScrollY(); 
+    short screenX = pos.x - Map::instance()->getScrollX();
+    short screenY = pos.y - Map::instance()->getScrollY(); 
 
     if(facingRight) //Avoid flags and set bitmap pointer instead?
     {
@@ -167,26 +166,11 @@ void Player::draw( Arduboy2 * arduboy )
 //==========================================================
 void Player::takeHit()
 {
-    Serial.print("takeHit");
-    Serial.println(hitFrameCounter);
-
     if(!beingHit)
     {
         beingHit = true;
         life--;
     }
-}
-
-//==========================================================
-void Player::setMap( Map * map )
-{
-    this->map = map;
-}
-
-//==========================================================
-void Player::setEntitiesManager( EntitiesManager * entitiesManager)
-{
-    this->entitiesManager = entitiesManager;
 }
 
 //==========================================================
@@ -201,22 +185,22 @@ bool Player::isFalling() const
     short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
     short playerY = pos.y + PLAYER_HEIGHT + extraY;
 
-    return playerY < map->getLevelHeight() * TILE_LENGTH
-        && !map->checkCollisionForPoint(pos.x, playerY )
-        && !map->checkCollisionForPoint(pos.x + PLAYER_WIDTH, playerY )
+    return playerY < Map::instance()->getLevelHeight() * TILE_LENGTH
+        && !Map::instance()->checkCollisionForPoint(pos.x, playerY )
+        && !Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, playerY )
         && !checkCollisionWithEntities({pos.x, pos.y + extraY});
 }
 
 //==========================================================
 bool Player::somethingIsAbove() const
 {
-    return map->checkCollisionForPoint(pos.x, pos.y) || map->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y);
+    return Map::instance()->checkCollisionForPoint(pos.x, pos.y) || Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y);
 }
 
 //===========================================================
 bool Player::checkCollisionWithEntities(Position position)
 {
-    const CollisionCheckResult result = entitiesManager->collisionCheck(position);
+    const CollisionCheckResult result = EntitiesManager::instance()->collisionCheck(position);
     if(result == HIT_ENEMY)
     {
         //takeHit() is called in Enemy.cpp
