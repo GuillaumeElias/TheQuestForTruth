@@ -49,11 +49,11 @@ void Enemy::move( Arduboy2 * arduboy )
     }
 
     int8 diffX = pos.x - initPos.x;
-    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Map::instance()->getPlayerPosition(), {pos.x + ENEMY_MOVE, pos.y}))
+    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x + ENEMY_MOVE, pos.y}))
     {
         facingRight = false;
     }
-    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Map::instance()->getPlayerPosition(), {pos.x - ENEMY_MOVE, pos.y}))
+    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x - ENEMY_MOVE, pos.y}))
     {
         facingRight = true;
     }

@@ -23,8 +23,6 @@ class Map : public Drawable, public Singleton<Map>
         short getLevelHeight() const;
         short getLevelLength() const;
         short getCurrentLevel() const;
-        const Position & getPlayerPosition() const;
-
     private:
         const Position & playerPosition;
 

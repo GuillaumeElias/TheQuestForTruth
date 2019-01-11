@@ -139,9 +139,3 @@ short Map::getCurrentLevel() const
 {
     return current_level;
 }
-
-//=============================================================
-const Position & Map::getPlayerPosition() const
-{
-    return playerPosition;
-}
