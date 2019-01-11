@@ -9,17 +9,17 @@
 
 class Game
 {
-	private:
-		Arduboy2 arduboy;
+    private:
+        Arduboy2 arduboy;
 
-		Player player;
-		Map map;
-		EntitiesManager entitiesManager;
+        Player player;
+        Map map;
+        EntitiesManager entitiesManager;
         
-	public:	
-		Game();
-		void init();
-		void update();
+    public:	
+        Game();
+        void init();
+        void update();
 };
 
 #endif
