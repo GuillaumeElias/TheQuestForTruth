@@ -44,5 +44,7 @@ static const short MAX_CHARACTERS_PER_LEVEL = 2;
 static const short MAX_TRIGGERS_PER_LEVEL = 2;
 static const short TRIGGER_HEIGHT = PLAYER_HEIGHT;
 static const short TRIGGER_WIDTH = PLAYER_WIDTH;
+static const short DIALOG_LETTER_NBFRAMES = 6;
+static const short DIALOG_SENTENCE_END_NBFRAMES = 50;
 
 #endif

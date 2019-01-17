@@ -4,6 +4,7 @@
 #include <Arduboy2.h>
 
 #include "EntitiesManager.h"
+#include "DialogManager.h"
 #include "drawable/Player.h"
 #include "drawable/Map.h"
 
@@ -15,6 +16,7 @@ class Game
         Player player;
         Map map;
         EntitiesManager entitiesManager;
+        DialogManager dialogManager;
         
     public:	
         Game();

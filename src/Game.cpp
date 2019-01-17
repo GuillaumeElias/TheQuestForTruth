@@ -36,6 +36,7 @@ void Game::update()
     map.draw( &arduboy );
     player.draw( &arduboy );
     entitiesManager.drawEntities();
+    dialogManager.draw( &arduboy );
 
     arduboy.display();
 }

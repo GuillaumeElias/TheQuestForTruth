@@ -18,7 +18,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         void moveEntities();
 
         const CollisionCheckResult collisionCheck(const Position & pos) const;
-        void triggerCheckAndExecute(const Position & pos) const;
+        void triggerCheckAndExecute(const Position & pos);
 
     private:
         Arduboy2 * arduboy;

@@ -14,10 +14,4 @@ bool static rectangleCollision(const Rectangle & rectA, const Rectangle & rectB)
         && rectA.pos.y + rectA.height > rectB.pos.y;
 }
 
-//==========================================================
-void static printText(Arduboy2 * arduboy)
-{
-    
-}
-
 #endif

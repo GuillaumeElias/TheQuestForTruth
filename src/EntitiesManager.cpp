@@ -1,4 +1,5 @@
 #include "EntitiesManager.h"
+#include "DialogManager.h"
 #include "Utils.h"
 
 //==========================================================
@@ -82,17 +83,19 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 }
 
 //==========================================================
-void EntitiesManager::triggerCheckAndExecute(const Position & ppos) const
+void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
 {
-
     for(int8 i=0; i < trigger_number; i++)
     {
-        if( rectangleCollision({ppos, PLAYER_WIDTH, PLAYER_HEIGHT}, {triggers[trigger_number].pos, TRIGGER_WIDTH, TRIGGER_HEIGHT}) )
+        if(triggers[i].triggered) continue;
+
+        if( rectangleCollision({ppos, PLAYER_WIDTH, PLAYER_HEIGHT}, {triggers[i].pos, TRIGGER_WIDTH, TRIGGER_HEIGHT}) )
         {
-            switch(triggers[trigger_number].id)
+            switch(triggers[i].id)
             {
                 case 1:
-                    
+                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
+                    triggers[i].triggered = true;
                 break;
             }
         }
