@@ -1,32 +1,45 @@
 #include "EntitiesManager.h"
+#include "Utils.h"
 
 //==========================================================
 EntitiesManager::EntitiesManager(Arduboy2 * ardu)
     : arduboy(ardu)  
     , enemies_number(0)
+    , character_number(0)
+    , trigger_number(0)
 {
 }
 
 //==========================================================
-void EntitiesManager::drawEnemies() const
+void EntitiesManager::drawEntities() const
 {
-    for(short i=0; i < enemies_number; i++)
+    for(int8 i=0; i < enemies_number; i++)
     {
         enemies[i].draw( arduboy );
     }
-}
 
-//==========================================================
-void EntitiesManager::moveEnemies()
-{
-    for(short i=0; i < enemies_number; i++)
+    for(int8 i=0; i < character_number; i++)
     {
-        enemies[i].move( arduboy );
+        characters[i].draw( arduboy );
     }
 }
 
 //==========================================================
-void EntitiesManager::spawnEnemies(Map * map)
+void EntitiesManager::moveEntities()
+{
+    for(int8 i=0; i < enemies_number; i++)
+    {
+        enemies[i].move( arduboy );
+    }
+
+    for(int8 i=0; i < character_number; i++)
+    {
+        characters[i].move( arduboy );
+    }
+}
+
+//==========================================================
+void EntitiesManager::spawnEntities(Map * map)
 {
     for ( short i = 0; i < map->getLevelHeight(); i++ )
     {
@@ -37,6 +50,18 @@ void EntitiesManager::spawnEnemies(Map * map)
             {
                 enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
                 enemies_number++;
+            }
+            else if(tile == levels::Tile::_CHARACTER)
+            {
+                characters[character_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
+                character_number++;
+            }
+            else if( int8 triggerId = levels::getTileTriggerId(tile) >= 0)
+            {
+                triggers[trigger_number].pos = { j * TILE_LENGTH, i * TILE_LENGTH };
+                triggers[trigger_number].id = triggerId;
+                triggers[trigger_number].triggered = false;
+                trigger_number++;
             }
         }
     }
@@ -54,4 +79,23 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
     }
 
     return FREE;
+}
+
+//==========================================================
+void EntitiesManager::triggerCheckAndExecute(const Position & ppos) const
+{
+
+    for(int8 i=0; i < trigger_number; i++)
+    {
+        if( rectangleCollision({ppos, PLAYER_WIDTH, PLAYER_HEIGHT}, {triggers[trigger_number].pos, TRIGGER_WIDTH, TRIGGER_HEIGHT}) )
+        {
+            switch(triggers[trigger_number].id)
+            {
+                case 1:
+                    
+                break;
+            }
+        }
+    }
+ 
 }

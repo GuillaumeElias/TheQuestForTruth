@@ -16,7 +16,7 @@ void Game::init()
 
     map.startLevel();
     player.levelStart();
-    entitiesManager.spawnEnemies( &map );
+    entitiesManager.spawnEntities( &map );
 }
 
 //==========================================================
@@ -30,12 +30,12 @@ void Game::update()
 
     //move objects
     player.move( &arduboy );
-    entitiesManager.moveEnemies();
+    entitiesManager.moveEntities();
 
     //draw objects
     map.draw( &arduboy );
     player.draw( &arduboy );
-    entitiesManager.drawEnemies();
+    entitiesManager.drawEntities();
 
     arduboy.display();
 }

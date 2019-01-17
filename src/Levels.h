@@ -16,7 +16,8 @@ namespace levels
         FIRTREE_DOWNLEFT = 7,
         FIRTREE_DOWNRIGHT = 8,
         _ENEMY = 51,
-        _CHARACTER = 61
+        _CHARACTER = 61,
+        _TRIGGER_CHARACTER_1 = 81
     } Tile;
     
     PROGMEM static const Tile LEVEL_TILES[2][10][26] = 
@@ -30,7 +31,7 @@ namespace levels
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {0, 0, 0, 0, 0, 0, 0,51, 0, 0, 0, 0, 0, 0, 0, 1},
+            {0, 0, 0, 0, 0,81, 0,61, 0, 0, 0, 0, 0, 0, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}
         },
         { //LEVEL 2
@@ -50,6 +51,15 @@ namespace levels
     static Tile getTile(short level, short i, short j)
     {
         return static_cast<Tile>(pgm_read_byte(&LEVEL_TILES[level][i][j]));
+    }
+
+    static int8 getTileTriggerId(Tile t)
+    {
+        if(t >= _TRIGGER_CHARACTER_1 && t < 90)
+        {
+            return t - _TRIGGER_CHARACTER_1 + 1;
+        }
+        return -1;
     }
     
 }

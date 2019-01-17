@@ -5,23 +5,29 @@
 #include "abstract/Singleton.h"
 #include "drawable/Map.h"
 #include "drawable/Enemy.h"
+#include "drawable/Character.h"
+#include "Trigger.h"
 
 class EntitiesManager : public Singleton<EntitiesManager>
 {
     public: 
         EntitiesManager(Arduboy2 * arduboy);
 
-        void drawEnemies() const;
-        void spawnEnemies(Map * map);
-        void moveEnemies();
+        void drawEntities() const;
+        void spawnEntities(Map * map);
+        void moveEntities();
 
         const CollisionCheckResult collisionCheck(const Position & pos) const;
+        void triggerCheckAndExecute(const Position & pos) const;
 
     private:
         Arduboy2 * arduboy;
         
         Enemy enemies[MAX_ENEMIES_PER_LEVEL];
-        short enemies_number;
+        Character characters[MAX_CHARACTERS_PER_LEVEL];
+        Trigger triggers[MAX_TRIGGERS_PER_LEVEL];
+
+        int8 enemies_number, character_number, trigger_number;
 };
 
 

@@ -40,6 +40,9 @@ static const short MAX_ENEMIES_PER_LEVEL = 5;
 static const short ENEMY_MOVE = 1;
 static const short ENEMY_WALK_MAX = 40;
 static const short ENEMY_WALK_FRAME_SKIP = 2;
-
+static const short MAX_CHARACTERS_PER_LEVEL = 2;
+static const short MAX_TRIGGERS_PER_LEVEL = 2;
+static const short TRIGGER_HEIGHT = PLAYER_HEIGHT;
+static const short TRIGGER_WIDTH = PLAYER_WIDTH;
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 
+/** This should be called 'semi-singleton' as it is more just a "last-created-instance-holder" than a singleton.*/
 template<typename T>
 class Singleton {
 private:
