@@ -1,9 +1,12 @@
 #include "DialogManager.h"
+#include "drawable/Map.h"
 
 namespace
 {
     short CURSOR_Y = 15;
-    short INIT_CURSOR_I = 3;
+    short DEFAULT_INIT_MARGIN_X = 30;
+    short TRIGGER_TEXT_PADDING_X = 30;
+    short TRIGGER_TEXT_PADDING_Y = 30;
     short CHAR_WIDTH = 6;
 }
 
@@ -11,6 +14,7 @@ namespace
 DialogManager::DialogManager()
     : currentSentenceSize(0)
     , currentLineIndex(0)
+    , currentTrigger(nullptr)
 {
     
 }
@@ -32,7 +36,7 @@ void DialogManager::printNextLine()
             currentNbOfLines = 4;
             switch(currentLineIndex)
             {
-                case 0: printSentence("He did it."); break;
+                case 0: printSentence("He did it again."); break;
                 case 1: printSentence("It is really bad."); break;
                 case 2: printSentence("Go accross the hill."); break;
                 case 3: printSentence("You will see."); break;
@@ -84,11 +88,18 @@ void DialogManager::draw(Arduboy2 * arduboy)
         }
     }
 
-    short marginX = INIT_CURSOR_I * CHAR_WIDTH;
+    short startScreenX = DEFAULT_INIT_MARGIN_X;
+    short screenY = CURSOR_Y;
+    if(currentTrigger)
+    {
+        startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX() - TRIGGER_TEXT_PADDING_X;
+        screenY =  currentTrigger->pos.y - Map::instance()->getScrollY() - TRIGGER_TEXT_PADDING_Y;
+    }
+
     for(int8 i=0; i < currentLetterPosition; i++)
     {
-        short cursorX = marginX + i * CHAR_WIDTH;
-        arduboy->setCursor(cursorX, CURSOR_Y);
+        short cursorX = startScreenX + i * CHAR_WIDTH;
+        arduboy->setCursor(cursorX, screenY);
         arduboy->write(currentSentence[i]);
     }
 

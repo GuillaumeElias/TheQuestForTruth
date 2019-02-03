@@ -80,6 +80,9 @@ void Map::draw(Arduboy2 * arduboy)
                 case levels::Tile::FIRTREE_DOWNRIGHT:
                     arduboy->drawBitmap(screen_x, screen_y, tiles::FIRTREE_DOWNRIGHT, TILE_LENGTH, TILE_LENGTH);
                     break;
+                case levels::Tile::DIRT:
+                    arduboy->drawBitmap(screen_x, screen_y, tiles::DIRT, TILE_LENGTH, TILE_LENGTH);
+                    break;
             }
             screen_x += TILE_LENGTH;
         }
@@ -107,7 +110,8 @@ bool Map::checkCollisionForPoint(const short& x, const short& y) const
     short tile_i = y / TILE_LENGTH;
     short tile_j = x / TILE_LENGTH;
     
-    return levels::getTile(current_level, tile_i, tile_j) == levels::Tile::WALL;
+    levels::Tile tile = levels::getTile(current_level, tile_i, tile_j);
+    return tile == levels::Tile::WALL || tile == levels::Tile::DIRT;
 }
 
 //=============================================================
