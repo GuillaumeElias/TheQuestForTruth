@@ -5,23 +5,34 @@
 
 #include "EntitiesManager.h"
 #include "DialogManager.h"
+#include "Menu.h"
 #include "drawable/Player.h"
 #include "drawable/Map.h"
 
+typedef enum __attribute__ ((packed))
+{
+    PLAY,
+    MENU,
+    ANIM
+} GameMode;
+
 class Game
 {
-    private:
-        Arduboy2 arduboy;
-
-        Player player;
-        Map map;
-        EntitiesManager entitiesManager;
-        DialogManager dialogManager;
-        
     public:	
         Game();
         void init();
         void update();
+
+    private:
+        Arduboy2 arduboy;
+
+        Menu menu;
+        Player player;
+        Map map;
+        EntitiesManager entitiesManager;
+        DialogManager dialogManager;
+
+        GameMode mode;
 };
 
 #endif

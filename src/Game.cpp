@@ -4,6 +4,7 @@
 Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
+    , mode( GameMode::PLAY )
 {
     
 }
@@ -26,24 +27,50 @@ void Game::update()
         return;
 
     arduboy.clear();
-    arduboy.print(player.getLife());
 
-    //move objects
-    player.move( &arduboy );
-    entitiesManager.moveEntities();
-
-    if(entitiesManager.isLevelFinished())
+    switch(mode)
     {
-        map.startNextLevel();
-        entitiesManager.startNewLevel();
-        player.levelStart();
-    }
+        /****************************PLAY*******************************/
+        case PLAY:    
 
-    //draw objects
-    map.draw( &arduboy );
-    player.draw( &arduboy );
-    entitiesManager.drawEntities();
-    dialogManager.draw( &arduboy );
+            //print HUD
+            arduboy.print(player.getLife());
+
+            //move objects
+            player.move( &arduboy );
+            entitiesManager.moveEntities();
+
+            //draw objects
+            map.draw( &arduboy );
+            player.draw( &arduboy );
+            entitiesManager.drawEntities();
+            dialogManager.draw( &arduboy );
+
+            if(entitiesManager.isLevelFinished()) //next level triggered
+            {
+                map.startNextLevel();
+                entitiesManager.startNewLevel();
+                player.levelStart();
+            } 
+            else if(arduboy.pressed( B_BUTTON ))//menu triggered
+            {
+                mode = GameMode::MENU;
+            }
+
+        break;
+
+        /****************************MENU*******************************/
+        case MENU:
+            menu.update(&arduboy);
+
+            if(menu.getSelectedOption() == MenuOption::GO)
+            {
+                mode = GameMode::PLAY;
+                menu.setInGame(true);
+            }
+
+            break;
+    }
 
     arduboy.display();
 }
