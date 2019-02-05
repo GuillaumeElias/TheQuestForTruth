@@ -14,6 +14,7 @@ class Map : public Drawable, public Singleton<Map>
         Map(const Position & playerPos);
         void draw( Arduboy2 * arduboy );
         void startLevel();
+        void startNextLevel();
 
         bool checkCollision(const short& x, const short& y, const short& w, const short& h) const;
         bool checkCollisionForPoint(const short& x, const short& y) const;

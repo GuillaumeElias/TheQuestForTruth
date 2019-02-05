@@ -36,7 +36,7 @@ Player::Player()
 void Player::levelStart()
 {
     pos.x = 0;
-    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT;
+    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT + 1;
 }
 
 

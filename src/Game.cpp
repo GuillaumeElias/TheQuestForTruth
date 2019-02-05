@@ -32,6 +32,13 @@ void Game::update()
     player.move( &arduboy );
     entitiesManager.moveEntities();
 
+    if(entitiesManager.isLevelFinished())
+    {
+        map.startNextLevel();
+        entitiesManager.startNewLevel();
+        player.levelStart();
+    }
+
     //draw objects
     map.draw( &arduboy );
     player.draw( &arduboy );

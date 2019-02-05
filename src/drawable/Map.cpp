@@ -99,6 +99,13 @@ void Map::startLevel()
 }
 
 //=============================================================
+void Map::startNextLevel()
+{
+    current_level++;
+    startLevel();
+}
+
+//=============================================================
 bool Map::checkCollision(const short& x, const short& y, const short& w, const short& h) const
 {
     return checkCollisionForPoint(x, y) || checkCollisionForPoint(x + w, y) ||  checkCollisionForPoint(x, y + h) ||  checkCollisionForPoint(x + w, y + h);

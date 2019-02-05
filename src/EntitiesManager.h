@@ -20,7 +20,12 @@ class EntitiesManager : public Singleton<EntitiesManager>
         const CollisionCheckResult collisionCheck(const Position & pos) const;
         void triggerCheckAndExecute(const Position & pos);
 
+        bool isLevelFinished() const;
+        void startNewLevel();
+
     private:
+        void clearEntities();
+
         Arduboy2 * arduboy;
         
         Enemy enemies[MAX_ENEMIES_PER_LEVEL];
@@ -28,6 +33,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         Trigger triggers[MAX_TRIGGERS_PER_LEVEL];
 
         int8 enemies_number, character_number, trigger_number;
+        bool levelFinished;
 };
 
 

@@ -8,6 +8,7 @@ EntitiesManager::EntitiesManager(Arduboy2 * ardu)
     , enemies_number(0)
     , character_number(0)
     , trigger_number(0)
+    , levelFinished(false)
 {
 }
 
@@ -57,10 +58,10 @@ void EntitiesManager::spawnEntities(Map * map)
                 characters[character_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
                 character_number++;
             }
-            else if( int8 triggerId = levels::getTileTriggerId(tile) >= 0)
+            else if(levels::getTileTriggerId(tile) >= 0)
             {
                 triggers[trigger_number].pos = { j * TILE_LENGTH, i * TILE_LENGTH };
-                triggers[trigger_number].id = triggerId;
+                triggers[trigger_number].id = levels::getTileTriggerId(tile);
                 triggers[trigger_number].triggered = false;
                 trigger_number++;
             }
@@ -96,9 +97,43 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
                 case 1:
                     DialogManager::instance()->printTextForTrigger(&triggers[i]);
                     triggers[i].triggered = true;
-                break;
+                    break;
+                case 19:
+                    levelFinished = true;
+                    break;
             }
         }
     }
  
+}
+
+//==========================================================
+bool EntitiesManager::isLevelFinished() const
+{
+    return levelFinished;
+}
+
+//==========================================================
+void EntitiesManager::startNewLevel()
+{
+    clearEntities();
+    spawnEntities(Map::instance());
+    levelFinished = false;
+}
+
+//==========================================================
+void EntitiesManager::clearEntities()
+{
+    for(short i=0; i < enemies_number; i++)
+    {
+        enemies[i] = Enemy();
+    }
+    for(short i=0; i < character_number; i++)
+    {
+        characters[i] = Character();
+    }
+    for(short i=0; i < trigger_number; i++)
+    {
+        triggers[i] = Trigger();
+    }
 }
