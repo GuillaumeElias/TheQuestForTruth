@@ -36,7 +36,7 @@ Player::Player()
 void Player::levelStart()
 {
     pos.x = 0;
-    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT + 1;
+    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT - 1;
 }
 
 
@@ -94,7 +94,7 @@ void Player::move( Arduboy2 * arduboy )
             facingRight = false;
             newX -= PLAYER_MOVE;
         }
-        if( !jumping && !falling && arduboy->pressed( A_BUTTON )) //jump only works when on the ground
+        if( !jumping && !falling && arduboy->justPressed( A_BUTTON )) //jump only works when on the ground
         {
             jumping = true;
             yVelocity = -PLAYER_JUMP_VELOCITY;

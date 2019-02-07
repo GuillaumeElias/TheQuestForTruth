@@ -4,7 +4,7 @@
 Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
-    , mode( GameMode::PLAY )
+    , mode( GameMode::MENU )
 {
     
 }
@@ -27,6 +27,7 @@ void Game::update()
         return;
 
     arduboy.clear();
+    arduboy.pollButtons();
 
     switch(mode)
     {
@@ -63,7 +64,7 @@ void Game::update()
         case MENU:
             menu.update(&arduboy);
 
-            if(menu.getSelectedOption() == MenuOption::GO)
+            if(menu.popSelectedOption() == MenuOption::GO)
             {
                 mode = GameMode::PLAY;
                 menu.setInGame(true);

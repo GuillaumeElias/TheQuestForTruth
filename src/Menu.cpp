@@ -2,11 +2,12 @@
 
 namespace
 {
-    static const short CURSOR_LEFT_X = 30;
-    static const short CURSOR_TOP_Y = 30;
-    static const short LINE_HEIGHT = 10;
+    static const short CURSOR_LEFT_X = 50;
+    static const short CURSOR_TOP_Y = 25;
+    static const short LINE_HEIGHT = 15;
     static const short NB_ITEMS = 2;
     static const short SELECTION_BALL_WIDTH = 5;
+    static const short SELECTION_BALL_UP_PADDING = 3;
 }
 
 //=============================================================
@@ -34,21 +35,21 @@ void Menu::update(Arduboy2 * arduboy)
         arduboy->println("ABOUT");
     }
 
-    if( arduboy->pressed( UP_BUTTON ) )
+    if( arduboy->justPressed( DOWN_BUTTON ) )
     {
         if(selection < NB_ITEMS)
         {
             selection++;
         }
     }
-    else if( arduboy->pressed(DOWN_BUTTON) )
+    else if( arduboy->justPressed(UP_BUTTON) )
     {
         if(selection > 1)
         {
             selection--;
         }
     }
-    if( arduboy->pressed(A_BUTTON) )
+    if( arduboy->justPressed(A_BUTTON) )
     {
         if(selection == 1)
         {
@@ -56,7 +57,7 @@ void Menu::update(Arduboy2 * arduboy)
         }
     }
 
-    short ballY = CURSOR_TOP_Y;
+    short ballY = CURSOR_TOP_Y + SELECTION_BALL_UP_PADDING;
     if(selection > 1)
     {
         ballY += LINE_HEIGHT;
@@ -72,7 +73,10 @@ void Menu::setInGame(bool inGame)
 }
 
 //=============================================================
-const MenuOption Menu::getSelectedOption() const
-{
-    return selectedOption;
+const MenuOption Menu::popSelectedOption()
+{   
+    MenuOption option = selectedOption;
+    selectedOption = NONE;
+
+    return option;
 }

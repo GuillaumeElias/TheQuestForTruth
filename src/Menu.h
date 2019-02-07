@@ -18,7 +18,7 @@ class Menu
         Menu();
         void update(Arduboy2 * arduboy);
         void setInGame(bool inGame);
-        const MenuOption getSelectedOption() const;
+        const MenuOption popSelectedOption(); //returns selectedOption and reset it to NONE
     private:
        MenuOption selectedOption;
        int8 selection;
