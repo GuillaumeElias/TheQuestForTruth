@@ -53,8 +53,9 @@ void EntitiesManager::spawnEntities(Map * map)
                 enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
                 enemies_number++;
             }
-            else if(tile == levels::Tile::_CHARACTER)
+            else if(levels::isCharacterTile(tile))
             {
+                characters[character_number] = Character(tile);
                 characters[character_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
                 character_number++;
             }
@@ -95,6 +96,10 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
             switch(triggers[i].id)
             {
                 case 1:
+                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
+                    triggers[i].triggered = true;
+                    break;
+                case 2:
                     DialogManager::instance()->printTextForTrigger(&triggers[i]);
                     triggers[i].triggered = true;
                     break;

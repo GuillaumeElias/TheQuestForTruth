@@ -11,6 +11,7 @@ class Character : public Drawable, public Movable
 {
     public:
         Character();
+        Character(int8 characterId);
 
         void spawn( const Position & spawnPosition );
         void move( Arduboy2 * arduboy ) override;
@@ -18,10 +19,15 @@ class Character : public Drawable, public Movable
         
         const Position & getPos() const;
 
-        static bool checkCharacterCollision(const Position & playerPosition, const Position & enemyPosition);
+        bool checkCharacterCollision(const Position & playerPosition, const Position & enemyPosition);
     private:
+
+        short getWidth() const;
+        short getHeight() const;
+
         Position pos;
         
+        int8 id;
         bool displaySpriteA;
         bool facingRight;
         bool visible;
