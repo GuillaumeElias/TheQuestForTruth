@@ -13,7 +13,7 @@ class Enemy : public Drawable, public Movable
         Enemy();
 
         void spawn( const Position & spawnPosition );
-        void move( Arduboy2 * arduboy ) override;
+        TriggerEvent move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
         
         const Position & getPos() const;

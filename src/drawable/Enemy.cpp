@@ -34,9 +34,9 @@ Enemy::Enemy()
  }
 
 //==========================================================
-void Enemy::move( Arduboy2 * arduboy )
+TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
-    if(dead) return;
+    if(dead) return NO_EVENT;
 
     if(walkFrameSkipped > ENEMY_WALK_FRAME_SKIP)
     {
@@ -45,7 +45,7 @@ void Enemy::move( Arduboy2 * arduboy )
     else
     {
         walkFrameSkipped++;
-        return; //only move every n frames
+        return NO_EVENT; //only move every n frames
     }
 
     int8 diffX = pos.x - initPos.x;
@@ -66,6 +66,8 @@ void Enemy::move( Arduboy2 * arduboy )
     {
         pos.x -= ENEMY_MOVE;
     }
+
+    return NO_EVENT;
 }
 
 //==========================================================

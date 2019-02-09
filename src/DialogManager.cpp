@@ -3,10 +3,10 @@
 
 namespace
 {
-    short CURSOR_Y = 15;
+    short CURSOR_Y = 30;
     short DEFAULT_INIT_MARGIN_X = 30;
     short TRIGGER_TEXT_PADDING_X = 30;
-    short TRIGGER_TEXT_PADDING_Y = 30;
+    short TRIGGER_TEXT_PADDING_Y = 20;
     short CHAR_WIDTH = 6;
 }
 
@@ -40,6 +40,16 @@ void DialogManager::printNextLine()
                 case 1: printSentence("It is really bad."); break;
                 case 2: printSentence("Go accross the hill."); break;
                 case 3: printSentence("You will see."); break;
+            }
+
+        break;
+
+        case 2:
+            currentNbOfLines = 2;
+            switch(currentLineIndex)
+            {
+                case 0: printSentence("Those ghosts!"); break;
+                case 1: printSentence("I hate them!"); break;
             }
 
         break;

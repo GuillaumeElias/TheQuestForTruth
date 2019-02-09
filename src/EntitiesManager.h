@@ -20,11 +20,15 @@ class EntitiesManager : public Singleton<EntitiesManager>
         const CollisionCheckResult collisionCheck(const Position & pos) const;
         void triggerCheckAndExecute(const Position & pos);
 
-        bool isLevelFinished() const;
+        TriggerEvent popTriggerEvent();
         void startNewLevel();
+
+        Trigger * getTriggerForEvent(const TriggerEvent & event) const;
 
     private:
         void clearEntities();
+        Character* getCharacterWithId(int8 characterId);
+        Trigger* getTriggerWithId(int8 triggerId);
 
         Arduboy2 * arduboy;
         
@@ -33,9 +37,14 @@ class EntitiesManager : public Singleton<EntitiesManager>
         Trigger triggers[MAX_TRIGGERS_PER_LEVEL];
 
         int8 enemies_number, character_number, trigger_number;
-        bool levelFinished;
+        TriggerEvent triggerEvent;
 };
 
+//===============================================================================
+static bool isStartDialogEvent(const TriggerEvent& e)
+{
+    return e == START_DIALOG_2;
+}
 
 
 #endif

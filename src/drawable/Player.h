@@ -16,7 +16,7 @@ class Player : public Drawable, public Movable, public Singleton<Player>
         Player();
         void levelStart();
 
-        void move( Arduboy2 * arduboy ) override;
+        TriggerEvent move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
         void takeHit();
 

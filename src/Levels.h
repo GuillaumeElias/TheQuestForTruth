@@ -20,6 +20,7 @@ namespace levels
         _CHARACTER_SKINNY_GUY = 61,
         _CHARACTER_LITTLE_GIRL = 62,
         _TRIGGER_CHARACTER_1 = 81,
+        _TRIGGER_CHARACTER_2 = 82,
         _TRIGGER_END_LEVEL = 99
     } Tile;
     

@@ -7,7 +7,7 @@
 class Movable
 {
     public:
-        virtual void move( Arduboy2 * arduboy ) = 0;
+        virtual TriggerEvent move( Arduboy2 * arduboy ) = 0;
 };
 
 #endif

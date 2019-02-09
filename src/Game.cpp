@@ -31,33 +31,51 @@ void Game::update()
 
     switch(mode)
     {
-        /****************************PLAY*******************************/
-        case PLAY:    
-
-            //print HUD
+        /****************************PLAY/ANIM*******************************/
+        case PLAY: 
+        case ANIM:
+        {
+            //PRINT HUD
             arduboy.print(player.getLife());
 
-            //move objects
-            player.move( &arduboy );
+            //MOVE OBJECTS
+            if(mode == PLAY) //don't move player if in animation
+            {
+                player.move( &arduboy );
+            }
             entitiesManager.moveEntities();
 
-            //draw objects
+            //DRAW OBJECTS
             map.draw( &arduboy );
             player.draw( &arduboy );
             entitiesManager.drawEntities();
             dialogManager.draw( &arduboy );
 
-            if(entitiesManager.isLevelFinished()) //next level triggered
+            TriggerEvent event = entitiesManager.popTriggerEvent();
+            if(event == TriggerEvent::END_LEVEL) //next level triggered
             {
                 map.startNextLevel();
                 entitiesManager.startNewLevel();
                 player.levelStart();
-            } 
-            else if(arduboy.pressed( B_BUTTON ))//menu triggered
+            }
+            else if(event == TriggerEvent::START_ANIM) //start animation
+            {
+                mode = ANIM;
+            }
+            else if(event == TriggerEvent::STOP_ANIM) //start animation
+            {
+                mode = PLAY;
+            }
+            else if(isStartDialogEvent(event))
+            {
+                mode = PLAY;
+                dialogManager.printTextForTrigger(entitiesManager.getTriggerForEvent(event));
+            }
+            else if(arduboy.pressed( B_BUTTON )) //menu triggered
             {
                 mode = GameMode::MENU;
             }
-
+        }
         break;
 
         /****************************MENU*******************************/

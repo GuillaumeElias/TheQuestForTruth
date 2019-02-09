@@ -38,6 +38,7 @@ Character::Character(int8 characterId)
     , facingRight( true )
     , animFrameCounter( 0 )
     , visible( false )
+    , distanceToMove(0)
 {
 
 }
@@ -52,9 +53,9 @@ Character::Character(int8 characterId)
  }
 
 //==========================================================
-void Character::move( Arduboy2 * arduboy )
+TriggerEvent Character::move( Arduboy2 * arduboy )
 {
-    if(!visible) return;
+    if(!visible) return NO_EVENT;
 
     //Frame animation
     if(animFrameCounter > PLAYER_ANIM_NB_FRAMES)
@@ -63,6 +64,27 @@ void Character::move( Arduboy2 * arduboy )
         animFrameCounter = 0;
     }
     animFrameCounter++;
+
+    if( abs(distanceToMove) >= CHARACTER_MOVE)
+    {
+        if(distanceToMove > 0)
+        {
+            pos.x += CHARACTER_MOVE;
+            distanceToMove -= CHARACTER_MOVE;
+        }
+        else //if distanceToMove < 0
+        {
+            pos.x -= CHARACTER_MOVE;
+            distanceToMove += CHARACTER_MOVE;
+        }
+        if( abs(distanceToMove) < CHARACTER_MOVE)
+        {
+            distanceToMove = 0;
+            return getTriggerEventForCharacterMovement();
+        }
+    }
+    
+    return NO_EVENT;
 }
 
 //==========================================================
@@ -106,9 +128,21 @@ const Position & Character::getPos() const
 }
 
 //==========================================================
+const int8 Character::getId() const
+{
+    return id;
+}
+
+//==========================================================
 bool Character::checkCharacterCollision(const Position & playerPosition, const Position & CharacterPosition)
 {
     return rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {CharacterPosition, getWidth(), getHeight()});
+}
+
+//==========================================================
+void Character::moveDistance(int8 distance)
+{
+    distanceToMove = distance;
 }
 
 //==========================================================
@@ -137,4 +171,16 @@ short Character::getHeight() const
         break;
     }
     return 0;
+}
+
+//==========================================================
+TriggerEvent Character::getTriggerEventForCharacterMovement() const
+{
+    switch (id)
+    {
+        case levels::Tile::_CHARACTER_LITTLE_GIRL:
+            return TriggerEvent::START_DIALOG_2;
+        default:
+            return TriggerEvent::NO_EVENT;
+    }
 }

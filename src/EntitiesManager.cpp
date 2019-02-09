@@ -8,7 +8,7 @@ EntitiesManager::EntitiesManager(Arduboy2 * ardu)
     , enemies_number(0)
     , character_number(0)
     , trigger_number(0)
-    , levelFinished(false)
+    , triggerEvent(NO_EVENT)
 {
 }
 
@@ -27,16 +27,22 @@ void EntitiesManager::drawEntities() const
 }
 
 //==========================================================
-void EntitiesManager::moveEntities()
+void EntitiesManager::moveEntities()   //we assume there will only be one event triggered per call
 {
+    TriggerEvent generatedEvent = NO_EVENT;
     for(int8 i=0; i < enemies_number; i++)
     {
-        enemies[i].move( arduboy );
+        generatedEvent = enemies[i].move( arduboy );
     }
 
     for(int8 i=0; i < character_number; i++)
     {
-        characters[i].move( arduboy );
+        generatedEvent = characters[i].move( arduboy );
+    }
+
+    if(generatedEvent != NO_EVENT)
+    {
+        triggerEvent = generatedEvent;
     }
 }
 
@@ -100,11 +106,13 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
                     triggers[i].triggered = true;
                     break;
                 case 2:
-                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
                     triggers[i].triggered = true;
+                    getCharacterWithId(62)->moveDistance(-50);
+        
+                    triggerEvent = START_ANIM;
                     break;
                 case 19:
-                    levelFinished = true;
+                    triggerEvent = END_LEVEL;
                     break;
             }
         }
@@ -113,9 +121,11 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
 }
 
 //==========================================================
-bool EntitiesManager::isLevelFinished() const
+TriggerEvent EntitiesManager::popTriggerEvent()
 {
-    return levelFinished;
+    TriggerEvent e = triggerEvent;
+    triggerEvent = NO_EVENT;
+    return e;
 }
 
 //==========================================================
@@ -123,7 +133,18 @@ void EntitiesManager::startNewLevel()
 {
     clearEntities();
     spawnEntities(Map::instance());
-    levelFinished = false;
+    triggerEvent = NO_EVENT;
+}
+
+//==========================================================
+Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event) const
+{
+    switch(event)
+    {
+        case START_DIALOG_2:
+            return getTriggerWithId(2);
+    }
+    return nullptr;
 }
 
 //==========================================================
@@ -140,5 +161,29 @@ void EntitiesManager::clearEntities()
     for(short i=0; i < trigger_number; i++)
     {
         triggers[i] = Trigger();
+    }
+}
+
+//==========================================================
+Character* EntitiesManager::getCharacterWithId(int8 characterId)
+{
+    for(short i=0; i < character_number; i++)
+    {
+        if(characters[i].getId() == characterId)
+        {
+            return &characters[i];
+        }
+    }
+}
+
+//==========================================================
+Trigger* EntitiesManager::getTriggerWithId(int8 triggerId)
+{
+    for(short i=0; i < trigger_number; i++)
+    {
+        if(triggers[i].id == triggerId)
+        {
+            return &triggers[i];
+        }
     }
 }

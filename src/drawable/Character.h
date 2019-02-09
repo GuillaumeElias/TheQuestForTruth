@@ -14,16 +14,19 @@ class Character : public Drawable, public Movable
         Character(int8 characterId);
 
         void spawn( const Position & spawnPosition );
-        void move( Arduboy2 * arduboy ) override;
+        TriggerEvent move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
         
         const Position & getPos() const;
+        const int8 getId() const;
 
         bool checkCharacterCollision(const Position & playerPosition, const Position & enemyPosition);
+        void moveDistance(int8 distance);
     private:
 
         short getWidth() const;
         short getHeight() const;
+        TriggerEvent getTriggerEventForCharacterMovement() const;
 
         Position pos;
         
@@ -34,6 +37,7 @@ class Character : public Drawable, public Movable
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
+        int8 distanceToMove;
 
 };
 

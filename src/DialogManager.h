@@ -14,6 +14,7 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
         void draw( Arduboy2 * arduboy) override;
 
         void printTextForTrigger(Trigger * trigger);
+        void printTextNb(int8 dialogNb);
 
     private:
         void printNextLine();

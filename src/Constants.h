@@ -21,6 +21,16 @@ typedef enum __attribute__ ((packed))
     HIT_TRIGGER
 } CollisionCheckResult;
 
+//TRIGGER EVENT
+typedef enum __attribute__ ((packed))
+{
+    NO_EVENT,
+    START_ANIM,
+    STOP_ANIM,
+    START_DIALOG_2,
+    END_LEVEL
+} TriggerEvent;
+
 static const short SCREEN_HEIGHT = 64;
 static const short SCREEN_WIDTH = 128;
 static const short MID_WIDTH = SCREEN_WIDTH / 2;
@@ -37,6 +47,7 @@ static const float PLAYER_FALL_MAX_VELOCITY = 2.0f;
 static const short TILE_LENGTH = 10;
 static const short TILE_SCREEN_Y_OFFSET = SCREEN_HEIGHT % TILE_LENGTH;
 static const short MAX_ENEMIES_PER_LEVEL = 5;
+static const short CHARACTER_MOVE = 1;
 static const short ENEMY_MOVE = 1;
 static const short ENEMY_WALK_MAX = 25;
 static const short ENEMY_WALK_FRAME_SKIP = 2;

@@ -41,7 +41,7 @@ void Player::levelStart()
 
 
 //==========================================================
-void Player::move( Arduboy2 * arduboy )
+TriggerEvent Player::move( Arduboy2 * arduboy )
 {
     short newY = pos.y, newX = pos.x;
     bool falling = isFalling();
@@ -118,6 +118,8 @@ void Player::move( Arduboy2 * arduboy )
     pos.y += yVelocity; //apply velocity to player position regardless of collision (y collision is already handled)
 
     EntitiesManager::instance()->triggerCheckAndExecute(pos);
+
+    return NO_EVENT;
 }
 
 //==========================================================
