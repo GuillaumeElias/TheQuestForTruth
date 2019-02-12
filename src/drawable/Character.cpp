@@ -47,7 +47,7 @@ Character::Character(int8 characterId)
  void Character::spawn( const Position & spawnPosition )
  {
      pos = spawnPosition;
-     pos.y += TILE_LENGTH - (getHeight() % TILE_LENGTH); //if the character height doesn't fall right on tile end we shift it downwards
+     pos.y += (TILE_LENGTH - (getHeight() % TILE_LENGTH)) % TILE_LENGTH; //if the character height doesn't fall right on tile end we shift it downwards
 
      visible = true;
  }
@@ -97,7 +97,7 @@ void Character::draw( Arduboy2 * arduboy )
     
     switch(id)
     {
-        case levels::Tile::_CHARACTER_SKINNY_GUY:
+        case levels::Tile::_CHARACTER_1:
             if(displaySpriteA)
             {
                 arduboy->drawBitmap(screenX, screenY, BITMAP_1_A, CHARACTER_1_WIDTH, CHARACTER_1_HEIGHT);
@@ -107,7 +107,7 @@ void Character::draw( Arduboy2 * arduboy )
                 arduboy->drawBitmap(screenX, screenY, BITMAP_1_B, CHARACTER_1_WIDTH, CHARACTER_1_HEIGHT);
             }
         break;
-        case levels::Tile::_CHARACTER_LITTLE_GIRL:
+        case levels::Tile::_CHARACTER_2:
             if(displaySpriteA)
             {
                 arduboy->drawBitmap(screenX, screenY, BITMAP_2_A, CHARACTER_2_WIDTH, CHARACTER_2_HEIGHT);
@@ -150,9 +150,9 @@ short Character::getWidth() const
 {
     switch(id)
     {
-        case levels::Tile::_CHARACTER_SKINNY_GUY:
+        case levels::Tile::_CHARACTER_1:
             return CHARACTER_1_WIDTH;
-        case levels::Tile::_CHARACTER_LITTLE_GIRL:
+        case levels::Tile::_CHARACTER_2:
             return CHARACTER_2_WIDTH;
         break;
     }
@@ -164,9 +164,9 @@ short Character::getHeight() const
 {
     switch(id)
     {
-        case levels::Tile::_CHARACTER_SKINNY_GUY:
+        case levels::Tile::_CHARACTER_1:
             return CHARACTER_1_HEIGHT;
-        case levels::Tile::_CHARACTER_LITTLE_GIRL:
+        case levels::Tile::_CHARACTER_2:
             return CHARACTER_2_HEIGHT;
         break;
     }
@@ -178,7 +178,7 @@ TriggerEvent Character::getTriggerEventForCharacterMovement() const
 {
     switch (id)
     {
-        case levels::Tile::_CHARACTER_LITTLE_GIRL:
+        case levels::Tile::_CHARACTER_2:
             return TriggerEvent::START_DIALOG_2;
         default:
             return TriggerEvent::NO_EVENT;

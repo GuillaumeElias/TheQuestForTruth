@@ -17,8 +17,8 @@ namespace levels
         FIRTREE_DOWNRIGHT = 8,
         DIRT = 9,
         _ENEMY = 51,
-        _CHARACTER_SKINNY_GUY = 61,
-        _CHARACTER_LITTLE_GIRL = 62,
+        _CHARACTER_1 = 61,
+        _CHARACTER_2 = 62,
         _TRIGGER_CHARACTER_1 = 81,
         _TRIGGER_CHARACTER_2 = 82,
         _TRIGGER_END_LEVEL = 99
@@ -63,7 +63,7 @@ namespace levels
 
     static bool isCharacterTile(Tile t)
     {
-        return t >= _CHARACTER_SKINNY_GUY && t <= _CHARACTER_LITTLE_GIRL;
+        return t >= _CHARACTER_1 && t <= _CHARACTER_2;
     }
 
     static int8 getTileTriggerId(Tile t)

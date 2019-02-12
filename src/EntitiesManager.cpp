@@ -162,6 +162,10 @@ void EntitiesManager::clearEntities()
     {
         triggers[i] = Trigger();
     }
+
+    enemies_number = 0;
+    character_number = 0;
+    trigger_number = 0;
 }
 
 //==========================================================
