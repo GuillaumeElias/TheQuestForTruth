@@ -5,7 +5,7 @@ namespace
 {
     short CURSOR_Y = 30;
     short DEFAULT_INIT_MARGIN_X = 30;
-    short TRIGGER_TEXT_PADDING_X = 30;
+    short DEFAULT_TRIGGER_TEXT_PADDING_X = 30;
     short TRIGGER_TEXT_PADDING_Y = 20;
     short CHAR_WIDTH = 6;
 }
@@ -30,6 +30,8 @@ void DialogManager::printTextForTrigger(Trigger * trigger)
 //======================================================================
 void DialogManager::printNextLine()
 {
+    triggerTextPaddingX = DEFAULT_TRIGGER_TEXT_PADDING_X;
+
     switch(currentTrigger->id)
     {
         case 1:
@@ -45,11 +47,15 @@ void DialogManager::printNextLine()
         break;
 
         case 2:
-            currentNbOfLines = 2;
+            currentNbOfLines = 4;
+            triggerTextPaddingX = 48;
+
             switch(currentLineIndex)
             {
-                case 0: printSentence("Those ghosts!"); break;
-                case 1: printSentence("I hate them!"); break;
+                case 0: triggerTextPaddingX = -5; printSentence("Hello."); break;
+                case 1: printSentence("This is the Village."); break;
+                case 2: printSentence("Beware of the ghosts."); break;
+                case 3: printSentence("They are everywhere."); break;
             }
 
         break;
@@ -102,7 +108,7 @@ void DialogManager::draw(Arduboy2 * arduboy)
     short screenY = CURSOR_Y;
     if(currentTrigger)
     {
-        startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX() - TRIGGER_TEXT_PADDING_X;
+        startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX() - triggerTextPaddingX;
         screenY =  currentTrigger->pos.y - Map::instance()->getScrollY() - TRIGGER_TEXT_PADDING_Y;
     }
 

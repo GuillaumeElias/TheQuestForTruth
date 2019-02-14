@@ -21,6 +21,7 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
         void printSentence(char * charArray);
         int8 currentSentenceSize, currentLetterPosition, currentLineIndex, currentNbOfLines;
         int8 letterFrameCounter;
+        int8 triggerTextPaddingX;
         Trigger * currentTrigger;
         
         char * currentSentence;
