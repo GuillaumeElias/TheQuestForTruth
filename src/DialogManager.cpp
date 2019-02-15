@@ -3,11 +3,8 @@
 
 namespace
 {
-    short CURSOR_Y = 30;
-    short DEFAULT_INIT_MARGIN_X = 30;
-    short DEFAULT_TRIGGER_TEXT_PADDING_X = 30;
-    short TRIGGER_TEXT_PADDING_Y = 20;
-    short CHAR_WIDTH = 6;
+    static const short DEFAULT_TRIGGER_TEXT_PADDING_X = 30;
+    static const short TRIGGER_TEXT_PADDING_Y = 20;
 }
 
 //======================================================================
@@ -66,13 +63,22 @@ void DialogManager::printNextLine()
 //======================================================================
 void DialogManager::printSentence(char * charArray)
 {
+    reset();
+
     currentSentence = charArray;
 
     char* p = charArray;
     for (; *p != '\0'; ++p);
     currentSentenceSize = p - charArray;
+}
+
+//======================================================================
+void DialogManager::reset()
+{
+    currentSentenceSize = 0;
     currentLetterPosition = 1;
     letterFrameCounter = 0;
+    currentSentence = nullptr;
 }
 
 //======================================================================
@@ -104,19 +110,30 @@ void DialogManager::draw(Arduboy2 * arduboy)
         }
     }
 
-    short startScreenX = DEFAULT_INIT_MARGIN_X;
-    short screenY = CURSOR_Y;
+    short startScreenX = DIALOG_DEFAULT_INIT_CURSOR_X;
+    short screenY = DIALOG_DEFAULT_CURSOR_Y;
     if(currentTrigger)
     {
         startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX() - triggerTextPaddingX;
         screenY =  currentTrigger->pos.y - Map::instance()->getScrollY() - TRIGGER_TEXT_PADDING_Y;
     }
 
+    short nbCharacterOnCurrentLine = 0;
     for(int8 i=0; i < currentLetterPosition; i++)
     {
-        short cursorX = startScreenX + i * CHAR_WIDTH;
-        arduboy->setCursor(cursorX, screenY);
-        arduboy->write(currentSentence[i]);
+        short cursorX = startScreenX + nbCharacterOnCurrentLine * DIALOG_CHAR_WIDTH;
+        if(currentSentence[i] == '\n')
+        {
+            screenY += DIALOG_CHAR_HEIGHT;
+            cursorX = startScreenX;
+            nbCharacterOnCurrentLine = 0;
+        }
+        else
+        {
+            arduboy->setCursor(cursorX, screenY);
+            arduboy->write(currentSentence[i]);
+            nbCharacterOnCurrentLine++;
+        }
     }
 
     letterFrameCounter++;

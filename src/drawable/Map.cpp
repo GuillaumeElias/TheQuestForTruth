@@ -65,7 +65,7 @@ void Map::draw(Arduboy2 * arduboy)
                 case levels::Tile::DOOR_UP:
                     arduboy->drawBitmap(screen_x, screen_y, tiles::DOOR_UP, TILE_LENGTH, TILE_LENGTH);
                     break;
-                case levels::Tile::DOOR_DOWN:
+                case levels::Tile::DOOR_HOUSE_1:
                     //to texture
                 break;
                 case levels::Tile::FIRTREE_UPLEFT:

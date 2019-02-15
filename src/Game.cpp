@@ -4,7 +4,7 @@
 Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
-    , mode( GameMode::MENU )
+    , mode( GameMode::CINEMATIC )
 {
     
 }
@@ -88,6 +88,20 @@ void Game::update()
                 menu.setInGame(true);
             }
 
+            break;
+
+        /****************************HOUSE*******************************/
+        case HOUSE:
+            boxView.update(&arduboy);
+            break;
+
+       /****************************CINEMATIC*****************************/
+        case CINEMATIC:
+
+            if( boxView.updateCinematic(&arduboy) == false)
+            {
+                mode = GameMode::MENU;
+            }
             break;
     }
 

@@ -6,6 +6,7 @@
 #include "EntitiesManager.h"
 #include "DialogManager.h"
 #include "Menu.h"
+#include "BoxView.h"
 #include "drawable/Player.h"
 #include "drawable/Map.h"
 
@@ -13,7 +14,9 @@ typedef enum __attribute__ ((packed))
 {
     PLAY,
     MENU,
-    ANIM
+    ANIM,
+    HOUSE,
+    CINEMATIC
 } GameMode;
 
 class Game
@@ -31,6 +34,7 @@ class Game
         Map map;
         EntitiesManager entitiesManager;
         DialogManager dialogManager;
+        BoxView boxView;
 
         GameMode mode;
 };
