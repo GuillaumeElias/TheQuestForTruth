@@ -9,7 +9,8 @@ class BoxView
 {
 public:
     BoxView();
-    void update(Arduboy2 * arduboy);
+    void reset();
+    bool update(Arduboy2 * arduboy);
     bool updateCinematic(Arduboy2 * arduboy);
 
 private:

@@ -18,56 +18,68 @@ namespace
 BoxView::BoxView()
     :  frameCount(0)
     ,  inscructionNb(0)
-
-    ,  aX(20)
-    ,  aY(14)
-  
-    ,  bX(110)
-    ,  bY(14)
-  
-    ,  cX(20)
-    ,  cY(50)
-  
-    ,  dX(110)
-    ,  dY(50)
-  
-    ,  aaX(0)
-    ,  aaY(0)
-  
-    ,  bbX(128)
-    ,  bbY(0)
-  
-    ,  ccX(0)
-    ,  ccY(64)
-  
-    ,  ddX(128)
-    ,  ddY(64)
 {
-    
+    reset();
 }
 
+//====================================================================
+void BoxView::reset()
+{
+    aX = 20;
+    aY = 14;
+  
+    bX = 110;
+    bY = 14;
+  
+    cX = 20;
+    cY = 50;
+  
+    dX = 110;
+    dY = 50;
+  
+    aaX = 0;
+    aaY = 0;
+  
+    bbX = 128;
+    bbY = 0;
+  
+    ccX = 0;
+    ccY = 64;
+  
+    ddX = 128;
+    ddY = 64;
+
+    frameCount = 0;
+}
 
 //====================================================================
-void BoxView::update(Arduboy2 * arduboy)
+bool BoxView::update(Arduboy2 * arduboy)
 {
-    if( arduboy->pressed( UP_BUTTON ) )
+    if((aY > 24 && dY < 40) || dY < bY || cY < aY)
     {
-        moveUp();
+        return false;
+    }
+
+    if( arduboy->justPressed( UP_BUTTON ) )
+    {
+        if( ( (aY - 4) > 0 ) || ( (bY - 4) > 0 ) ) moveUp();
     }    
-    else if( arduboy->pressed( DOWN_BUTTON ) )
+    else if( arduboy->justPressed( DOWN_BUTTON ) )
     {
         moveDown();
     }
     else if( arduboy->pressed( RIGHT_BUTTON ) )
     {
-        moveRight();
+        if( dY - 20 > bY) moveRight();
     }
     else if( arduboy->pressed( LEFT_BUTTON ) )
     {
-        moveLeft();
+         if( cY - 20 > aY) moveLeft();
     }
 
     drawLines(arduboy);
+
+    return true;
 }
 
 //====================================================================

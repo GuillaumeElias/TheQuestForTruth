@@ -75,6 +75,11 @@ void Game::update()
             {
                 mode = GameMode::MENU;
             }
+            else if(arduboy.pressed( UP_BUTTON ) && map.checkPlayerIsOnADoor()) //up key pressed
+            {
+                mode = GameMode::HOUSE;
+                boxView.reset();
+            }
         }
         break;
 
@@ -92,7 +97,10 @@ void Game::update()
 
         /****************************HOUSE*******************************/
         case HOUSE:
-            boxView.update(&arduboy);
+            if( boxView.update(&arduboy) == false)
+            {
+                mode = GameMode::PLAY;
+            }
             break;
 
        /****************************CINEMATIC*****************************/
