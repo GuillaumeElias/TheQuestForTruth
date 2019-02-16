@@ -45,7 +45,7 @@ void DialogManager::printNextLine()
 
         case 2:
             currentNbOfLines = 4;
-            triggerTextPaddingX = 48;
+            triggerTextPaddingX = 68;
 
             switch(currentLineIndex)
             {

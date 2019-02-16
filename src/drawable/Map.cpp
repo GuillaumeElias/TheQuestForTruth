@@ -65,6 +65,9 @@ void Map::draw(Arduboy2 * arduboy)
                 case levels::Tile::DOOR_UP:
                     arduboy->drawBitmap(screen_x, screen_y, tiles::DOOR_UP, TILE_LENGTH, TILE_LENGTH);
                     break;
+                case levels::Tile::BRICK:
+                    arduboy->drawBitmap(screen_x, screen_y, tiles::BRICK, TILE_LENGTH, TILE_LENGTH);
+                    break;   
                 case levels::Tile::DOOR_HOUSE_1:
                     //to texture
                 break;
@@ -82,6 +85,9 @@ void Map::draw(Arduboy2 * arduboy)
                     break;
                 case levels::Tile::DIRT:
                     arduboy->drawBitmap(screen_x, screen_y, tiles::DIRT, TILE_LENGTH, TILE_LENGTH);
+                    break;
+                case levels::Tile::_TRIGGER_END_LEVEL:
+                    arduboy->drawCircle(screen_x + TILE_LENGTH / 3, screen_y + TILE_LENGTH / 3, TILE_LENGTH / 3);
                     break;
             }
             screen_x += TILE_LENGTH;
@@ -118,7 +124,7 @@ bool Map::checkCollisionForPoint(const short& x, const short& y) const
     short tile_j = x / TILE_LENGTH;
     
     levels::Tile tile = levels::getTile(current_level, tile_i, tile_j);
-    return tile == levels::Tile::WALL || tile == levels::Tile::DIRT;
+    return tile == levels::Tile::WALL || tile == levels::Tile::DIRT || tile == levels::Tile::BRICK;
 }
 
 //=============================================================
