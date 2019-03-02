@@ -61,6 +61,13 @@ void DialogManager::printNextLine()
 }
 
 //======================================================================
+void DialogManager::printSingleSentence(char * charArray)
+{
+    currentTrigger = nullptr;
+    printSentence(charArray);
+}
+
+//======================================================================
 void DialogManager::printSentence(char * charArray)
 {
     reset();

@@ -15,9 +15,10 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
 
         void printTextForTrigger(Trigger * trigger);
         void printTextNb(int8 dialogNb);
-        void printSentence(char * charArray);
+        void printSingleSentence(char * charArray);
 
     private:
+        void printSentence(char * charArray);
         void printNextLine();
         void reset();
 

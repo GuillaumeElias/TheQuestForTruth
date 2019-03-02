@@ -3,6 +3,7 @@
 
 namespace
 {
+    //CINEMATIC MODE
     static const short CINEMATIC_FRAME_MOVE = 5;
 
     static const short NB_INSTRUCTIONS_SEQ_1 = 40;
@@ -12,12 +13,15 @@ namespace
     static const short END_SEQ_2 = NB_INSTRUCTIONS_SEQ_1 + NB_INSTRUCTIONS_SEQ_2;
     static const short END_SEQ_3 = NB_INSTRUCTIONS_SEQ_1 + NB_INSTRUCTIONS_SEQ_2 + NB_INSTRUCTIONS_SEQ_3;
     static const short END_SEQ_4 = NB_INSTRUCTIONS_SEQ_1 + NB_INSTRUCTIONS_SEQ_2 + NB_INSTRUCTIONS_SEQ_3 + NB_INSTRUCTIONS_SEQ_4;
+
+    //HOUSE MODE
+    static const short NB_INSTRUCTIONS_NOTHING = DIALOG_LETTER_NBFRAMES * 8 + DIALOG_SENTENCE_END_NBFRAMES;  //depends on number of letters in "Nothing."
 }
 
 //====================================================================
 BoxView::BoxView()
-    :  frameCount(0)
-    ,  inscructionNb(0)
+    : frameCount(0)
+    , inscructionNb(0)
 {
     reset();
 }
@@ -50,33 +54,66 @@ void BoxView::reset()
     ddY = 64;
 
     frameCount = 0;
+    inscructionNb = 0;
 }
 
 //====================================================================
 bool BoxView::update(Arduboy2 * arduboy)
 {
-    if((aY > 24 && dY < 40) || dY < bY || cY < aY)
+    if(inscructionNb > 0)
     {
-        return false;
-    }
+        if(inscructionNb == 1 ) //"NOTHING"
+        {
+            if(frameCount > NB_INSTRUCTIONS_NOTHING)
+            {
+                inscructionNb = 0;
+                frameCount = 0;
+                DialogManager::instance()->printSingleSentence("");
+            }
+        }
 
-    if( arduboy->justPressed( UP_BUTTON ) )
-    {
-        if( ( (aY - 4) > 0 ) || ( (bY - 4) > 0 ) ) moveUp();
-    }    
-    else if( arduboy->justPressed( DOWN_BUTTON ) )
-    {
-        moveDown();
+        DialogManager::instance()->draw( arduboy );
+        frameCount++;
     }
-    else if( arduboy->pressed( RIGHT_BUTTON ) )
+    else
     {
-        if( dY - 20 > bY) moveRight();
-    }
-    else if( arduboy->pressed( LEFT_BUTTON ) )
-    {
-         if( cY - 20 > aY) moveLeft();
-    }
+        if((aY > 24 && dY < 40) || dY < bY || cY < aY)
+        {
+            return false;
+        }
 
+        bool checkClue = false;
+
+        if( arduboy->justPressed( UP_BUTTON ) )
+        {
+            if( aY > 4 || bY > 4 ) moveUp();
+            
+            checkClue = true;
+        }    
+        else if( arduboy->justPressed( DOWN_BUTTON ) )
+        {
+            moveDown();
+        }
+        else if( arduboy->pressed( RIGHT_BUTTON ) )
+        {
+            if( dY - 20 > bY && ddY - 20 > bbY) moveRight();
+            checkClue = true;
+        }
+        else if( arduboy->pressed( LEFT_BUTTON ) )
+        {
+            if( cY - 20 > aY && ccY - 20 > aaY) moveLeft();
+            checkClue = true;
+        }
+
+        if(checkClue && 
+        aY < 4 && bY < 4  &&
+        aX > 4 && dX + 4 < SCREEN_WIDTH)
+        {
+            DialogManager::instance()->printSingleSentence("Nothing.");
+            inscructionNb = 1;
+        }
+    }
+    
     drawLines(arduboy);
 
     return true;
@@ -101,11 +138,11 @@ bool BoxView::updateCinematic(Arduboy2 * arduboy)
     {
         if(inscructionNb == END_SEQ_2)
         {
-            DialogManager::instance()->printSentence("THE QUEST\nFOR TRUTH");
+            DialogManager::instance()->printSingleSentence("THE QUEST\nFOR TRUTH");
         }
         else if(inscructionNb == END_SEQ_3 - 1)
         {
-            DialogManager::instance()->printSentence("");
+            DialogManager::instance()->printSingleSentence("");
         }
         DialogManager::instance()->draw( arduboy );
         inscructionNb++;

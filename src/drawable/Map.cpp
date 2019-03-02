@@ -130,11 +130,23 @@ bool Map::checkCollisionForPoint(const short& x, const short& y) const
 //=============================================================
 bool Map::checkPlayerIsOnADoor() const
 {
+    return getCurrentDoorNumber() >= 0;
+}
+
+//=============================================================
+short Map::getCurrentDoorNumber() const
+{
     short tile_i = playerPosition.y / TILE_LENGTH + 1;
     short tile_j = playerPosition.x / TILE_LENGTH;
 
     levels::Tile tile = levels::getTile(current_level, tile_i, tile_j);
-    return tile == levels::Tile::DOOR_HOUSE_1;
+
+    short doorNb = tile - levels::Tile::DOOR_HOUSE_0;
+    if(doorNb > 2)
+    {
+        return -1;
+    }
+    return doorNb;
 }
 
 //=============================================================

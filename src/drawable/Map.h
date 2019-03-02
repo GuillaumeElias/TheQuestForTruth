@@ -19,6 +19,7 @@ class Map : public Drawable, public Singleton<Map>
         bool checkCollision(const short& x, const short& y, const short& w, const short& h) const;
         bool checkCollisionForPoint(const short& x, const short& y) const;
         bool checkPlayerIsOnADoor() const;
+        short getCurrentDoorNumber() const; // will be < 0 if none
 
         short getScrollX() const;
         short getScrollY() const;
