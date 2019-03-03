@@ -15,7 +15,7 @@ class ItemsManager : public Singleton<ItemsManager>
         byte cluesFound;
 };
 
-PROGMEM static const char CLUE_1[] PROGMEM = "This is good.";
-PROGMEM static const char CLUE_2[] PROGMEM = "It is okay.";
+PROGMEM static const char CLUE_1[] = "This is good.";
+PROGMEM static const char CLUE_2[] = "It is okay.";
 
 #endif

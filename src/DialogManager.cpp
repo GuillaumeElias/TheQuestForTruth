@@ -80,13 +80,11 @@ void DialogManager::printSentence(char * charArray)
 
     if(readFromPgmMem)
     {
-        currentSentenceSize = strlen_P((char*)charArray);
+        currentSentenceSize = strlen_P(charArray);
     }
     else
     {
-        char* p = charArray;
-        for (; *p != '\0'; ++p);
-        currentSentenceSize = p - charArray;
+        currentSentenceSize = strlen(charArray);
     }
 }
 
@@ -163,9 +161,7 @@ char DialogManager::getChar(short i)
 {
     if(readFromPgmMem)
     {
-        char tBuffer[22];
-        strcpy_P(tBuffer, (char*)currentSentence);
-        return tBuffer[i];
+        return pgm_read_byte(&currentSentence[i]);
     }
     
     return currentSentence[i];
