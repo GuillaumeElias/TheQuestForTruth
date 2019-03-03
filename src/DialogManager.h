@@ -15,17 +15,19 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
 
         void printTextForTrigger(Trigger * trigger);
         void printTextNb(int8 dialogNb);
-        void printSingleSentence(char * charArray);
+        void printSingleSentence(char * charArray, bool readFromPgm = false);
 
     private:
         void printSentence(char * charArray);
         void printNextLine();
         void reset();
+        inline char getChar(short i);
 
         int8 currentSentenceSize, currentLetterPosition, currentLineIndex, currentNbOfLines;
         int8 letterFrameCounter;
         int8 triggerTextPaddingX;
         Trigger * currentTrigger;
+        bool readFromPgmMem;
         
         char * currentSentence;
 

@@ -5,6 +5,7 @@
 
 #include "EntitiesManager.h"
 #include "DialogManager.h"
+#include "ItemsManager.h"
 #include "Menu.h"
 #include "BoxView.h"
 #include "drawable/Player.h"
@@ -34,6 +35,7 @@ class Game
         Map map;
         EntitiesManager entitiesManager;
         DialogManager dialogManager;
+        ItemsManager itemsManager;
         BoxView boxView;
 
         GameMode mode;

@@ -1,5 +1,7 @@
 #include "BoxView.h"
 #include "DialogManager.h"
+#include "ItemsManager.h"
+#include "drawable/Map.h"
 
 namespace
 {
@@ -109,7 +111,19 @@ bool BoxView::update(Arduboy2 * arduboy)
         aY < 4 && bY < 4  &&
         aX > 4 && dX + 4 < SCREEN_WIDTH)
         {
-            DialogManager::instance()->printSingleSentence("Nothing.");
+            switch( Map::instance()->getCurrentDoorNumber() )
+            {
+                case 0:
+                    DialogManager::instance()->printSingleSentence("Nothing.");
+                    break;
+                case 1:
+                    DialogManager::instance()->printSingleSentence(CLUE_1, true);
+                    break;
+                case 2:
+                    DialogManager::instance()->printSingleSentence(CLUE_2, true);
+                    break;
+            }
+            
             inscructionNb = 1;
         }
     }

@@ -1,5 +1,6 @@
 #include "DialogManager.h"
 #include "drawable/Map.h"
+#include "ItemsManager.h"
 
 namespace
 {
@@ -12,6 +13,7 @@ DialogManager::DialogManager()
     : currentSentenceSize(0)
     , currentLineIndex(0)
     , currentTrigger(nullptr)
+    , readFromPgmMem(false)
 {
     
 }
@@ -21,6 +23,7 @@ void DialogManager::printTextForTrigger(Trigger * trigger)
 {
     currentTrigger = trigger;
     currentLineIndex = 0;
+    readFromPgmMem = false;
     printNextLine();
 }
 
@@ -61,8 +64,9 @@ void DialogManager::printNextLine()
 }
 
 //======================================================================
-void DialogManager::printSingleSentence(char * charArray)
+void DialogManager::printSingleSentence(char * charArray, bool readFromPgmMemory)
 {
+    readFromPgmMem = readFromPgmMemory;
     currentTrigger = nullptr;
     printSentence(charArray);
 }
@@ -74,9 +78,16 @@ void DialogManager::printSentence(char * charArray)
 
     currentSentence = charArray;
 
-    char* p = charArray;
-    for (; *p != '\0'; ++p);
-    currentSentenceSize = p - charArray;
+    if(readFromPgmMem)
+    {
+        currentSentenceSize = strlen_P((char*)charArray);
+    }
+    else
+    {
+        char* p = charArray;
+        for (; *p != '\0'; ++p);
+        currentSentenceSize = p - charArray;
+    }
 }
 
 //======================================================================
@@ -129,7 +140,8 @@ void DialogManager::draw(Arduboy2 * arduboy)
     for(int8 i=0; i < currentLetterPosition; i++)
     {
         short cursorX = startScreenX + nbCharacterOnCurrentLine * DIALOG_CHAR_WIDTH;
-        if(currentSentence[i] == '\n')
+        char currentChar = getChar(i);
+        if(currentChar == '\n')
         {
             screenY += DIALOG_CHAR_HEIGHT;
             cursorX = startScreenX;
@@ -138,10 +150,23 @@ void DialogManager::draw(Arduboy2 * arduboy)
         else
         {
             arduboy->setCursor(cursorX, screenY);
-            arduboy->write(currentSentence[i]);
+            arduboy->write(currentChar);
             nbCharacterOnCurrentLine++;
         }
     }
 
     letterFrameCounter++;
+}
+
+//======================================================================
+char DialogManager::getChar(short i)
+{
+    if(readFromPgmMem)
+    {
+        char tBuffer[22];
+        strcpy_P(tBuffer, (char*)currentSentence);
+        return tBuffer[i];
+    }
+    
+    return currentSentence[i];
 }
