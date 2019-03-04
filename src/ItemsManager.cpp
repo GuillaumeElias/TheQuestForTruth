@@ -7,9 +7,9 @@ ItemsManager::ItemsManager()
 }
 
 //====================================================================
-void ItemsManager::foundClue(int8 index)
+void ItemsManager::foundClue(int8 clueNb)
 {
-    cluesFound |= 1 << index;
+    cluesFound |= 1 << (clueNb - 1);
 }
 
 //====================================================================

@@ -14,6 +14,7 @@ DialogManager::DialogManager()
     , currentLineIndex(0)
     , currentTrigger(nullptr)
     , readFromPgmMem(false)
+    , extraTextPaddingX(0)
 {
     
 }
@@ -24,13 +25,13 @@ void DialogManager::printTextForTrigger(Trigger * trigger)
     currentTrigger = trigger;
     currentLineIndex = 0;
     readFromPgmMem = false;
-    printNextLine();
+    printNextLineForTrigger();
 }
 
 //======================================================================
-void DialogManager::printNextLine()
+void DialogManager::printNextLineForTrigger()
 {
-    triggerTextPaddingX = DEFAULT_TRIGGER_TEXT_PADDING_X;
+    extraTextPaddingX = DEFAULT_TRIGGER_TEXT_PADDING_X;
 
     switch(currentTrigger->id)
     {
@@ -48,11 +49,11 @@ void DialogManager::printNextLine()
 
         case 2:
             currentNbOfLines = 4;
-            triggerTextPaddingX = 68;
+            extraTextPaddingX = 68;
 
             switch(currentLineIndex)
             {
-                case 0: triggerTextPaddingX = -5; printSentence("Hello."); break;
+                case 0: extraTextPaddingX = -5; printSentence("Hello."); break;
                 case 1: printSentence("This is the Village."); break;
                 case 2: printSentence("Beware of the ghosts."); break;
                 case 3: printSentence("They are everywhere."); break;
@@ -64,9 +65,10 @@ void DialogManager::printNextLine()
 }
 
 //======================================================================
-void DialogManager::printSingleSentence(char * charArray, bool readFromPgmMemory)
+void DialogManager::printSingleSentence(char * charArray, bool readFromPgmMemory, int8 extraPadX)
 {
     readFromPgmMem = readFromPgmMemory;
+    extraTextPaddingX = extraPadX;
     currentTrigger = nullptr;
     printSentence(charArray);
 }
@@ -114,7 +116,7 @@ void DialogManager::draw(Arduboy2 * arduboy)
                 if(currentLineIndex < currentNbOfLines)
                 {
                     currentLineIndex++;
-                    printNextLine();
+                    printNextLineForTrigger();
                 }
                 return;
             }
@@ -130,9 +132,11 @@ void DialogManager::draw(Arduboy2 * arduboy)
     short screenY = DIALOG_DEFAULT_CURSOR_Y;
     if(currentTrigger)
     {
-        startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX() - triggerTextPaddingX;
+        startScreenX = currentTrigger->pos.x - Map::instance()->getScrollX();
         screenY =  currentTrigger->pos.y - Map::instance()->getScrollY() - TRIGGER_TEXT_PADDING_Y;
     }
+    
+    startScreenX -= extraTextPaddingX;
 
     short nbCharacterOnCurrentLine = 0;
     for(int8 i=0; i < currentLetterPosition; i++)

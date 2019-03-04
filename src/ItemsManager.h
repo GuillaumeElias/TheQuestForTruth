@@ -9,13 +9,13 @@ class ItemsManager : public Singleton<ItemsManager>
 {
     public:
         ItemsManager();
-        void foundClue(int8 index);
+        void foundClue(int8 clueNb);
         byte getCluesFound() const;
     private:
         byte cluesFound;
 };
 
-PROGMEM static const char CLUE_1[] = "This is good.";
-PROGMEM static const char CLUE_2[] = "It is okay.";
+PROGMEM static const char CLUE_1[] = "This is your\n first clue.\n ...that's nice.";
+PROGMEM static const char CLUE_2[] = "Second clue:\nNo one will know.";
 
 #endif

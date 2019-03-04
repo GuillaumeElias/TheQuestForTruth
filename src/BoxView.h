@@ -45,7 +45,7 @@ private:
     short ddX = 128;
     short ddY = 64;
 
-    int8 frameCount;
+    short frameCount;
     short inscructionNb;
 };
 

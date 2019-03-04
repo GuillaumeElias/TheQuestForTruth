@@ -18,6 +18,8 @@ namespace
 
     //HOUSE MODE
     static const short NB_INSTRUCTIONS_NOTHING = DIALOG_LETTER_NBFRAMES * 8 + DIALOG_SENTENCE_END_NBFRAMES;  //depends on number of letters in "Nothing."
+    static const short NB_INSTRUCTIONS_CLUE_1 = DIALOG_LETTER_NBFRAMES * 43 + DIALOG_SENTENCE_END_NBFRAMES;
+    static const short NB_INSTRUCTIONS_CLUE_2 = DIALOG_LETTER_NBFRAMES * 33 + DIALOG_SENTENCE_END_NBFRAMES;
 }
 
 //====================================================================
@@ -64,14 +66,13 @@ bool BoxView::update(Arduboy2 * arduboy)
 {
     if(inscructionNb > 0)
     {
-        if(inscructionNb == 1 ) //"NOTHING"
+        if( inscructionNb == 1 && frameCount > NB_INSTRUCTIONS_NOTHING || 
+            inscructionNb == 2 && frameCount > NB_INSTRUCTIONS_CLUE_1 ||
+            inscructionNb == 3 && frameCount > NB_INSTRUCTIONS_CLUE_2 )
         {
-            if(frameCount > NB_INSTRUCTIONS_NOTHING)
-            {
-                inscructionNb = 0;
-                frameCount = 0;
-                DialogManager::instance()->printSingleSentence("");
-            }
+            inscructionNb = 0;
+            frameCount = 0;
+            DialogManager::instance()->printSingleSentence("");
         }
 
         DialogManager::instance()->draw( arduboy );
@@ -115,16 +116,28 @@ bool BoxView::update(Arduboy2 * arduboy)
             {
                 case 0:
                     DialogManager::instance()->printSingleSentence("Nothing.");
+                    inscructionNb = 1;
+
                     break;
                 case 1:
-                    DialogManager::instance()->printSingleSentence(CLUE_1, true);
+
+                    if((ItemsManager::instance()->getCluesFound() & 0b00000001) == false)
+                    {
+                        DialogManager::instance()->printSingleSentence(CLUE_1, true, 20);
+                        ItemsManager::instance()->foundClue(1);
+                        inscructionNb = 2;
+                    }
+                    
                     break;
                 case 2:
-                    DialogManager::instance()->printSingleSentence(CLUE_2, true);
+                    if((ItemsManager::instance()->getCluesFound() & 0b00000010) == false)
+                    {
+                        DialogManager::instance()->printSingleSentence(CLUE_2, true, 20);
+                        ItemsManager::instance()->foundClue(2);
+                        inscructionNb = 3;
+                    }
                     break;
             }
-            
-            inscructionNb = 1;
         }
     }
     
