@@ -9,7 +9,9 @@ typedef enum __attribute__ ((packed))
 {
     NONE,
     GO,
-    ABOUT
+    ABOUT,
+    CLUES,
+    INVENTORY
 } MenuOption;
 
 class Menu
@@ -18,8 +20,12 @@ class Menu
         Menu();
         void update(Arduboy2 * arduboy);
         void setInGame(bool inGame);
-        const MenuOption popSelectedOption(); //returns selectedOption and reset it to NONE
+        const MenuOption getSelectedOption() const;
+        void clearSelectedOption();
     private:
+       void displayClues(Arduboy2 * arduboy);
+       void printFromProgmem(Arduboy2 * arduboy, char * textInProgMem);
+       
        MenuOption selectedOption;
        int8 selection;
        bool inGame;

@@ -87,10 +87,11 @@ void Game::update()
         case MENU:
             menu.update(&arduboy);
 
-            if(menu.popSelectedOption() == MenuOption::GO)
+            if(menu.getSelectedOption() == MenuOption::GO)
             {
                 mode = GameMode::PLAY;
                 menu.setInGame(true);
+                menu.clearSelectedOption();
             }
 
             break;
