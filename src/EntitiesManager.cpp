@@ -111,6 +111,10 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
         
                     triggerEvent = START_ANIM;
                     break;
+                case 3:
+                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
+                    triggers[i].triggered = true;
+                    break;
                 case 19:
                     triggerEvent = END_LEVEL;
                     break;

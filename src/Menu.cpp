@@ -31,7 +31,7 @@ void Menu::update(Arduboy2 * arduboy)
         break;
         case CLUES:
 
-            if( arduboy->justPressed(A_BUTTON) )
+            if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
             {
                 selectedOption = NONE;
             }

@@ -61,6 +61,19 @@ void DialogManager::printNextLineForTrigger()
 
         break;
 
+        case 3:
+            currentNbOfLines = 5;
+            switch(currentLineIndex)
+            {
+                case 0: printSentence("Hello young boy."); break;
+                case 1: extraTextPaddingX = 58; printSentence("Where are you off to?"); break;
+                case 2: printSentence("Those legs..."); break;
+                case 3: extraTextPaddingX = 60; printSentence("They look good on you."); break;
+                case 4: printSentence("He he he!."); break;
+            }
+            
+            break;
+
     }
 }
 

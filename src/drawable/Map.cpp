@@ -87,7 +87,9 @@ void Map::draw(Arduboy2 * arduboy)
                     arduboy->drawBitmap(screen_x, screen_y, tiles::DIRT, TILE_LENGTH, TILE_LENGTH);
                     break;
                 case levels::Tile::_TRIGGER_END_LEVEL:
-                    arduboy->drawCircle(screen_x + TILE_LENGTH / 3, screen_y + TILE_LENGTH / 3, TILE_LENGTH / 3);
+                    static int circleSize = 0;
+                    circleSize = (circleSize + 1) % (TILE_LENGTH / 2);
+                    arduboy->drawCircle(screen_x, screen_y, circleSize);
                     break;
             }
             screen_x += TILE_LENGTH;

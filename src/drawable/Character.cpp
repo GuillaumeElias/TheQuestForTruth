@@ -8,6 +8,8 @@ namespace
     static const short CHARACTER_1_HEIGHT = 20;
     static const short CHARACTER_2_WIDTH = 9;
     static const short CHARACTER_2_HEIGHT = 15;
+    static const short CHARACTER_3_WIDTH = 10;
+    static const short CHARACTER_3_HEIGHT = 18;
 }
 
 //SKINNY GUY
@@ -23,6 +25,14 @@ PROGMEM static const byte BITMAP_2_A[] = {0x38, 0x14, 0x06, 0x89, 0x73, 0xdb, 0x
 
 PROGMEM static const byte BITMAP_2_B[] = {0x10, 0x3c, 0x06, 0x89, 0x73, 0xdb, 0x06, 0x3c, 
 0x10, 0x02, 0x43, 0x3d, 0x21, 0x10, 0x21, 0x3d, 0x43, 0x02};
+
+//OLD GUY
+PROGMEM static const byte BITMAP_3_A[] = {0x1c, 0x22, 0x41, 0x41, 0x41, 0x22, 0x9c, 0x90, 
+0xe0, 0x80, 0x00, 0xf8, 0x0a, 0x09, 0x05, 0x05, 0xc2, 0x7a, 0x3d, 0xc3, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x03, 0x00, 0x02, 0x03 };
+
+PROGMEM static const byte BITMAP_3_B[] = {0x00, 0x1c, 0x22, 0x41, 0x41, 0x41, 0xa2, 0x9c, 
+0xe0, 0x80, 0x00, 0xfc, 0x04, 0x05, 0x05, 0x05, 0xc2, 0x7a, 0x3d, 0xc3, 0x00, 0x01, 0x00, 0x00,  0x00, 0x02, 0x03, 0x00, 0x02, 0x03 };
+
 
 //==========================================================
 Character::Character()
@@ -117,6 +127,16 @@ void Character::draw( Arduboy2 * arduboy )
                 arduboy->drawBitmap(screenX, screenY, BITMAP_2_B, CHARACTER_2_WIDTH, CHARACTER_2_HEIGHT);
             }
         break;
+        case levels::Tile::_CHARACTER_3:
+            if(displaySpriteA)
+            {
+                arduboy->drawBitmap(screenX, screenY, BITMAP_3_A, CHARACTER_3_WIDTH, CHARACTER_3_HEIGHT);
+            }
+            else
+            {
+                arduboy->drawBitmap(screenX, screenY, BITMAP_3_B, CHARACTER_3_WIDTH, CHARACTER_3_HEIGHT);
+            }
+        break;
     }
     
 }
@@ -154,6 +174,8 @@ short Character::getWidth() const
             return CHARACTER_1_WIDTH;
         case levels::Tile::_CHARACTER_2:
             return CHARACTER_2_WIDTH;
+        case levels::Tile::_CHARACTER_3:
+            return CHARACTER_3_WIDTH;
         break;
     }
     return 0;
@@ -168,6 +190,8 @@ short Character::getHeight() const
             return CHARACTER_1_HEIGHT;
         case levels::Tile::_CHARACTER_2:
             return CHARACTER_2_HEIGHT;
+        case levels::Tile::_CHARACTER_3:
+            return CHARACTER_3_HEIGHT;
         break;
     }
     return 0;
