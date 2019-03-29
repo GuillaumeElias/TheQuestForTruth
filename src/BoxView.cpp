@@ -75,15 +75,15 @@ bool BoxView::update(Arduboy2 * arduboy)
         {
             inscructionNb = 0;
             frameCount = 0;
-            DialogManager::instance()->printSingleSentence("");
+            DialogManager::instance()->printSingleSentence(F(""));
         }
         else if(inscructionNb == 2 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {
-            DialogManager::instance()->printSingleSentence(CLUE_1, true, 20);
+            DialogManager::instance()->printSingleSentence(CLUE_1, 20);
         }
         else if(inscructionNb == 3 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {
-            DialogManager::instance()->printSingleSentence(CLUE_2, true, 20);
+            DialogManager::instance()->printSingleSentence(CLUE_2, 20);
         }
 
         DialogManager::instance()->draw( arduboy );
@@ -126,7 +126,7 @@ bool BoxView::update(Arduboy2 * arduboy)
             switch( Map::instance()->getCurrentDoorNumber() )
             {
                 case 0:
-                    DialogManager::instance()->printSingleSentence("Nothing.");
+                    DialogManager::instance()->printSingleSentence(F("Nothing."));
                     inscructionNb = 1;
 
                     break;
@@ -134,7 +134,7 @@ bool BoxView::update(Arduboy2 * arduboy)
 
                     if((ItemsManager::instance()->getCluesFound() & 0b00000001) == false)
                     {
-                        DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, true, 24);
+                        DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, 24);
                         ItemsManager::instance()->foundClue(1);
                         inscructionNb = 2;
                     }
@@ -143,7 +143,7 @@ bool BoxView::update(Arduboy2 * arduboy)
                 case 2:
                     if((ItemsManager::instance()->getCluesFound() & 0b00000010) == false)
                     {
-                        DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, true, 24);
+                        DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, 24);
                         ItemsManager::instance()->foundClue(2);
                         inscructionNb = 3;
                     }
@@ -176,11 +176,11 @@ bool BoxView::updateCinematic(Arduboy2 * arduboy)
     {
         if(inscructionNb == END_SEQ_2)
         {
-            DialogManager::instance()->printSingleSentence("THE QUEST\nFOR TRUTH");
+            DialogManager::instance()->printSingleSentence(F("THE QUEST\nFOR TRUTH"));
         }
         else if(inscructionNb == END_SEQ_3 - 1)
         {
-            DialogManager::instance()->printSingleSentence("");
+            DialogManager::instance()->printSingleSentence(F(""));
         }
         DialogManager::instance()->draw( arduboy );
         inscructionNb++;

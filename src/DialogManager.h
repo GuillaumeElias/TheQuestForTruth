@@ -15,10 +15,12 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
 
         void printTextForTrigger(Trigger * trigger);
         void printTextNb(int8 dialogNb);
-        void printSingleSentence(char * charArray, bool readFromPgm = false, int8 extraTextPaddingX = 0);
+        void printSingleSentence(__FlashStringHelper * stringSentence, int8 extraTextPaddingX = 0);
+        void printSingleSentence(PGM_P sentenceString, int8 extraTextPaddingX = 0);
 
     private:
-        void printSentence(char * charArray);
+        void printSentence(__FlashStringHelper * stringSentence);
+        void printSentence(PGM_P stringSentence);
         void printNextLineForTrigger();
         void reset();
         inline char getChar(short i);
@@ -27,9 +29,8 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
         int8 letterFrameCounter;
         int8 extraTextPaddingX;
         Trigger * currentTrigger;
-        bool readFromPgmMem;
         
-        char * currentSentence;
+        PGM_P currentSentence;
 
 };
 

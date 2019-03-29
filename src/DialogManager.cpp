@@ -6,6 +6,18 @@ namespace
 {
     static const short DEFAULT_TRIGGER_TEXT_PADDING_X = 30;
     static const short TRIGGER_TEXT_PADDING_Y = 20;
+
+    size_t getStringLength(PGM_P p)
+    {
+        size_t n = 0;
+        while (1) {
+            unsigned char c = pgm_read_byte(p++);
+            if (c == 0) break;
+            n++;
+        }
+        return n;
+    }
+
 }
 
 //======================================================================
@@ -13,7 +25,6 @@ DialogManager::DialogManager()
     : currentSentenceSize(0)
     , currentLineIndex(0)
     , currentTrigger(nullptr)
-    , readFromPgmMem(false)
     , extraTextPaddingX(0)
 {
     
@@ -24,7 +35,6 @@ void DialogManager::printTextForTrigger(Trigger * trigger)
 {
     currentTrigger = trigger;
     currentLineIndex = 0;
-    readFromPgmMem = false;
     printNextLineForTrigger();
 }
 
@@ -39,10 +49,10 @@ void DialogManager::printNextLineForTrigger()
             currentNbOfLines = 4;
             switch(currentLineIndex)
             {
-                case 0: printSentence("He did it again."); break;
-                case 1: printSentence("It is really bad."); break;
-                case 2: printSentence("Go accross the hill."); break;
-                case 3: printSentence("You will see."); break;
+                case 0: printSentence(F("He did it again.")); break;
+                case 1: printSentence(F("It is really bad.")); break;
+                case 2: printSentence(F("Go accross the hill.")); break;
+                case 3: printSentence(F("You will see.")); break;
             }
 
         break;
@@ -53,10 +63,10 @@ void DialogManager::printNextLineForTrigger()
 
             switch(currentLineIndex)
             {
-                case 0: extraTextPaddingX = -5; printSentence("Hello."); break;
-                case 1: printSentence("This is the Village."); break;
-                case 2: printSentence("Beware of the ghosts."); break;
-                case 3: printSentence("They are everywhere."); break;
+                case 0: extraTextPaddingX = -5; printSentence(F("Hello.")); break;
+                case 1: printSentence(F("This is the Village.")); break;
+                case 2: printSentence(F("Beware of the ghosts.")); break;
+                case 3: printSentence(F("They are everywhere.")); break;
             }
 
         break;
@@ -65,42 +75,44 @@ void DialogManager::printNextLineForTrigger()
             currentNbOfLines = 5;
             switch(currentLineIndex)
             {
-                case 0: printSentence("Hello young boy."); break;
-                case 1: extraTextPaddingX = 58; printSentence("Where are you off to?"); break;
-                case 2: printSentence("Those legs..."); break;
-                case 3: extraTextPaddingX = 60; printSentence("They look good on you."); break;
-                case 4: printSentence("He he he!."); break;
+                case 0: printSentence(F("Hello young boy.")); break;
+                case 1: extraTextPaddingX = 58; printSentence(F("Where are you off to?")); break;
+                case 2: printSentence(F("Those legs...")); break;
+                case 3: extraTextPaddingX = 60; printSentence(F("They look good on you.")); break;
+                case 4: printSentence(F("He he he!.")); break;
             }
             
             break;
 
     }
 }
-
 //======================================================================
-void DialogManager::printSingleSentence(char * charArray, bool readFromPgmMemory, int8 extraPadX)
+void DialogManager::printSingleSentence(__FlashStringHelper * stringSentence, int8 extraPadX)
 {
-    readFromPgmMem = readFromPgmMemory;
-    extraTextPaddingX = extraPadX;
-    currentTrigger = nullptr;
-    printSentence(charArray);
+    printSingleSentence( reinterpret_cast<PGM_P>(stringSentence),  extraPadX);
 }
 
 //======================================================================
-void DialogManager::printSentence(char * charArray)
+void DialogManager::printSingleSentence(PGM_P stringSentence, int8 extraPadX)
+{
+    extraTextPaddingX = extraPadX;
+    currentTrigger = nullptr;
+    printSentence(stringSentence);
+}
+
+//======================================================================
+void DialogManager::printSentence(__FlashStringHelper * sentenceString)
+{
+    printSentence( reinterpret_cast<PGM_P>(sentenceString) );
+}
+
+//======================================================================
+void DialogManager::printSentence(PGM_P sentenceString)
 {
     reset();
 
-    currentSentence = charArray;
-
-    if(readFromPgmMem)
-    {
-        currentSentenceSize = strlen_P(charArray);
-    }
-    else
-    {
-        currentSentenceSize = strlen(charArray);
-    }
+    currentSentence = sentenceString;
+    currentSentenceSize = getStringLength(sentenceString);
 }
 
 //======================================================================
@@ -176,10 +188,5 @@ void DialogManager::draw(Arduboy2 * arduboy)
 //======================================================================
 char DialogManager::getChar(short i)
 {
-    if(readFromPgmMem)
-    {
-        return pgm_read_byte(&currentSentence[i]);
-    }
-    
-    return currentSentence[i];
+    return pgm_read_byte(currentSentence + i);
 }
