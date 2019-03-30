@@ -12,7 +12,12 @@ Game::Game()
 //==========================================================
 void Game::init()
 {
-    arduboy.begin();
+    arduboy.boot();
+    arduboy.display();
+    arduboy.flashlight();
+    arduboy.systemButtons();
+    arduboy.audio.begin();
+    arduboy.waitNoButtons();
     arduboy.clear();
 
     map.startLevel();
