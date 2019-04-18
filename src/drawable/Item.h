@@ -14,6 +14,8 @@ class Item : public Drawable
         void spawn(int8 newId, const Position & position);
         bool isPresent() const;
         bool collidesWithPlayer(const Position & playerPos);
+
+        int8 getId() const;
     private:
         short getHeight() const;
         

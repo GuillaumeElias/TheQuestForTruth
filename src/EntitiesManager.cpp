@@ -1,5 +1,6 @@
 #include "EntitiesManager.h"
 #include "DialogManager.h"
+#include "ItemsManager.h"
 #include "Utils.h"
 
 //==========================================================
@@ -86,7 +87,7 @@ void EntitiesManager::spawnEntities(Map * map)
 }
 
 //==========================================================
-const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos) const
+const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos)
 {
     for(short i=0; i < enemies_number; i++)
     {
@@ -98,7 +99,10 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 
     if(itemToBePickedUp.isPresent() && itemToBePickedUp.collidesWithPlayer(ppos))
     {
-        return HIT_ITEM;
+        ItemsManager::instance()->foundItem(itemToBePickedUp.getId());
+        itemToBePickedUp = Item();
+
+        DialogManager::instance()->printSingleSentence(F("You found\nan item"));
     }
 
     return FREE;
@@ -184,6 +188,8 @@ void EntitiesManager::clearEntities()
     enemies_number = 0;
     character_number = 0;
     trigger_number = 0;
+
+    itemToBePickedUp = Item();
 }
 
 //==========================================================

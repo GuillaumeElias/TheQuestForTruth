@@ -18,7 +18,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         void spawnEntities(Map * map);
         void moveEntities();
 
-        const CollisionCheckResult collisionCheck(const Position & pos) const;
+        const CollisionCheckResult collisionCheck(const Position & pos);
         void triggerCheckAndExecute(const Position & pos);
 
         TriggerEvent popTriggerEvent();

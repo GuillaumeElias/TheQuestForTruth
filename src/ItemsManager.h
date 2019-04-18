@@ -12,6 +12,7 @@ class ItemsManager : public Singleton<ItemsManager>
         void foundClue(int8 clueNb);
         byte getCluesFound() const;
         byte getItems() const;
+        void foundItem(int8 itemId);
     private:
         byte cluesFound, items;
 };

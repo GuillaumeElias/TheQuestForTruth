@@ -23,3 +23,9 @@ byte ItemsManager::getItems() const
 {
     return items;
 }
+
+//====================================================================
+void ItemsManager::foundItem(int8 itemId)
+{
+    items |= 1 << (itemId - 1);
+}

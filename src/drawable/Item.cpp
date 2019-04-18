@@ -65,6 +65,12 @@ bool Item::collidesWithPlayer(const Position & playerPos)
 }
 
 //=========================================
+int8 Item::getId() const
+{
+    return id;
+}
+
+//=========================================
 short Item::getHeight() const
 {
     if(id == 1) //PEPPER SPRAY
