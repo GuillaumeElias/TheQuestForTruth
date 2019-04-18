@@ -11,8 +11,9 @@ class ItemsManager : public Singleton<ItemsManager>
         ItemsManager();
         void foundClue(int8 clueNb);
         byte getCluesFound() const;
+        byte getItems() const;
     private:
-        byte cluesFound;
+        byte cluesFound, items;
 };
 
 PROGMEM static const char CLUE_PRE_TEXT[] = "You found a clue:";

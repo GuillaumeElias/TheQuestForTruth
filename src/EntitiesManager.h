@@ -6,6 +6,7 @@
 #include "drawable/Map.h"
 #include "drawable/Enemy.h"
 #include "drawable/Character.h"
+#include "drawable/Item.h"
 #include "Trigger.h"
 
 class EntitiesManager : public Singleton<EntitiesManager>
@@ -35,6 +36,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         Enemy enemies[MAX_ENEMIES_PER_LEVEL];
         Character characters[MAX_CHARACTERS_PER_LEVEL];
         Trigger triggers[MAX_TRIGGERS_PER_LEVEL];
+        Item itemToBePickedUp;
 
         int8 enemies_number, character_number, trigger_number;
         TriggerEvent triggerEvent;

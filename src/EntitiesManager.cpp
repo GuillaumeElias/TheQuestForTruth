@@ -24,6 +24,11 @@ void EntitiesManager::drawEntities() const
     {
         characters[i].draw( arduboy );
     }
+
+    if(itemToBePickedUp.isPresent())
+    {
+        itemToBePickedUp.draw( arduboy );
+    }
 }
 
 //==========================================================
@@ -71,6 +76,10 @@ void EntitiesManager::spawnEntities(Map * map)
                 triggers[trigger_number].id = levels::getTileTriggerId(tile);
                 triggers[trigger_number].triggered = false;
                 trigger_number++;
+            }else if(levels::getTileItemId(tile) >= 0)
+            {
+                int8 itemId = levels::getTileItemId(tile);
+                itemToBePickedUp.spawn(itemId, { j * TILE_LENGTH, i * TILE_LENGTH } );
             }
         }
     }
@@ -85,6 +94,11 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
         {
             return HIT_ENEMY;
         }
+    }
+
+    if(itemToBePickedUp.isPresent() && itemToBePickedUp.collidesWithPlayer(ppos))
+    {
+        return HIT_ITEM;
     }
 
     return FREE;

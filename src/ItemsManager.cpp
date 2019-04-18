@@ -17,3 +17,9 @@ byte ItemsManager::getCluesFound() const
 {
     return cluesFound;
 }
+
+//====================================================================
+byte ItemsManager::getItems() const
+{
+    return items;
+}

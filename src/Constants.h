@@ -18,7 +18,8 @@ typedef enum __attribute__ ((packed))
 {
     FREE,
     HIT_ENEMY,
-    HIT_TRIGGER
+    HIT_TRIGGER,
+    HIT_ITEM
 } CollisionCheckResult;
 
 //TRIGGER EVENT
