@@ -13,6 +13,7 @@ class ItemsManager : public Singleton<ItemsManager>
         byte getCluesFound() const;
         byte getItems() const;
         void foundItem(int8 itemId);
+        bool hasItem(int8 itemId) const;
     private:
         byte cluesFound, items;
 };

@@ -28,6 +28,8 @@ class Player : public Drawable, public Movable, public Singleton<Player>
         bool isFalling() const;
         bool somethingIsAbove() const;
         bool checkCollisionWithEntities(Position pos); //return true if there is a collision
+        void fire();
+        void drawMuzzleSparkles(Arduboy2 * arduboy);
 
         int8 life;
         Position pos;
@@ -35,6 +37,7 @@ class Player : public Drawable, public Movable, public Singleton<Player>
         float yVelocity;
         bool jumping;
         bool beingHit;
+        bool firing;
 
         bool displaySpriteA;
         bool facingRight;

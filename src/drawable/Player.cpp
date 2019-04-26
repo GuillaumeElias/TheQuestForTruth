@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../ItemsManager.h"
 
 PROGMEM static const byte BITMAP_A_RIGHT[] = {0x1c, 0x22, 0xc1, 0xe1, 0x92, 0x9c, 0x80, 0x80, 
   0x80, 0x00, 0x00, 0xff, 0x01, 0x02, 0x04, 0x08, 
@@ -99,6 +100,10 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
             jumping = true;
             yVelocity = -PLAYER_JUMP_VELOCITY;
         }
+        else if(arduboy->pressed( B_BUTTON ) && ItemsManager::instance()->hasItem(1))
+        {
+            fire();
+        }
 
         //Player animation
         if(animFrameCounter > PLAYER_ANIM_NB_FRAMES)
@@ -165,6 +170,11 @@ void Player::draw( Arduboy2 * arduboy )
             hitFrameCounter++;
         }
     }
+
+    if(firing)
+    {
+        drawMuzzleSparkles(arduboy);
+    }
 }
 
 //==========================================================
@@ -211,4 +221,22 @@ bool Player::checkCollisionWithEntities(Position position)
         return true;
     }
     return result != FREE;
+}
+
+//===========================================================
+void Player::fire()
+{
+    firing = true;
+    //TODO check collision with enemies
+}
+
+//===========================================================
+void Player::drawMuzzleSparkles(Arduboy2 * arduboy)
+{
+    for(int i=0; i<10; i++)
+    {
+        short pixelX = pos.x + PLAYER_WIDTH + random(0, TILE_LENGTH);
+        short pixelY = pos.y + PLAYER_HEIGHT + random(0, TILE_LENGTH);
+        arduboy->drawPixel(pixelX, pixelY);
+    }
 }
