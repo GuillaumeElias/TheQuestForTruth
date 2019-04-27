@@ -60,9 +60,9 @@ void EntitiesManager::spawnEntities(Map * map)
         for( short j = 0; j < map->getLevelLength(); j++ )
         {
             levels::Tile tile = levels::getTile(map->getCurrentLevel(), i, j);
-            if(tile == levels::Tile::_ENEMY)
+            if(levels::getTileEnemyType(tile) >= 0)
             {
-                enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
+                enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH }, levels::getTileEnemyType(tile));
                 enemies_number++;
             }
             else if(levels::isCharacterTile(tile))
@@ -91,7 +91,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 {
     for(short i=0; i < enemies_number; i++)
     {
-        if(Enemy::checkEnemyCollision(enemies[i].getPos(), ppos))
+        if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos))
         {
             return HIT_ENEMY;
         }
