@@ -245,7 +245,18 @@ bool Player::checkCollisionWithEntities(Position position)
 void Player::fire()
 {
     firing = true;
-    //TODO check collision with enemies
+
+    Position checkPos = pos;
+    if(facingRight)
+    {
+        checkPos.x += PLAYER_WIDTH;
+    }
+    else
+    {
+        checkPos.x -= PLAYER_WIDTH;
+    }
+    
+    EntitiesManager::instance()->fireCollisionCheck(checkPos, PEPPER_SPRAY_RANGE_X, PEPPER_SPRAY_RANGE_Y, HitType::PEPPER_SPRAY);
 }
 
 //===========================================================

@@ -109,6 +109,18 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 }
 
 //==========================================================
+void EntitiesManager::fireCollisionCheck(const Position & pos, const short & rangeX, const short & rangeY, const HitType & hitType)
+{
+    for(short i=0; i < enemies_number; i++)
+    {
+        if(enemies[i].isAlive() && rectangleCollision({pos, rangeX, rangeY}, {enemies[i].getPos(), enemies[i].getWidth(), enemies[i].getHeight()}))
+        {
+            enemies[i].onHit(hitType);
+        }
+    }
+}
+
+//==========================================================
 void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
 {
     for(int8 i=0; i < trigger_number; i++)

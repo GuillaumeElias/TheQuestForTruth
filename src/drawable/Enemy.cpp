@@ -23,10 +23,11 @@ PROGMEM static const byte BITMAP_2[] = {0xf0, 0x0c, 0x02, 0x1a, 0x99, 0x81, 0x81
 Enemy::Enemy()
     : pos(0,0)
     , initPos(0,0)
+    , life(0)
     , displaySpriteA( true )
     , facingRight( true )
     , animFrameCounter( 0 )
-    , dead( true )
+    , paralysedCounter( 0 )
 {
 
 }
@@ -37,13 +38,42 @@ Enemy::Enemy()
      type = enemyType;
      pos = spawnPosition;
      initPos = spawnPosition;
-     dead = false;
+
+     switch(type)
+     {
+        case 1:
+            life = 1;
+            break;
+        case 2:
+            life = 10;
+            break;
+     }
  }
 
 //==========================================================
 TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
-    if(dead) return NO_EVENT;
+    if(life == 0) return NO_EVENT;
+
+    if(paralysedCounter > 0)
+    { 
+        if(paralysedCounter % 2)
+        {
+            pos.y--;
+        }
+        else
+        {
+            if(pos.y + getHeight() < Map::instance()->getLevelHeight() * TILE_LENGTH) pos.y++;
+        }
+        
+        paralysedCounter--;
+
+        if(paralysedCounter == 0)
+        {
+            pos.y--; //TODO put back in initial position
+        }
+        return;
+    }
 
     if(walkFrameSkipped > ENEMY_WALK_FRAME_SKIP)
     {
@@ -80,7 +110,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
 //==========================================================
 void Enemy::draw( Arduboy2 * arduboy )
 {
-    if(dead) return;
+    if(life == 0) return;
 
     short screenX = pos.x - Map::instance()->getScrollX();
     short screenY = pos.y - Map::instance()->getScrollY(); 
@@ -115,6 +145,15 @@ bool Enemy::checkEnemyCollision(const Position & playerPosition, const Position 
 }
 
 //==========================================================
+void Enemy::onHit( const HitType & type )
+{
+    if(type == HitType::PEPPER_SPRAY)
+    {
+        paralysedCounter = 120;
+    }
+}
+
+//==========================================================
 short Enemy::getWidth() const
 {
     switch(type)
@@ -136,4 +175,10 @@ short Enemy::getHeight() const
         case 2:
             return ENEMY_2_HEIGHT;
     }
+}
+
+//==========================================================
+bool Enemy::isAlive() const
+{
+    return life > 0;
 }

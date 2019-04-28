@@ -19,20 +19,24 @@ class Enemy : public Drawable, public Movable
         const Position & getPos() const;
 
         bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition);
-    private:
+        void onHit( const HitType & hitType );
+
         short getWidth() const;
         short getHeight() const;
+        bool isAlive() const;
+    private:
 
         int8 type;
+        int8 life;
         Position pos;
         Position initPos;
         
         bool displaySpriteA;
         bool facingRight;
-        bool dead;
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
+        int8 paralysedCounter;
 
 };
 
