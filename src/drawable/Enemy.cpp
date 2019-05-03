@@ -8,6 +8,7 @@ namespace
     static const short ENEMY_1_HEIGHT = 18;
     static const short ENEMY_2_WIDTH = 12;
     static const short ENEMY_2_HEIGHT = 12;
+    static const short PARALYSED_TICKS = 500;
 }
 
 PROGMEM static const byte BITMAP_1[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3, 0x06, 
@@ -55,23 +56,9 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
     if(life == 0) return NO_EVENT;
 
-    if(paralysedCounter > 0)
+    if(paralysedCounter != 0)
     { 
-        if(paralysedCounter % 2)
-        {
-            pos.y--;
-        }
-        else
-        {
-            if(pos.y + getHeight() < Map::instance()->getLevelHeight() * TILE_LENGTH) pos.y++;
-        }
-        
-        paralysedCounter--;
-
-        if(paralysedCounter == 0)
-        {
-            pos.y--; //TODO put back in initial position
-        }
+        shakeEnemyForParalysis();
         return;
     }
 
@@ -147,9 +134,9 @@ bool Enemy::checkEnemyCollision(const Position & playerPosition, const Position 
 //==========================================================
 void Enemy::onHit( const HitType & type )
 {
-    if(type == HitType::PEPPER_SPRAY)
+    if(type == HitType::PEPPER_SPRAY && paralysedCounter == 0)
     {
-        paralysedCounter = 120;
+        paralysedCounter = PARALYSED_TICKS;
     }
 }
 
@@ -181,4 +168,22 @@ short Enemy::getHeight() const
 bool Enemy::isAlive() const
 {
     return life > 0;
+}
+
+//==========================================================
+void Enemy::shakeEnemyForParalysis()
+{
+    if(paralysedCounter > 0)
+    {
+        if(paralysedCounter % 2)
+        {
+            pos.y--;
+        }
+        else if(pos.y + getHeight() < Map::instance()->getLevelHeight() * TILE_LENGTH)
+        {
+            pos.y++;
+        }
+    
+        paralysedCounter--;
+    }
 }

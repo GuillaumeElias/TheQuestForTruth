@@ -25,6 +25,7 @@ class Enemy : public Drawable, public Movable
         short getHeight() const;
         bool isAlive() const;
     private:
+        void shakeEnemyForParalysis();
 
         int8 type;
         int8 life;
@@ -36,7 +37,7 @@ class Enemy : public Drawable, public Movable
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
-        int8 paralysedCounter;
+        short paralysedCounter;
 
 };
 
