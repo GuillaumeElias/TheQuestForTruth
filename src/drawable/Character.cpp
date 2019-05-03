@@ -57,7 +57,7 @@ Character::Character(int8 characterId)
  void Character::spawn( const Position & spawnPosition )
  {
      pos = spawnPosition;
-     pos.y += (TILE_LENGTH - (getHeight() % TILE_LENGTH)) % TILE_LENGTH; //if the character height doesn't fall right on tile end we shift it downwards
+     pos.y += calculateTilePaddingForHeight(getHeight()); //if the character height doesn't fall right on tile end we shift it downwards
 
      visible = true;
  }

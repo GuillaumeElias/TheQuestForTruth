@@ -1,5 +1,6 @@
 #include "EntitiesManager.h"
 #include "DialogManager.h"
+#include "ItemsManager.h"
 #include "Utils.h"
 
 //==========================================================
@@ -23,6 +24,11 @@ void EntitiesManager::drawEntities() const
     for(int8 i=0; i < character_number; i++)
     {
         characters[i].draw( arduboy );
+    }
+
+    if(itemToBePickedUp.isPresent())
+    {
+        itemToBePickedUp.draw( arduboy );
     }
 }
 
@@ -54,9 +60,9 @@ void EntitiesManager::spawnEntities(Map * map)
         for( short j = 0; j < map->getLevelLength(); j++ )
         {
             levels::Tile tile = levels::getTile(map->getCurrentLevel(), i, j);
-            if(tile == levels::Tile::_ENEMY)
+            if(levels::getTileEnemyType(tile) >= 0)
             {
-                enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
+                enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH }, levels::getTileEnemyType(tile));
                 enemies_number++;
             }
             else if(levels::isCharacterTile(tile))
@@ -71,23 +77,47 @@ void EntitiesManager::spawnEntities(Map * map)
                 triggers[trigger_number].id = levels::getTileTriggerId(tile);
                 triggers[trigger_number].triggered = false;
                 trigger_number++;
+            }else if(levels::getTileItemId(tile) >= 0)
+            {
+                int8 itemId = levels::getTileItemId(tile);
+                itemToBePickedUp.spawn(itemId, { j * TILE_LENGTH, i * TILE_LENGTH } );
             }
         }
     }
 }
 
 //==========================================================
-const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos) const
+const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos)
 {
     for(short i=0; i < enemies_number; i++)
     {
-        if(Enemy::checkEnemyCollision(enemies[i].getPos(), ppos))
+        if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos))
         {
             return HIT_ENEMY;
         }
     }
 
+    if(itemToBePickedUp.isPresent() && itemToBePickedUp.collidesWithPlayer(ppos))
+    {
+        ItemsManager::instance()->foundItem(itemToBePickedUp.getId());
+        itemToBePickedUp = Item();
+
+        DialogManager::instance()->printSingleSentence(F("You found\nan item"));
+    }
+
     return FREE;
+}
+
+//==========================================================
+void EntitiesManager::fireCollisionCheck(const Position & pos, const short & rangeX, const short & rangeY, const HitType & hitType)
+{
+    for(short i=0; i < enemies_number; i++)
+    {
+        if(enemies[i].isAlive() && rectangleCollision({pos, rangeX, rangeY}, {enemies[i].getPos(), enemies[i].getWidth(), enemies[i].getHeight()}))
+        {
+            enemies[i].onHit(hitType);
+        }
+    }
 }
 
 //==========================================================
@@ -170,6 +200,8 @@ void EntitiesManager::clearEntities()
     enemies_number = 0;
     character_number = 0;
     trigger_number = 0;
+
+    itemToBePickedUp = Item();
 }
 
 //==========================================================

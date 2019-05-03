@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../ItemsManager.h"
 
 PROGMEM static const byte BITMAP_A_RIGHT[] = {0x1c, 0x22, 0xc1, 0xe1, 0x92, 0x9c, 0x80, 0x80, 
   0x80, 0x00, 0x00, 0xff, 0x01, 0x02, 0x04, 0x08, 
@@ -19,6 +20,16 @@ PROGMEM static const byte BITMAP_B_LEFT[] = {0x20, 0x20, 0x40, 0x5c, 0x92, 0xe1,
   0x1c, 0x04, 0x02, 0x02, 0x01, 0x01, 0x00, 0xff, 
   0x00, 0x00, 0x04, 0x04, 0x02, 0x02, 0x01, 0x01, 
   0x00, 0x03, 0x0c};
+
+PROGMEM static const byte BITMAP_FIRING_1_RIGHT[] PROGMEM = { 0x1c, 0x22, 0xc1, 0xe1, 0x92, 0xcc, 0x60, 0xe0, 
+  0x20, 0x00, 0x00, 0xff, 0x02, 0x04, 0x0f, 0x08, 
+  0x0f, 0x00, 0x0c, 0x03, 0x00, 0x01, 0x01, 0x02, 
+  0x02, 0x04, 0x04};
+
+PROGMEM static const byte BITMAP_FIRING_1_LEFT[] PROGMEM = { 0x20, 0xe0, 0x60, 0xcc, 0x92, 0xe1, 0xc1, 0x22, 
+  0x1c, 0x00, 0x0f, 0x08, 0x0f, 0x04, 0x02, 0xff, 
+  0x00, 0x00, 0x04, 0x04, 0x02, 0x02, 0x01, 0x01, 
+  0x00, 0x03, 0x0c };
 
 //==========================================================
 Player::Player()
@@ -99,6 +110,10 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
             jumping = true;
             yVelocity = -PLAYER_JUMP_VELOCITY;
         }
+        else if(arduboy->pressed( B_BUTTON ) && ItemsManager::instance()->hasItem(1))
+        {
+            fire();
+        }
 
         //Player animation
         if(animFrameCounter > PLAYER_ANIM_NB_FRAMES)
@@ -130,7 +145,11 @@ void Player::draw( Arduboy2 * arduboy )
 
     if(facingRight) //Avoid flags and set bitmap pointer instead?
     {
-        if(displaySpriteA)
+        if(firing)
+        {
+            arduboy->drawBitmap(screenX, screenY, BITMAP_FIRING_1_RIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+        }
+        else if(displaySpriteA)
         {
             arduboy->drawBitmap(screenX, screenY, BITMAP_A_RIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
         }
@@ -141,7 +160,11 @@ void Player::draw( Arduboy2 * arduboy )
     }
     else
     {
-        if(displaySpriteA)
+        if(firing)
+        {
+            arduboy->drawBitmap(screenX, screenY, BITMAP_FIRING_1_LEFT, PLAYER_WIDTH, PLAYER_HEIGHT);
+        }
+        else if(displaySpriteA)
         {
             arduboy->drawBitmap(screenX, screenY, BITMAP_A_LEFT, PLAYER_WIDTH, PLAYER_HEIGHT);
         }
@@ -164,6 +187,11 @@ void Player::draw( Arduboy2 * arduboy )
         {
             hitFrameCounter++;
         }
+    }
+
+    if(firing)
+    {
+        drawMuzzleSparkles(arduboy);
     }
 }
 
@@ -211,4 +239,55 @@ bool Player::checkCollisionWithEntities(Position position)
         return true;
     }
     return result != FREE;
+}
+
+//===========================================================
+void Player::fire()
+{
+    firing = true;
+
+    Position checkPos = pos;
+    if(facingRight)
+    {
+        checkPos.x += PLAYER_WIDTH;
+    }
+    else
+    {
+        checkPos.x -= PLAYER_WIDTH;
+    }
+    
+    EntitiesManager::instance()->fireCollisionCheck(checkPos, PEPPER_SPRAY_RANGE_X, PEPPER_SPRAY_RANGE_Y, HitType::PEPPER_SPRAY);
+}
+
+//===========================================================
+void Player::drawMuzzleSparkles(Arduboy2 * arduboy)
+{
+    short screenX = pos.x - Map::instance()->getScrollX();
+    short screenY = pos.y - Map::instance()->getScrollY() + TILE_LENGTH / 2;
+
+    if(facingRight)
+    {
+        screenX += PLAYER_WIDTH;
+    }
+    else
+    {
+        screenX -= PLAYER_WIDTH;
+    }
+
+    for(int i=0; i<10; i++)
+    {
+        short randX = random(0, TILE_LENGTH);
+        short randY = random(0, TILE_LENGTH);
+        short fx = randX;
+
+        if(!facingRight) fx = TILE_LENGTH - randX;
+
+        if(randY <= fx) //making a triangle filtering points using: y < f(x)
+        {
+            arduboy->drawPixel(screenX + randX, screenY + randY);
+            arduboy->drawPixel(screenX + randX, screenY - randY);
+        }   
+    }
+
+    firing = false;
 }

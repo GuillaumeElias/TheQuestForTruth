@@ -76,7 +76,7 @@ void Game::update()
                 mode = PLAY;
                 dialogManager.printTextForTrigger(entitiesManager.getTriggerForEvent(event));
             }
-            else if(arduboy.pressed( B_BUTTON )) //menu triggered
+            else if(arduboy.pressed( DOWN_BUTTON )) //menu triggered
             {
                 mode = GameMode::MENU;
             }

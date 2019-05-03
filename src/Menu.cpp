@@ -5,12 +5,17 @@ namespace
 {
     static const short MENU_CURSOR_LEFT_X = 50;
     static const short MENU_CURSOR_TOP_Y = 25;
+    static const short MENU_INGAME_CURSOR_TOP_Y = 15;
 
     static const short CLUES_CURSOR_LEFT_X = 5;
     static const short CLUES_CURSOR_TOP_Y = 15;
 
+    static const short INVENTORY_CURSOR_LEFT_X = 5;
+    static const short INVENTORY_CURSOR_TOP_Y = 15;
+
     static const short LINE_HEIGHT = 15;
-    static const short NB_ITEMS = 2;
+    static const short NB_ITEMS_INGAME = 3;
+    static const short NB_ITEMS_PREGAME = 2;
     static const short SELECTION_BALL_WIDTH = 5;
     static const short SELECTION_BALL_UP_PADDING = 3;
 }
@@ -41,27 +46,44 @@ void Menu::update(Arduboy2 * arduboy)
             }
             return;
         case INVENTORY:
-        break;
+            if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
+            {
+                selectedOption = NONE;
+            }
+            else
+            {
+                displayInventory(arduboy);
+            }
+            return;
     }
+
+    short initCursorY;
 
     if(inGame)
     {
-        arduboy->setCursor(MENU_CURSOR_LEFT_X, MENU_CURSOR_TOP_Y);
+        initCursorY = MENU_INGAME_CURSOR_TOP_Y;
+        short cursorY = initCursorY;
+        arduboy->setCursor(MENU_CURSOR_LEFT_X, cursorY);
         arduboy->println(F("RESUME"));
-        arduboy->setCursor(MENU_CURSOR_LEFT_X, MENU_CURSOR_TOP_Y + LINE_HEIGHT);
+        cursorY += LINE_HEIGHT;
+        arduboy->setCursor(MENU_CURSOR_LEFT_X, cursorY);
         arduboy->println(F("CLUES"));
+        cursorY += LINE_HEIGHT;
+        arduboy->setCursor(MENU_CURSOR_LEFT_X, cursorY);
+        arduboy->println(F("INVENTORY"));
     }
     else
     {
-        arduboy->setCursor(MENU_CURSOR_LEFT_X, MENU_CURSOR_TOP_Y);
+        initCursorY = MENU_CURSOR_TOP_Y;
+        arduboy->setCursor(MENU_CURSOR_LEFT_X, initCursorY);
         arduboy->println(F("PLAY"));
-        arduboy->setCursor(MENU_CURSOR_LEFT_X, MENU_CURSOR_TOP_Y + LINE_HEIGHT);
+        arduboy->setCursor(MENU_CURSOR_LEFT_X, initCursorY + LINE_HEIGHT);
         arduboy->println(F("ABOUT"));
     }
 
     if( arduboy->justPressed( DOWN_BUTTON ) )
     {
-        if(selection < NB_ITEMS)
+        if(selection < getNbItems())
         {
             selection++;
         }
@@ -100,12 +122,7 @@ void Menu::update(Arduboy2 * arduboy)
         
     }
 
-    short ballY = MENU_CURSOR_TOP_Y + SELECTION_BALL_UP_PADDING;
-    if(selection > 1)
-    {
-        ballY += LINE_HEIGHT;
-    }
-
+    short ballY = initCursorY + SELECTION_BALL_UP_PADDING + LINE_HEIGHT * (selection - 1);
     arduboy->drawCircle(MENU_CURSOR_LEFT_X - SELECTION_BALL_WIDTH, ballY, SELECTION_BALL_WIDTH / 2);
 }
 
@@ -138,6 +155,25 @@ void Menu::displayClues(Arduboy2 * arduboy)
 }
 
 //=============================================================
+void Menu::displayInventory(Arduboy2 * arduboy)
+{
+    bool nothing = true;
+
+    arduboy->setCursor(INVENTORY_CURSOR_LEFT_X, INVENTORY_CURSOR_TOP_Y);
+
+    if((ItemsManager::instance()->getItems() & 0b00000001))
+    {
+        arduboy->print(F("- Pepper spray"));
+        nothing = false;
+    }
+
+    if(nothing)
+    {
+        arduboy->print(F("No items yet."));
+    }
+}
+
+//=============================================================
 void Menu::printFromProgmem(Arduboy2 * arduboy, char * textInProgMem)
 {
     char tBuffer[strlen_P(textInProgMem)];
@@ -161,4 +197,14 @@ const MenuOption Menu::getSelectedOption() const
 void Menu::clearSelectedOption()
 {   
     selectedOption = NONE;
+}
+
+//=============================================================
+short Menu::getNbItems() const
+{
+    if(inGame)
+    {
+        return NB_ITEMS_INGAME;
+    }
+    return NB_ITEMS_PREGAME;
 }

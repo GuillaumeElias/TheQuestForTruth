@@ -12,23 +12,32 @@ class Enemy : public Drawable, public Movable
     public:
         Enemy();
 
-        void spawn( const Position & spawnPosition );
+        void spawn( const Position & spawnPosition, int8 enemyType);
         TriggerEvent move( Arduboy2 * arduboy ) override;
         void draw( Arduboy2 * arduboy ) override;
         
         const Position & getPos() const;
 
-        static bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition);
+        bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition);
+        void onHit( const HitType & hitType );
+
+        short getWidth() const;
+        short getHeight() const;
+        bool isAlive() const;
     private:
+        void shakeEnemyForParalysis();
+
+        int8 type;
+        int8 life;
         Position pos;
         Position initPos;
         
         bool displaySpriteA;
         bool facingRight;
-        bool dead;
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
+        short paralysedCounter;
 
 };
 

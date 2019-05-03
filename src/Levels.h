@@ -19,10 +19,12 @@ namespace levels
         DOOR_HOUSE_0 = 40, //NOTHING
         DOOR_HOUSE_1 = 41, //FIRST CLUE
         DOOR_HOUSE_2 = 42, //SECOND CLUE
-        _ENEMY = 51,
+        _ENEMY_1 = 51,
+        _ENEMY_2 = 52,
         _CHARACTER_1 = 61,
         _CHARACTER_2 = 62,
         _CHARACTER_3 = 63,
+        _ITEM_1 = 71,
         _TRIGGER_CHARACTER_1 = 81,
         _TRIGGER_CHARACTER_2 = 82,
         _TRIGGER_CHARACTER_3 = 83,
@@ -73,8 +75,8 @@ namespace levels
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0,83, 0,63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            {0, 0, 0, 0, 0, 0,83, 0,63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         }
     };
 
@@ -83,9 +85,27 @@ namespace levels
         return static_cast<Tile>(pgm_read_byte(&LEVEL_TILES[level][i][j]));
     }
 
+    static int8 getTileEnemyType(Tile t)
+    {
+        if(t >= _ENEMY_1 && t <= _ENEMY_2)
+        {
+            return t - _ENEMY_1 + 1;
+        }
+        return -1;
+    }
+
     static bool isCharacterTile(Tile t)
     {
         return t >= _CHARACTER_1 && t <= _CHARACTER_3;
+    }
+
+    static int8 getTileItemId(Tile t)
+    {
+        if(t >= _ITEM_1 && t <= _ITEM_1)
+        {
+            return t - _ITEM_1 + 1;
+        }
+        return -1;
     }
 
     static int8 getTileTriggerId(Tile t)

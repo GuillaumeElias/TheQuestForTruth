@@ -14,4 +14,10 @@ bool static rectangleCollision(const Rectangle & rectA, const Rectangle & rectB)
         && rectA.pos.y + rectA.height > rectB.pos.y;
 }
 
+//==========================================================
+short static calculateTilePaddingForHeight(const short & height)
+{
+    return (TILE_LENGTH - (height % TILE_LENGTH)) % TILE_LENGTH;
+}
+
 #endif

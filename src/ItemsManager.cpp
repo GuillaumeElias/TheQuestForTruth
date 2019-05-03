@@ -17,3 +17,21 @@ byte ItemsManager::getCluesFound() const
 {
     return cluesFound;
 }
+
+//====================================================================
+byte ItemsManager::getItems() const
+{
+    return items;
+}
+
+//====================================================================
+void ItemsManager::foundItem(int8 itemId)
+{
+    items |= 1 << (itemId - 1);
+}
+
+//====================================================================
+bool ItemsManager::hasItem(int8 itemId) const
+{
+    return items & (1 << (itemId - 1));
+}

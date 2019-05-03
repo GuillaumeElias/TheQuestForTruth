@@ -13,6 +13,8 @@ Game game;
 void setup()
 {
     game.init();
+    randomSeed(analogRead(0));
+
     Serial.begin(9600); //TODO remove
     
     Serial.print("freeMemory()=");

@@ -4,39 +4,63 @@
 
 namespace
 {
-    static const short ENEMY_WIDTH = 10;
-    static const short ENEMY_HEIGHT = 18;
+    static const short ENEMY_1_WIDTH = 10;
+    static const short ENEMY_1_HEIGHT = 18;
+    static const short ENEMY_2_WIDTH = 12;
+    static const short ENEMY_2_HEIGHT = 12;
+    static const short PARALYSED_TICKS = 500;
 }
 
-PROGMEM static const byte BITMAP_A[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3, 0x06, 
+PROGMEM static const byte BITMAP_1[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3, 0x06, 
   0x1c, 0xe0, 0xff, 0x05, 0x82, 0xa5, 0xd0, 0x55, 
   0xa2, 0x85, 0x00, 0xff, 0x03, 0x01, 0x01, 0x03, 
   0x01, 0x03, 0x01, 0x01, 0x03, 0x01};
+
+PROGMEM static const byte BITMAP_2[] = {0xf0, 0x0c, 0x02, 0x1a, 0x99, 0x81, 0x81, 0x99, 
+  0x1a, 0x02, 0x0c, 0xf0, 0x00, 0x03, 0x04, 0x05, 
+  0x08, 0x08, 0x08, 0x08, 0x05, 0x04, 0x03, 0x00};
 
 //==========================================================
 Enemy::Enemy()
     : pos(0,0)
     , initPos(0,0)
+    , life(0)
     , displaySpriteA( true )
     , facingRight( true )
     , animFrameCounter( 0 )
-    , dead( true )
+    , paralysedCounter( 0 )
 {
 
 }
 
 //==========================================================
- void Enemy::spawn( const Position & spawnPosition )
+ void Enemy::spawn( const Position & spawnPosition, int8 enemyType )
  {
+     type = enemyType;
      pos = spawnPosition;
      initPos = spawnPosition;
-     dead = false;
+
+     switch(type)
+     {
+        case 1:
+            life = 1;
+            break;
+        case 2:
+            life = 10;
+            break;
+     }
  }
 
 //==========================================================
 TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
-    if(dead) return NO_EVENT;
+    if(life == 0) return NO_EVENT;
+
+    if(paralysedCounter != 0)
+    { 
+        shakeEnemyForParalysis();
+        return;
+    }
 
     if(walkFrameSkipped > ENEMY_WALK_FRAME_SKIP)
     {
@@ -73,12 +97,21 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
 //==========================================================
 void Enemy::draw( Arduboy2 * arduboy )
 {
-    if(dead) return;
+    if(life == 0) return;
 
     short screenX = pos.x - Map::instance()->getScrollX();
     short screenY = pos.y - Map::instance()->getScrollY(); 
+
+    switch(type)
+    {
+        case 1:
+            arduboy->drawBitmap(screenX, screenY, BITMAP_1, ENEMY_1_WIDTH, ENEMY_1_HEIGHT);
+            break;
+        case 2:
+            arduboy->drawBitmap(screenX, screenY, BITMAP_2, ENEMY_2_WIDTH, ENEMY_2_HEIGHT);
+            break;
+    }
     
-    arduboy->drawBitmap(screenX, screenY, BITMAP_A, ENEMY_WIDTH, ENEMY_HEIGHT);
 }
 
 //==========================================================
@@ -90,10 +123,67 @@ const Position & Enemy::getPos() const
 //==========================================================
 bool Enemy::checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition)
 {
-    if(rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {enemyPosition, ENEMY_WIDTH, ENEMY_HEIGHT}))
+    if(rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {enemyPosition, getWidth(), getHeight()}))
     {
         Player::instance()->takeHit();
         return true;
     }
     return false;
+}
+
+//==========================================================
+void Enemy::onHit( const HitType & type )
+{
+    if(type == HitType::PEPPER_SPRAY && paralysedCounter == 0)
+    {
+        paralysedCounter = PARALYSED_TICKS;
+    }
+}
+
+//==========================================================
+short Enemy::getWidth() const
+{
+    switch(type)
+    {
+        case 1:
+            return ENEMY_1_WIDTH;
+        case 2:
+            return ENEMY_2_WIDTH;
+    }
+}
+
+//==========================================================
+short Enemy::getHeight() const
+{
+    switch(type)
+    {
+        case 1:
+            return ENEMY_1_HEIGHT;
+        case 2:
+            return ENEMY_2_HEIGHT;
+    }
+}
+
+//==========================================================
+bool Enemy::isAlive() const
+{
+    return life > 0;
+}
+
+//==========================================================
+void Enemy::shakeEnemyForParalysis()
+{
+    if(paralysedCounter > 0)
+    {
+        if(paralysedCounter % 2)
+        {
+            pos.y--;
+        }
+        else if(pos.y + getHeight() < Map::instance()->getLevelHeight() * TILE_LENGTH)
+        {
+            pos.y++;
+        }
+    
+        paralysedCounter--;
+    }
 }

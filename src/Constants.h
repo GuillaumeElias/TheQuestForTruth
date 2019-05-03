@@ -18,7 +18,8 @@ typedef enum __attribute__ ((packed))
 {
     FREE,
     HIT_ENEMY,
-    HIT_TRIGGER
+    HIT_TRIGGER,
+    HIT_ITEM
 } CollisionCheckResult;
 
 //TRIGGER EVENT
@@ -30,6 +31,12 @@ typedef enum __attribute__ ((packed))
     START_DIALOG_2,
     END_LEVEL
 } TriggerEvent;
+
+//HIT TYPE
+typedef enum __attribute__ ((packed))
+{
+    PEPPER_SPRAY
+} HitType;
 
 static const short SCREEN_HEIGHT = 64;
 static const short SCREEN_WIDTH = 128;
@@ -61,5 +68,7 @@ static const short DIALOG_CHAR_WIDTH = 6;
 static const short DIALOG_CHAR_HEIGHT = 15;
 static const short DIALOG_LETTER_NBFRAMES = 6;
 static const short DIALOG_SENTENCE_END_NBFRAMES = 50;
+static const short PEPPER_SPRAY_RANGE_X = TILE_LENGTH;
+static const short PEPPER_SPRAY_RANGE_Y = TILE_LENGTH * 2;
 
 #endif
