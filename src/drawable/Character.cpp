@@ -154,7 +154,7 @@ const int8 Character::getId() const
 }
 
 //==========================================================
-bool Character::checkCharacterCollision(const Position & playerPosition, const Position & CharacterPosition)
+bool Character::checkCharacterCollision(const Position & CharacterPosition, const Position & playerPosition)
 {
     return rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {CharacterPosition, getWidth(), getHeight()});
 }

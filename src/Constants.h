@@ -18,6 +18,7 @@ typedef enum __attribute__ ((packed))
 {
     FREE,
     HIT_ENEMY,
+    HIT_CHARACTER,
     HIT_TRIGGER,
     HIT_ITEM
 } CollisionCheckResult;
@@ -56,6 +57,7 @@ static const short TILE_SCREEN_Y_OFFSET = SCREEN_HEIGHT % TILE_LENGTH;
 static const short MAX_ENEMIES_PER_LEVEL = 5;
 static const short CHARACTER_MOVE = 1;
 static const short ENEMY_MOVE = 1;
+static const short ENEMY_FOLLOW_MOVE = 2;
 static const short ENEMY_WALK_MAX = 25;
 static const short ENEMY_WALK_FRAME_SKIP = 2;
 static const short MAX_CHARACTERS_PER_LEVEL = 2;

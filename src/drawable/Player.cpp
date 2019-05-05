@@ -193,6 +193,8 @@ void Player::draw( Arduboy2 * arduboy )
     {
         drawMuzzleSparkles(arduboy);
     }
+
+    firing = false;
 }
 
 //==========================================================
@@ -226,19 +228,15 @@ bool Player::isFalling() const
 //==========================================================
 bool Player::somethingIsAbove() const
 {
-    return Map::instance()->checkCollisionForPoint(pos.x, pos.y) || Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y);
+    return Map::instance()->checkCollisionForPoint(pos.x, pos.y) 
+        || Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y) 
+        || checkCollisionWithEntities(pos);
 }
 
 //===========================================================
-bool Player::checkCollisionWithEntities(Position position)
+bool Player::checkCollisionWithEntities(const Position & position)
 {
-    const CollisionCheckResult result = EntitiesManager::instance()->collisionCheck(position);
-    if(result == HIT_ENEMY)
-    {
-        //takeHit() is called in Enemy.cpp
-        return true;
-    }
-    return result != FREE;
+    return EntitiesManager::instance()->collisionCheck(position) != FREE;
 }
 
 //===========================================================

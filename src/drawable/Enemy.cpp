@@ -9,6 +9,7 @@ namespace
     static const short ENEMY_2_WIDTH = 12;
     static const short ENEMY_2_HEIGHT = 12;
     static const short PARALYSED_TICKS = 500;
+    static const short FOLLOW_PLAYER_DISTANCE = TILE_LENGTH * 5;
 }
 
 PROGMEM static const byte BITMAP_1[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3, 0x06, 
@@ -72,25 +73,54 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         return NO_EVENT; //only move every n frames
     }
 
-    int8 diffX = pos.x - initPos.x;
-    if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x + ENEMY_MOVE, pos.y}))
-    {
-        facingRight = false;
-    }
-    else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x - ENEMY_MOVE, pos.y}))
-    {
-        facingRight = true;
-    }
+    short distancePlayerX = pos.x - Player::instance()->getPos().x;
 
-    if(facingRight)
+    if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
     {
-        pos.x += ENEMY_MOVE; 
-    }
-    else
-    {
-        pos.x -= ENEMY_MOVE;
-    }
+        if(checkEnemyCollision(Player::instance()->getPos(), {pos.x, pos.y}, true))
+        {
+            life = 0;
+            return NO_EVENT;
+        }
 
+        short distancePlayerY = pos.y - Player::instance()->getPos().y;
+        float ratioX = atan2(distancePlayerX, distancePlayerY) / PI * 2;
+        float ratioY = atan2(distancePlayerY, distancePlayerX) / PI * 2;
+
+        short toAddX = ENEMY_FOLLOW_MOVE * ratioX;
+        short toAddY = ENEMY_FOLLOW_MOVE * ratioY;
+
+        short newPosX = pos.x - toAddX;
+        short newPosY = pos.y - toAddY;
+        
+        if(!Map::instance()->checkCollision(newPosX, newPosY, getWidth(), getHeight() ) )
+        {
+            pos.x = newPosX;
+            pos.y = newPosY;
+        }
+    }
+    else //NORMAL PATROL MOVE
+    {
+        int8 diffX = pos.x - initPos.x;
+        if(diffX > ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x + ENEMY_MOVE, pos.y}, true))
+        {
+            facingRight = false;
+        }
+        else if(diffX < -ENEMY_WALK_MAX || checkEnemyCollision(Player::instance()->getPos(), {pos.x - ENEMY_MOVE, pos.y}, true))
+        {
+            facingRight = true;
+        }
+
+        if(facingRight)
+        {
+            pos.x += ENEMY_MOVE; 
+        }
+        else
+        {
+            pos.x -= ENEMY_MOVE;
+        }
+    }
+    
     return NO_EVENT;
 }
 
@@ -121,11 +151,15 @@ const Position & Enemy::getPos() const
 }
 
 //==========================================================
-bool Enemy::checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition)
+bool Enemy::checkEnemyCollision(const Position & enemyPosition, const Position & playerPosition, bool damageOn)
 {
-    if(rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {enemyPosition, getWidth(), getHeight()}))
+    //TODO redo that more accurately
+    if(life > 0 && rectangleCollision({playerPosition, PLAYER_WIDTH, PLAYER_HEIGHT}, {enemyPosition, getWidth(), getHeight()}))
     {
-        Player::instance()->takeHit();
+        if(damageOn)
+        {
+            Player::instance()->takeHit();
+        }
         return true;
     }
     return false;

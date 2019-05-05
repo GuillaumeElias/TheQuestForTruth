@@ -91,9 +91,17 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 {
     for(short i=0; i < enemies_number; i++)
     {
-        if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos))
+        if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos, false))
         {
             return HIT_ENEMY;
+        }
+    }
+
+    for(short i=0; i < character_number; i++)
+    {
+        if(characters[i].checkCharacterCollision(characters[i].getPos(), ppos))
+        {
+            return HIT_CHARACTER;
         }
     }
 

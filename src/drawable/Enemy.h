@@ -18,7 +18,7 @@ class Enemy : public Drawable, public Movable
         
         const Position & getPos() const;
 
-        bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition);
+        bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition, bool damageOn);
         void onHit( const HitType & hitType );
 
         short getWidth() const;
