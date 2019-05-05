@@ -10,6 +10,7 @@ namespace
     static const short ENEMY_2_HEIGHT = 12;
     static const short PARALYSED_TICKS = 500;
     static const short FOLLOW_PLAYER_DISTANCE = TILE_LENGTH * 5;
+    static const short ENEMY_DEATH_TICKS = 21;
 }
 
 PROGMEM static const byte BITMAP_1[] = {0xfc, 0x06, 0xc3, 0x01, 0x01, 0x01, 0xc3, 0x06, 
@@ -55,7 +56,7 @@ Enemy::Enemy()
 //==========================================================
 TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
-    if(life == 0) return NO_EVENT;
+    if(life <= 0) return NO_EVENT;
 
     if(paralysedCounter != 0)
     { 
@@ -79,7 +80,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
     {
         if(checkEnemyCollision(Player::instance()->getPos(), {pos.x, pos.y}, true))
         {
-            life = 0;
+            life = -ENEMY_DEATH_TICKS;
             return NO_EVENT;
         }
 
@@ -131,6 +132,13 @@ void Enemy::draw( Arduboy2 * arduboy )
 
     short screenX = pos.x - Map::instance()->getScrollX();
     short screenY = pos.y - Map::instance()->getScrollY(); 
+
+    if(life < 0)
+    {
+        arduboy->drawCircle(screenX + getWidth() / 2, screenY + getHeight() / 2, abs(life / 3));
+        life++;
+        return;
+    }
 
     switch(type)
     {
