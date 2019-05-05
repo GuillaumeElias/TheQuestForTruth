@@ -74,7 +74,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         return NO_EVENT; //only move every n frames
     }
 
-    short distancePlayerX = pos.x - Player::instance()->getPos().x;
+    short distancePlayerX = Player::instance()->getPos().x - pos.x;
 
     if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
     {
@@ -84,15 +84,17 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
             return NO_EVENT;
         }
 
-        short distancePlayerY = pos.y - Player::instance()->getPos().y;
-        float ratioX = atan2(distancePlayerX, distancePlayerY) / PI * 2;
-        float ratioY = atan2(distancePlayerY, distancePlayerX) / PI * 2;
+        short dx = distancePlayerX;
+        short dy = Player::instance()->getPos().y - pos.y;
+        float norm = sqrt(dx * dx + dy * dy); //normalise vector
+        if (norm)
+        {
+            dx *= ENEMY_FOLLOW_MOVE / norm;
+            dy *= ENEMY_FOLLOW_MOVE / norm;
+        }
 
-        short toAddX = ENEMY_FOLLOW_MOVE * ratioX;
-        short toAddY = ENEMY_FOLLOW_MOVE * ratioY;
-
-        short newPosX = pos.x - toAddX;
-        short newPosY = pos.y - toAddY;
+        short newPosX = pos.x + dx;
+        short newPosY = pos.y + dy;
         
         if(!Map::instance()->checkCollision(newPosX, newPosY, getWidth(), getHeight() ) )
         {
