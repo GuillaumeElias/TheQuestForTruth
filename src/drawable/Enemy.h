@@ -34,10 +34,12 @@ class Enemy : public Drawable, public Movable
         
         bool displaySpriteA;
         bool facingRight;
+        bool goBackToInitPos;
 
         int8 animFrameCounter;
         int8 walkFrameSkipped;
         short paralysedCounter;
+        int8 hitCounter;
 
 };
 
