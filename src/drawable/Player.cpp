@@ -124,7 +124,7 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
     }
 
     //if no collision -> apply new position
-    if( !Map::instance()->checkCollision(newX, newY - 1, PLAYER_WIDTH, PLAYER_HEIGHT) && !checkCollisionWithEntities({newX, newY}))
+    if( !checkCollisionWithMap(newX, newY - 1) && !checkCollisionWithEntities({newX, newY}))
     {
         pos.x = newX;
         pos.y = newY;
@@ -220,17 +220,30 @@ bool Player::isFalling() const
     short playerY = pos.y + PLAYER_HEIGHT + extraY;
 
     return playerY < Map::instance()->getLevelHeight() * TILE_LENGTH
-        && !Map::instance()->checkCollisionForPoint(pos.x, playerY )
-        && !Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, playerY )
+        && !checkCollisionWithMap(pos.x, pos.y + extraY)
         && !checkCollisionWithEntities({pos.x, pos.y + extraY});
+}
+
+//==========================================================
+bool Player::checkCollisionWithMap(const short & playerX, const short & playerY) const
+{
+    for(int x=playerX; x <= playerX + PLAYER_WIDTH; x+=3)
+    {
+        for(int y=playerY; y <= playerY + PLAYER_HEIGHT; y+=2)
+        {
+            if(Map::instance()->checkCollisionForPoint(x, y))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 //==========================================================
 bool Player::somethingIsAbove() const
 {
-    return Map::instance()->checkCollisionForPoint(pos.x, pos.y) 
-        || Map::instance()->checkCollisionForPoint(pos.x + PLAYER_WIDTH, pos.y) 
-        || checkCollisionWithEntities(pos);
+    return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities(pos);
 }
 
 //===========================================================
