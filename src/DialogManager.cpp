@@ -75,11 +75,11 @@ void DialogManager::printNextLineForTrigger()
             currentNbOfLines = 5;
             switch(currentLineIndex)
             {
-                case 0: printSentence(F("Hello young boy.")); break;
-                case 1: extraTextPaddingX = 58; printSentence(F("Where are you off to?")); break;
-                case 2: printSentence(F("Those legs...")); break;
-                case 3: extraTextPaddingX = 60; printSentence(F("They look good on you.")); break;
-                case 4: printSentence(F("He he he!.")); break;
+                case 0: printSentence(F("Those big balls.")); break;
+                case 1: printSentence(F("I hate them.")); break;
+                case 2: extraTextPaddingX = 60; printSentence(F("Grab the pepper spray.")); break;
+                case 3: extraTextPaddingX = 60; printSentence(F("And jump the bastards!")); break;
+                case 4: printSentence(F("Yeay!")); break;
             }
             
             break;
