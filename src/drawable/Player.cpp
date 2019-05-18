@@ -33,7 +33,7 @@ PROGMEM static const byte BITMAP_FIRING_1_LEFT[] PROGMEM = { 0x20, 0xe0, 0x60, 0
 
 //==========================================================
 Player::Player()
-    : pos(0, SCREEN_HEIGHT - PLAYER_HEIGHT)
+    : pos(0, 0)
     , life(PLAYER_LIFE)
     , displaySpriteA( true )
     , facingRight( true )

@@ -55,7 +55,7 @@ void EntitiesManager::moveEntities()   //we assume there will only be one event 
 //==========================================================
 void EntitiesManager::spawnEntities(Map * map)
 {
-    for ( short i = 0; i < map->getLevelHeight(); i++ )
+    /*for ( short i = 0; i < map->getLevelHeight(); i++ )  //TODO parse level more efficienly
     {
         for( short j = 0; j < map->getLevelLength(); j++ )
         {
@@ -83,7 +83,7 @@ void EntitiesManager::spawnEntities(Map * map)
                 itemToBePickedUp.spawn(itemId, { j * TILE_LENGTH, i * TILE_LENGTH } );
             }
         }
-    }
+    }*/
 }
 
 //==========================================================
