@@ -26,8 +26,6 @@ void Map::draw(Arduboy2 * arduboy)
         scroll_x = level_width * TILE_LENGTH - SCREEN_WIDTH;
     }
 
-    //short scroll_offset_x = - (scroll_x % TILE_LENGTH); //Do we need this ?
-
     //COMPUTE SCROLL_Y BASED ON PLAYER POSITION
     scroll_y = playerPosition.y + PLAYER_HEIGHT - MID_HEIGHT;
     if(scroll_y < 0)
@@ -38,8 +36,6 @@ void Map::draw(Arduboy2 * arduboy)
     {
         scroll_y = level_height * TILE_LENGTH - SCREEN_HEIGHT;
     }
-
-    //short scroll_offset_y = -(scroll_y % TILE_LENGTH); //Do we need this ?
 
     short x = 0;
     short y = 0;
@@ -53,7 +49,7 @@ void Map::draw(Arduboy2 * arduboy)
             drawTile(c.tile, x, y, arduboy); 
                         
             y += TILE_LENGTH;
-            x = 0; //TODO reset to startX
+            x = 0;
         }
         else
         {
