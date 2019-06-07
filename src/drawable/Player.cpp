@@ -47,7 +47,7 @@ Player::Player()
 void Player::levelStart()
 {
     pos.x = 0;
-    pos.y = Map::instance()->getLevelHeight() * TILE_LENGTH - PLAYER_HEIGHT - 1;
+    pos.y = LEVEL_HEIGHT * TILE_LENGTH - PLAYER_HEIGHT - 1;
 }
 
 
@@ -219,7 +219,7 @@ bool Player::isFalling() const
     short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
     short playerY = pos.y + PLAYER_HEIGHT + extraY;
 
-    return playerY < Map::instance()->getLevelHeight() * TILE_LENGTH
+    return playerY < LEVEL_HEIGHT * TILE_LENGTH
         && !checkCollisionWithMap(pos.x, pos.y + extraY)
         && !checkCollisionWithEntities({pos.x, pos.y + extraY});
 }

@@ -23,7 +23,6 @@ class Map : public Drawable, public Singleton<Map>
 
         short getScrollX() const;
         short getScrollY() const;
-        short getLevelHeight() const;
         short getLevelLength() const;
         short getCurrentLevel() const;
     private:
@@ -34,7 +33,9 @@ class Map : public Drawable, public Singleton<Map>
 
         short current_level;
         short scroll_x, scroll_y;
-        short level_length, level_width, level_height;
+        short level_length, level_width;
+
+        byte level_row_indexes[LEVEL_HEIGHT];
 };
 
 #endif

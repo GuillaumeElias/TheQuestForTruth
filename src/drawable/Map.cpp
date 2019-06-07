@@ -7,7 +7,6 @@ Map::Map(const Position & playerPos)
     , current_level(0)
     , scroll_x(0)
     , scroll_y(0)
-    , level_height(0)
     , level_length(0)
 {
 }
@@ -32,9 +31,9 @@ void Map::draw(Arduboy2 * arduboy)
     {
         scroll_y = 0;
     }
-    else if(scroll_y + SCREEN_HEIGHT > level_height * TILE_LENGTH)
+    else if(scroll_y + SCREEN_HEIGHT > LEVEL_HEIGHT * TILE_LENGTH)
     {
-        scroll_y = level_height * TILE_LENGTH - SCREEN_HEIGHT;
+        scroll_y = LEVEL_HEIGHT * TILE_LENGTH - SCREEN_HEIGHT;
     }
 
     short x = 0;
@@ -114,17 +113,24 @@ void Map::drawTile(levels::Tile tile, const short & x, const short & y, Arduboy2
 void Map::startLevel()
 {
     level_length = levels::getLevelSize(current_level);
-    level_height = 0;
     level_width = 1; //precount the last cell of the row
     bool parseWidth = true;
+
+    short row = 0;
+    level_row_indexes[0] = 0;
+
     for(short index = 0; index < level_length; index ++)
     {
         levels::Cell c = levels::getCell(current_level, index);
         
         if(c.count == 0xFF)
         {      
-            level_height ++;            
             parseWidth = false;
+            if(index < level_length - 1)
+            {
+                ++row;
+                level_row_indexes[row] = index + 1;
+            }
         }
         else if(parseWidth)
         {
@@ -191,12 +197,6 @@ short Map::getScrollY() const
 }
 
 //=============================================================
-short Map::getLevelHeight() const
-{
-    return level_height;
-}
-
-//=============================================================
 short Map::getLevelLength() const
 {
     return level_length;
@@ -211,30 +211,18 @@ short Map::getCurrentLevel() const
 //=============================================================
 levels::Tile Map::getTile(short level, short i, short j) const
 {
-    short rowCount = 0;
     short colCount = 0;
-    for(short index = 0; index < level_length; ++index)
+    short index = level_row_indexes[i];
+    short stopI = index + level_width;
+    for(; index < stopI; ++index)
     {
         levels::Cell c = levels::getCell(current_level, index);
-        bool endOfRow = false;
 
-        if(c.count == 0xFF)
-        {      
-            endOfRow = true;           
-        }
-
-        if(rowCount == i)
+        colCount += (c.count == 0xFF) ? 1 : c.count;
+        if(colCount >= j + 1)
         {
-            colCount += endOfRow ? 1 : c.count;
-            if(colCount >= j + 1)
-            {
-                return c.tile;
-            }
+            return c.tile;
         }
-
-        if(endOfRow)
-        {
-            rowCount ++;
-        }
+        
     }
 }
