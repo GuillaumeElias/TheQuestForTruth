@@ -41,6 +41,7 @@ typedef enum __attribute__ ((packed))
 
 static const short SCREEN_HEIGHT = 64;
 static const short SCREEN_WIDTH = 128;
+static const short LEVEL_HEIGHT = 13;
 static const short MID_WIDTH = SCREEN_WIDTH / 2;
 static const short MID_HEIGHT = SCREEN_HEIGHT / 2;
 static const short PLAYER_HEIGHT = 20;

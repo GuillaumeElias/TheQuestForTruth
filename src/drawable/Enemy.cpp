@@ -278,7 +278,7 @@ void Enemy::shakeEnemyForParalysis()
         {
             pos.y--;
         }
-        else if(pos.y + getHeight() < Map::instance()->getLevelHeight() * TILE_LENGTH)
+        else if(pos.y + getHeight() < LEVEL_HEIGHT * TILE_LENGTH)
         {
             pos.y++;
         }

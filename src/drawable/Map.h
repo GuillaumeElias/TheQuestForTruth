@@ -23,16 +23,19 @@ class Map : public Drawable, public Singleton<Map>
 
         short getScrollX() const;
         short getScrollY() const;
-        short getLevelHeight() const;
         short getLevelLength() const;
         short getCurrentLevel() const;
     private:
+        void drawTile(levels::Tile tile, const short & screenX, const short & screenY, Arduboy2 * arduboy);
+        levels::Tile getTile(short level, short i, short j) const;
+
         const Position & playerPosition;
 
         short current_level;
         short scroll_x, scroll_y;
-        short level_height;
-        short level_length;
+        short level_length, level_width;
+
+        byte level_row_indexes[LEVEL_HEIGHT];
 };
 
 #endif

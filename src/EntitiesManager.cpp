@@ -55,33 +55,47 @@ void EntitiesManager::moveEntities()   //we assume there will only be one event 
 //==========================================================
 void EntitiesManager::spawnEntities(Map * map)
 {
-    for ( short i = 0; i < map->getLevelHeight(); i++ )
-    {
-        for( short j = 0; j < map->getLevelLength(); j++ )
+    short x = 0;
+    short y = 0;
+
+    for(short index = 0; index < map->getLevelLength(); index ++)
+    {        
+        levels::Cell c = levels::getCell(map->getCurrentLevel(), index);
+        
+        short count = (c.count == 0xFF) ? 1 : c.count;
+        short stopX = x + count * TILE_LENGTH;
+        for(; x < stopX; x += TILE_LENGTH)
         {
-            levels::Tile tile = levels::getTile(map->getCurrentLevel(), i, j);
-            if(levels::getTileEnemyType(tile) >= 0)
+            if(levels::getTileEnemyType(c.tile) >= 0)
             {
-                enemies[enemies_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH }, levels::getTileEnemyType(tile));
+                Serial.print("spawn enemy type:");
+                Serial.println(levels::getTileEnemyType(c.tile));
+                enemies[enemies_number].spawn( { x, y }, levels::getTileEnemyType(c.tile));
                 enemies_number++;
             }
-            else if(levels::isCharacterTile(tile))
+            else if(levels::isCharacterTile(c.tile))
             {
-                characters[character_number] = Character(tile);
-                characters[character_number].spawn( { j * TILE_LENGTH, i * TILE_LENGTH } );
+                characters[character_number] = Character(c.tile);
+                characters[character_number].spawn( { x, y } );
                 character_number++;
             }
-            else if(levels::getTileTriggerId(tile) >= 0)
+            else if(levels::getTileTriggerId(c.tile) >= 0)
             {
-                triggers[trigger_number].pos = { j * TILE_LENGTH, i * TILE_LENGTH };
-                triggers[trigger_number].id = levels::getTileTriggerId(tile);
+                triggers[trigger_number].pos = { x, y };
+                triggers[trigger_number].id = levels::getTileTriggerId(c.tile);
                 triggers[trigger_number].triggered = false;
                 trigger_number++;
-            }else if(levels::getTileItemId(tile) >= 0)
+            }else if(levels::getTileItemId(c.tile) >= 0)
             {
-                int8 itemId = levels::getTileItemId(tile);
-                itemToBePickedUp.spawn(itemId, { j * TILE_LENGTH, i * TILE_LENGTH } );
-            }
+                int8 itemId = levels::getTileItemId(c.tile);
+                itemToBePickedUp.spawn(itemId, { x, y } );
+            }                
+        }
+
+        if(c.count == 0xFF)
+        {                        
+            y += TILE_LENGTH;
+            x = 0;
         }
     }
 }
