@@ -1,6 +1,6 @@
 #########################################################################################
 # LEVEL ENCODER                                                                         #
-# This tool converts a level statically-defined with 2D arrays into a RDL-encoded array #
+# This tool converts a level statically-defined with 2D arrays into a RLE-encoded array #
 #########################################################################################
 
 from _levels import *
