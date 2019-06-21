@@ -15,11 +15,11 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
 
         void printTextForTrigger(Trigger * trigger);
         void printTextNb(int8 dialogNb);
-        void printSingleSentence(__FlashStringHelper * stringSentence, int8 extraTextPaddingX = 0);
+        void printSingleSentence(const __FlashStringHelper * stringSentence, int8 extraTextPaddingX = 0);
         void printSingleSentence(PGM_P sentenceString, int8 extraTextPaddingX = 0);
 
     private:
-        void printSentence(__FlashStringHelper * stringSentence);
+        void printSentence(const __FlashStringHelper * stringSentence);
         void printSentence(PGM_P stringSentence);
         void printNextLineForTrigger();
         void reset();

@@ -14,7 +14,7 @@ EntitiesManager::EntitiesManager(Arduboy2 * ardu)
 }
 
 //==========================================================
-void EntitiesManager::drawEntities() const
+void EntitiesManager::drawEntities()
 {
     for(int8 i=0; i < enemies_number; i++)
     {
@@ -193,7 +193,7 @@ void EntitiesManager::startNewLevel()
 }
 
 //==========================================================
-Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event) const
+Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event)
 {
     switch(event)
     {

@@ -247,7 +247,7 @@ bool Player::somethingIsAbove() const
 }
 
 //===========================================================
-bool Player::checkCollisionWithEntities(const Position & position)
+bool Player::checkCollisionWithEntities(const Position & position) const
 {
     return EntitiesManager::instance()->collisionCheck(position) != FREE;
 }

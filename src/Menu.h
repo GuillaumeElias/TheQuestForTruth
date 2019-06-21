@@ -25,7 +25,7 @@ class Menu
     private:
        void displayClues(Arduboy2 * arduboy);
        void displayInventory(Arduboy2 * arduboy);
-       void printFromProgmem(Arduboy2 * arduboy, char * textInProgMem);
+       void printFromProgmem(Arduboy2 * arduboy, const char * textInProgMem);
        inline short getNbItems() const;
        
        MenuOption selectedOption;

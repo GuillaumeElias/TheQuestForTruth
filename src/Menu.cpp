@@ -174,7 +174,7 @@ void Menu::displayInventory(Arduboy2 * arduboy)
 }
 
 //=============================================================
-void Menu::printFromProgmem(Arduboy2 * arduboy, char * textInProgMem)
+void Menu::printFromProgmem(Arduboy2 * arduboy, const char * textInProgMem)
 {
     char tBuffer[strlen_P(textInProgMem)];
     strcpy_P(tBuffer, textInProgMem);

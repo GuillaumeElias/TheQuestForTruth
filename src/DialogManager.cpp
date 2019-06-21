@@ -87,7 +87,7 @@ void DialogManager::printNextLineForTrigger()
     }
 }
 //======================================================================
-void DialogManager::printSingleSentence(__FlashStringHelper * stringSentence, int8 extraPadX)
+void DialogManager::printSingleSentence(const __FlashStringHelper * stringSentence, int8 extraPadX)
 {
     printSingleSentence( reinterpret_cast<PGM_P>(stringSentence),  extraPadX);
 }
@@ -101,7 +101,7 @@ void DialogManager::printSingleSentence(PGM_P stringSentence, int8 extraPadX)
 }
 
 //======================================================================
-void DialogManager::printSentence(__FlashStringHelper * sentenceString)
+void DialogManager::printSentence(const __FlashStringHelper * sentenceString)
 {
     printSentence( reinterpret_cast<PGM_P>(sentenceString) );
 }
