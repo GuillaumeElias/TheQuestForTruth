@@ -214,7 +214,7 @@ int8 Player::getLife() const
 }
 
 //==========================================================
-bool Player::isFalling() const
+bool Player::isFalling()
 {
     short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
     short playerY = pos.y + PLAYER_HEIGHT + extraY;
@@ -241,15 +241,21 @@ bool Player::checkCollisionWithMap(const short & playerX, const short & playerY)
 }
 
 //==========================================================
-bool Player::somethingIsAbove() const
+bool Player::somethingIsAbove()
 {
     return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities(pos);
 }
 
 //===========================================================
-bool Player::checkCollisionWithEntities(const Position & position) const
+bool Player::checkCollisionWithEntities(const Position & position)
 {
-    return EntitiesManager::instance()->collisionCheck(position) != FREE;
+    const CollisionCheckResult result = EntitiesManager::instance()->collisionCheck(position);
+    if(result == HIT_ENEMY)
+    {
+        takeHit();
+        return true;
+    }
+    return result != FREE;
 }
 
 //===========================================================
