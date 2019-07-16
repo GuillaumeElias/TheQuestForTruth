@@ -1,10 +1,11 @@
 # TheQuestForTruth
 
-Game for Arduboy. In early development.
+Game for Arduboy. In early development. The idea is to make a wacky platformer with RPG elements.
 
 ## Libraries
 
 - Arduboy2
+- ArduboyTones
 - MemoryFree
 
 ## License
