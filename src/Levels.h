@@ -1,12 +1,6 @@
 #ifndef _LEVELS_H_
 #define _LEVELS_H_
 
-template <typename T, short N>
-constexpr short arraysize(T(&)[N])
-{
-    return N;
-}
-
 namespace levels
 {
     typedef enum __attribute__ ((packed))

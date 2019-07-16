@@ -74,4 +74,10 @@ static const short DIALOG_SENTENCE_END_NBFRAMES = 50;
 static const short PEPPER_SPRAY_RANGE_X = TILE_LENGTH;
 static const short PEPPER_SPRAY_RANGE_Y = TILE_LENGTH * 2;
 
+template <typename T, short N>
+constexpr short arraysize(T(&)[N])
+{
+    return N;
+}
+
 #endif

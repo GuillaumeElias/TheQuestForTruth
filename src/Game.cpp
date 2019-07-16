@@ -4,6 +4,7 @@
 Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
+    , soundManager( &arduboy )
     , mode( GameMode::CINEMATIC )
 {
     
@@ -23,6 +24,7 @@ void Game::init()
     map.startLevel();
     player.levelStart();
     entitiesManager.spawnEntities( &map );
+    soundManager.startMusic(0);
 }
 
 //==========================================================
@@ -115,6 +117,7 @@ void Game::update()
             if( boxView.updateCinematic(&arduboy) == false)
             {
                 mode = GameMode::MENU;
+                //arduboy.setFrameRate(120);
             }
             break;
     }

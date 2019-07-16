@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../ItemsManager.h"
+#include "../SoundManager.h"
 
 PROGMEM static const byte BITMAP_A_RIGHT[] = {0x1c, 0x22, 0xc1, 0xe1, 0x92, 0x9c, 0x80, 0x80, 
   0x80, 0x00, 0x00, 0xff, 0x01, 0x02, 0x04, 0x08, 
@@ -202,6 +203,7 @@ void Player::takeHit()
 {
     if(!beingHit)
     {
+        SoundManager::instance()->playSound(Sound::PLAYER_HIT);
         beingHit = true;
         life--;
     }
