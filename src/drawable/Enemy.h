@@ -24,6 +24,7 @@ class Enemy : public Drawable, public Movable
         short getWidth() const;
         short getHeight() const;
         bool isAlive() const;
+        bool isParalysed() const;
     private:
         void shakeEnemyForParalysis();
 

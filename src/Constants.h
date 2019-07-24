@@ -18,6 +18,7 @@ typedef enum __attribute__ ((packed))
 {
     FREE,
     HIT_ENEMY,
+    HIT_ENEMY_INOFFENSIVE,
     HIT_CHARACTER,
     HIT_TRIGGER,
     HIT_ITEM

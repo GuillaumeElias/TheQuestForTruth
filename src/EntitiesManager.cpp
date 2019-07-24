@@ -107,7 +107,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
     {
         if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos, false))
         {
-            return HIT_ENEMY;
+            return enemies[i].isParalysed() ? HIT_ENEMY_INOFFENSIVE : HIT_ENEMY;
         }
     }
 
