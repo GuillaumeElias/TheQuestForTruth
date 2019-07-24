@@ -5,20 +5,38 @@
 SoundManager::SoundManager(Arduboy2 * arduboy)
     : tones(arduboy->audio.enabled)
     , playing(false)
-    , currentNote(0)
+    , nbSequences(9)
+    , currentSeqTick(0)
     , currentSequence(0)
     , currentSoundPlaying(0)
+    , currentChordModes(0)
+    , currentBaseMidiNote(0)
+    , currentOrderInChord(0)
     , noteDuration(24)
+    , sequenceRepeat(4)
+    , nbNotesInSequence(4)
 {
     pinMode(PIN_SPEAKER_1, OUTPUT);
     tones.volumeMode(VOLUME_ALWAYS_NORMAL);
 }
 
 //==========================================================
-void SoundManager::startMusic(int level)
+void SoundManager::startMusicForLevel()
+{
+    //TODO set rhytm based on level feel
+    startMusic();
+}
+
+//==========================================================
+void SoundManager::startMusic(short baseNote, short speed, short noteDuration, short numberOfSequences)
 {
 
-    nbSequences = arraysize(music_1);
+    this->currentBaseMidiNote = baseNote;
+    this->currentOrderInChord = 0;
+    this->noteDuration = noteDuration;
+    this->nbSequences = numberOfSequences;
+    this->currentSeqTick = 0;
+    //TODO set sequenceRepeat to random
 
     noInterrupts();
     TCCR1A = 0;
@@ -26,7 +44,7 @@ void SoundManager::startMusic(int level)
     TIMSK1 = 0b00000010;
     TCNT1 = 0; 
 
-    setSpeed(music_1_speed);
+    setSpeed(speed);
 
     //set prescaler to 1024
     TCCR1B |= (1 << WGM12);
@@ -82,30 +100,32 @@ void SoundManager::playNextNote()
         return;
     }
     
-    if(currentNote >= music_1_nb_notes - 1)
+    if(currentOrderInChord >= nbNotesInSequence - 1)
     {
         currentSeqTick++;
-        if(currentSeqTick >= music_1_sequences_repeat)
+        if(currentSeqTick >= sequenceRepeat)
         {
             gotoNextSequence();
         }
 
-        currentNote = 0;
+        currentOrderInChord = 0;
     }
     else
     {
-        currentNote++;
+        currentOrderInChord++;
     }
     
-    int note = music_1[currentSequence][currentNote];
+    int noteMidi = currentBaseMidiNote + computePositionInChord();
 
-    if(note == 0)
+    if(noteMidi == 0)
     {
         tones.noTone();
     }
     else
     {
-        tones.tone(note, noteDuration);
+        uint16_t noteHz = 440 * pow(2, ((noteMidi - 69)/12.0));
+
+        tones.tone(noteHz, noteDuration);
     }
 }
 
@@ -115,12 +135,59 @@ void SoundManager::gotoNextSequence()
     if(currentSequence >= nbSequences - 1)
     {
         currentSequence = 0;
+        currentChordModes = 0x00;
+        currentBaseMidiNote = random(24, 74);
+        setSpeed(random(2,16));
+        noteDuration = random(24, 64);
     }
     else
     {
         currentSequence++;
+
+        short randomBit = random(0,7);
+
+        if(random(0,3) == 0)
+        {
+            currentChordModes = 0; //reset modes every 1/3
+        }
+        else
+        {
+            currentChordModes ^= 1 << randomBit;
+        }
+
+        if(currentSequence % 2)
+        {
+            currentBaseMidiNote += random(0,3) * 2 - 3;
+        }
     }
     currentSeqTick = 0;
+}
+
+//==========================================================
+int8 SoundManager::computePositionInChord()
+{
+    switch(currentOrderInChord)
+    {
+        case 0: //root
+            return 0;
+
+        case 1: //third
+            if(currentChordModes & SUS_2) return 2;
+            if(currentChordModes & SUS_4) return 5;
+            if(currentChordModes & MAJOR_THIRD) return 4;
+            return 3;
+
+        case 2: //fifth
+            if(currentChordModes & DIMINISHED_5TH) return 6;
+            if(currentChordModes & AUGMENTED_5TH) return 8;
+            return 7;
+
+        case 3: //seventh or octave
+            if(currentChordModes & SIXTH) return 9;
+            if(currentChordModes & MINOR_7TH) return 10;
+            if(currentChordModes & MAJOR_7TH) return 11;
+            return 12;
+    }
 }
 
 //==========================================================
@@ -136,3 +203,5 @@ ISR(TIMER1_COMPA_vect){
         SoundManager::instance()->playNextNote();
     }
 }
+
+

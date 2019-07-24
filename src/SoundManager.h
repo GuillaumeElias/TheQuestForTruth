@@ -12,12 +12,25 @@ typedef enum __attribute__ ((packed))
     ENEMY_HIT
 } Sound;
 
+typedef enum __attribute__ ((packed))
+{
+    MAJOR_THIRD     = 0b10000000, //if not set -> minor
+    MINOR_7TH       = 0b01000000,
+    MAJOR_7TH       = 0b00100000, //if neither minor or major 7th -> octave
+    SUS_2           = 0b00010000,
+    SUS_4           = 0b00001000,
+    DIMINISHED_5TH  = 0b00000100,
+    AUGMENTED_5TH   = 0b00000010,
+    SIXTH           = 0b00000001,
+} ChordModesMasks;
+
 class SoundManager : public Singleton<SoundManager>
 {
     public:
         SoundManager(Arduboy2 * arduboy);
         void init();
-        void startMusic(int level);
+        void startMusicForLevel();
+        void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 9);
         void playSound(Sound sound);
 
         void stopMusic();
@@ -27,40 +40,25 @@ class SoundManager : public Singleton<SoundManager>
 
     private:
         void gotoNextSequence();
-        void setSpeed(int8 speed);
-        bool playing;
-        ArduboyTones tones;
+        int8 computePositionInChord();
 
-        int8 currentNote;
+        void setSpeed(int8 speed);
+        ArduboyTones tones;
+        bool playing;
+
+        int8 nbSequences;
         int8 currentSeqTick;
         int8 currentSequence;
         int8 currentSoundPlaying;
 
-        int8 nbSequences = 9;
-        int8 sequenceSpeed = 10;
-        int noteDuration;
+        byte currentChordModes;
+        int8 currentBaseMidiNote;
+        int8 currentOrderInChord;
+
+        int8 noteDuration;
+        int8 sequenceRepeat;
+        int8 nbNotesInSequence;
 
 };
-
-static const int8 music_1_nb_notes = 4;
-static const int8 music_1_sequences_repeat = 4;
-static const int8 music_1_speed = 10;
-
-static const short music_1[][music_1_nb_notes] = 
-{
-    {440, 523, 659, 523},
-    {440, 523, 698, 523},
-    {440, 523, 784, 523},
-    {494, 587, 698, 587},
-    {494, 587, 659, 587},
-    {131, 155, 196, 233},
-    {146, 174, 220, 262},
-    {174, 208, 262, 311},
-    {174, 195, 262, 294}
-};
-
-
-
-
 
 #endif

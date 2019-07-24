@@ -24,7 +24,7 @@ void Game::init()
     map.startLevel();
     player.levelStart();
     entitiesManager.spawnEntities( &map );
-    soundManager.startMusic(0);
+    soundManager.startMusic(69, 6, 22, 64);
 }
 
 //==========================================================
@@ -81,6 +81,7 @@ void Game::update()
             else if(arduboy.pressed( DOWN_BUTTON )) //menu triggered
             {
                 mode = GameMode::MENU;
+                soundManager.stopMusic();
             }
             else if(arduboy.pressed( UP_BUTTON ) && map.checkPlayerIsOnADoor()) //up key pressed
             {
@@ -96,6 +97,8 @@ void Game::update()
 
             if(menu.getSelectedOption() == MenuOption::GO)
             {
+                soundManager.startMusicForLevel(); //TODO resume if already in game
+                
                 mode = GameMode::PLAY;
                 menu.setInGame(true);
                 menu.clearSelectedOption();
