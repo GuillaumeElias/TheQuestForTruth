@@ -4,7 +4,6 @@
 //==========================================================
 SoundManager::SoundManager(Arduboy2 * arduboy)
     : tones(arduboy->audio.enabled)
-    , playing(false)
     , nbSequences(9)
     , currentSeqTick(0)
     , currentSequence(0)
@@ -38,6 +37,7 @@ void SoundManager::startMusic(short baseNote, short speed, short noteDuration, s
     this->currentSeqTick = 0;
     //TODO set sequenceRepeat to random
 
+    //set up timer 1
     noInterrupts();
     TCCR1A = 0;
     TCCR1B = 0b00001100;
@@ -52,7 +52,6 @@ void SoundManager::startMusic(short baseNote, short speed, short noteDuration, s
 
     interrupts();
 
-    playing=true;
     playNextNote();
 }
 
@@ -83,8 +82,23 @@ void SoundManager::setSpeed(int8 speed)
 //==========================================================
 void SoundManager::stopMusic()
 {
-    playing=false;
     tones.noTone();
+
+    //turn timer off
+    noInterrupts();
+    TIMSK1 = 0x0; 
+    interrupts();
+}
+
+//==========================================================
+void SoundManager::resumeMusic()
+{
+    //turn timer back on
+    noInterrupts();
+    TIMSK1 = 0b00000010;
+    interrupts();
+
+    playNextNote();
 }
 
 //==========================================================
@@ -191,17 +205,9 @@ int8 SoundManager::computePositionInChord()
 }
 
 //==========================================================
-bool SoundManager::isPlaying() const
-{
-    return playing;
-}
-
-//==========================================================
-ISR(TIMER1_COMPA_vect){
-    if(SoundManager::instance()->isPlaying())
-    {
-        SoundManager::instance()->playNextNote();
-    }
+ISR(TIMER1_COMPA_vect)
+{ 
+    SoundManager::instance()->playNextNote();
 }
 
 

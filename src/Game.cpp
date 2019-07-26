@@ -97,7 +97,14 @@ void Game::update()
 
             if(menu.getSelectedOption() == MenuOption::GO)
             {
-                soundManager.startMusicForLevel(); //TODO resume if already in game
+                if(menu.isInGame())
+                {
+                    soundManager.resumeMusic();
+                }
+                else
+                {
+                    soundManager.startMusicForLevel();
+                }
                 
                 mode = GameMode::PLAY;
                 menu.setInGame(true);

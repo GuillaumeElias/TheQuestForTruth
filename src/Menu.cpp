@@ -188,6 +188,12 @@ void Menu::setInGame(bool inGame)
 }
 
 //=============================================================
+bool Menu::isInGame() const
+{
+    return this->inGame;
+}
+
+//=============================================================
 const MenuOption Menu::getSelectedOption() const
 {   
     return selectedOption;

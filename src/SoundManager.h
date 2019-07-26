@@ -31,11 +31,9 @@ class SoundManager : public Singleton<SoundManager>
         void init();
         void startMusicForLevel();
         void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 9);
+        void resumeMusic();
         void playSound(Sound sound);
-
         void stopMusic();
-
-        bool isPlaying() const;
         void playNextNote();
 
     private:
@@ -44,7 +42,6 @@ class SoundManager : public Singleton<SoundManager>
 
         void setSpeed(int8 speed);
         ArduboyTones tones;
-        bool playing;
 
         int8 nbSequences;
         int8 currentSeqTick;

@@ -20,6 +20,7 @@ class Menu
         Menu();
         void update(Arduboy2 * arduboy);
         void setInGame(bool inGame);
+        bool isInGame() const;
         const MenuOption getSelectedOption() const;
         void clearSelectedOption();
     private:
