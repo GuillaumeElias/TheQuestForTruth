@@ -2,6 +2,7 @@
 #include "DialogManager.h"
 #include "ItemsManager.h"
 #include "Utils.h"
+#include "SoundManager.h"
 
 //==========================================================
 EntitiesManager::EntitiesManager(Arduboy2 * ardu)
@@ -125,6 +126,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
         itemToBePickedUp = Item();
 
         DialogManager::instance()->printSingleSentence(F("You found\nan item"));
+        SoundManager::instance()->playSound(HAPPY_SOUND);
     }
 
     return FREE;
@@ -169,6 +171,7 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
                     break;
                 case 19:
                     triggerEvent = END_LEVEL;
+                    SoundManager::instance()->playSound(HAPPY_SOUND);
                     break;
             }
         }

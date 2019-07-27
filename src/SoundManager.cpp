@@ -34,6 +34,7 @@ void SoundManager::startMusic(short baseNote, short speed, short noteDuration, s
     this->currentOrderInChord = 0;
     this->noteDuration = noteDuration;
     this->nbSequences = numberOfSequences;
+    this->currentSpeed = speed;
     this->currentSeqTick = 0;
     //TODO set sequenceRepeat to random
 
@@ -67,8 +68,20 @@ void SoundManager::playSound(Sound sound)
         case PLAYER_HIT:
             tones.tone( 440, 150);
             break;
-        case ENEMY_HIT:
-            tones.tone( 880, 150);
+        case PLAYER_FIRE:
+            tones.tone(40,100);
+            break;
+        case HAPPY_SOUND:
+            tones.tone(880, 120, 1175, 120, 1318 , 250);
+            break;
+        case UP:
+            tones.tone(880,50);
+            break;
+        case DOWN:
+            tones.tone(440,50);
+            break;
+        case OK:
+            tones.tone(1318,50);
             break;
     }
 }
@@ -77,6 +90,12 @@ void SoundManager::playSound(Sound sound)
 void SoundManager::setSpeed(int8 speed)
 {
     OCR1A = 15624 / speed;
+}
+
+//==========================================================
+void SoundManager::startNoteBurst()
+{
+    currentSeqTick = 0x7F;
 }
 
 //==========================================================
@@ -113,6 +132,24 @@ void SoundManager::playNextNote()
         }
         return;
     }
+
+    if(currentSeqTick == 0x7F)
+    {
+        currentSeqTick = -4;
+        setSpeed(20);
+    }
+
+    if(currentSeqTick < 0) //if in note burst mode
+    {
+        currentSeqTick++;
+        playNote(currentBaseMidiNote + 8 - abs(currentSeqTick));
+        if(currentSeqTick == 0)
+        {
+            setSpeed(currentSpeed);
+        }
+        return;
+    }
+    
     
     if(currentOrderInChord >= nbNotesInSequence - 1)
     {
@@ -137,10 +174,15 @@ void SoundManager::playNextNote()
     }
     else
     {
-        uint16_t noteHz = 440 * pow(2, ((noteMidi - 69)/12.0));
-
-        tones.tone(noteHz, noteDuration);
+        playNote(noteMidi);
     }
+}
+
+//==========================================================
+void SoundManager::playNote(const short & midiNote)
+{
+    uint16_t noteHz = 440 * pow(2, ((midiNote - 69)/12.0));
+    tones.tone(noteHz, noteDuration);
 }
 
 //==========================================================
@@ -151,8 +193,6 @@ void SoundManager::gotoNextSequence()
         currentSequence = 0;
         currentChordModes = 0x00;
         currentBaseMidiNote = random(24, 74);
-        setSpeed(random(2,16));
-        noteDuration = random(24, 64);
     }
     else
     {

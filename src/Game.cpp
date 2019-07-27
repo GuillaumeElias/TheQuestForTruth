@@ -19,7 +19,6 @@ void Game::init()
     arduboy.systemButtons();
     arduboy.audio.begin();
     arduboy.waitNoButtons();
-    arduboy.clear();
 
     map.startLevel();
     player.levelStart();

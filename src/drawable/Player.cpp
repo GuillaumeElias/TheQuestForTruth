@@ -110,10 +110,12 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
         {
             jumping = true;
             yVelocity = -PLAYER_JUMP_VELOCITY;
+            SoundManager::instance()->startNoteBurst();
         }
         else if(arduboy->pressed( B_BUTTON ) && ItemsManager::instance()->hasItem(1))
         {
             fire();
+            SoundManager::instance()->playSound(PLAYER_FIRE);
         }
 
         //Player animation

@@ -9,7 +9,11 @@
 typedef enum __attribute__ ((packed))
 {
     PLAYER_HIT,
-    ENEMY_HIT
+    PLAYER_FIRE,
+    HAPPY_SOUND,
+    UP,
+    DOWN,
+    OK
 } Sound;
 
 typedef enum __attribute__ ((packed))
@@ -30,15 +34,16 @@ class SoundManager : public Singleton<SoundManager>
         SoundManager(Arduboy2 * arduboy);
         void init();
         void startMusicForLevel();
-        void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 9);
+        void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 25);
         void resumeMusic();
         void playSound(Sound sound);
         void stopMusic();
         void playNextNote();
-
+        void startNoteBurst();
     private:
         void gotoNextSequence();
         int8 computePositionInChord();
+        void playNote(const short & midiNote);
 
         void setSpeed(int8 speed);
         ArduboyTones tones;
@@ -51,6 +56,7 @@ class SoundManager : public Singleton<SoundManager>
         byte currentChordModes;
         int8 currentBaseMidiNote;
         int8 currentOrderInChord;
+        int8 currentSpeed;
 
         int8 noteDuration;
         int8 sequenceRepeat;

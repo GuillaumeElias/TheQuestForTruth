@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "ItemsManager.h"
+#include "SoundManager.h"
 
 namespace
 {
@@ -86,6 +87,7 @@ void Menu::update(Arduboy2 * arduboy)
         if(selection < getNbItems())
         {
             selection++;
+            SoundManager::instance()->playSound(DOWN);
         }
     }
     else if( arduboy->justPressed(UP_BUTTON) )
@@ -93,6 +95,7 @@ void Menu::update(Arduboy2 * arduboy)
         if(selection > 1)
         {
             selection--;
+            SoundManager::instance()->playSound(UP);
         }
     }
     if( arduboy->justPressed(A_BUTTON) )
@@ -119,7 +122,7 @@ void Menu::update(Arduboy2 * arduboy)
                 selectedOption = MenuOption::ABOUT;
             }
         }
-        
+        SoundManager::instance()->playSound(OK);
     }
 
     short ballY = initCursorY + SELECTION_BALL_UP_PADDING + LINE_HEIGHT * (selection - 1);
