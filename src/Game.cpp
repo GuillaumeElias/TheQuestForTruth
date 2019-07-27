@@ -77,7 +77,7 @@ void Game::update()
                 mode = PLAY;
                 dialogManager.printTextForTrigger(entitiesManager.getTriggerForEvent(event));
             }
-            else if(arduboy.pressed( DOWN_BUTTON )) //menu triggered
+            else if(arduboy.pressed( DOWN_BUTTON ) && !leftHouseTimer) //menu triggered
             {
                 mode = GameMode::MENU;
                 soundManager.stopMusic();
@@ -87,6 +87,8 @@ void Game::update()
                 mode = GameMode::HOUSE;
                 boxView.reset();
             }
+
+            if(leftHouseTimer > 0) leftHouseTimer--;
         }
         break;
 
@@ -117,6 +119,7 @@ void Game::update()
             if( boxView.update(&arduboy) == false)
             {
                 mode = GameMode::PLAY;
+                leftHouseTimer = 50;
             }
             break;
 

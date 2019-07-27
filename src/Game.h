@@ -41,6 +41,7 @@ class Game
         BoxView boxView;
 
         GameMode mode;
+        int8 leftHouseTimer; //avoids mistakenly going to the menu when backing down from a house
 };
 
 #endif
