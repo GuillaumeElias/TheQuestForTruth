@@ -83,6 +83,8 @@ void SoundManager::playSound(Sound sound)
         case OK:
             tones.tone(1318,50);
             break;
+        case LETTER:
+            tones.tone(1760,5);
     }
 }
 

@@ -13,7 +13,8 @@ typedef enum __attribute__ ((packed))
     HAPPY_SOUND,
     UP,
     DOWN,
-    OK
+    OK,
+    LETTER
 } Sound;
 
 typedef enum __attribute__ ((packed))
@@ -34,7 +35,7 @@ class SoundManager : public Singleton<SoundManager>
         SoundManager(Arduboy2 * arduboy);
         void init();
         void startMusicForLevel();
-        void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 25);
+        void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short numberOfSequences = 15);
         void resumeMusic();
         void playSound(Sound sound);
         void stopMusic();
