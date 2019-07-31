@@ -47,16 +47,14 @@ void DialogManager::printNextLineForTrigger()
 {
     extraTextPaddingX = DEFAULT_TRIGGER_TEXT_PADDING_X;
 
-    const __FlashStringHelper * sentencePtr;
-
     switch(currentTrigger->id)
     {
         case 1:
             currentNbOfLines = 2;
             switch(currentLineIndex)
             {
-                case 0: sentencePtr = F("Hello"); break;
-                case 1: sentencePtr = F("My name is Bill"); break;
+                case 0: printSentence(F("Hello")); break;
+                case 1: printSentence(F("My name is Bill")); break;
             }
 
         break;
@@ -67,9 +65,9 @@ void DialogManager::printNextLineForTrigger()
 
             switch(currentLineIndex)
             {
-                case 0: extraTextPaddingX = -5; sentencePtr = F("Hello"); break;
-                case 1: sentencePtr = F("This is the Village"); break;
-                case 2: sentencePtr = F("My house is nearby"); break;
+                case 0: extraTextPaddingX = -5; printSentence(F("Hello")); break;
+                case 1: printSentence(F("This is the Village")); break;
+                case 2: printSentence(F("My house is nearby")); break;
             }
 
         break;
@@ -79,16 +77,14 @@ void DialogManager::printNextLineForTrigger()
             extraTextPaddingX = 60;
             switch(currentLineIndex)
             {
-                case 0: sentencePtr = F("Mind those big balls"); break;
-                case 1: sentencePtr = F("Grab the pepper spray"); break;
-                case 2: sentencePtr = F("And jump the bastards"); break;
+                case 0: printSentence(F("Mind those big balls")); break;
+                case 1: printSentence(F("Grab the pepper spray")); break;
+                case 2: printSentence(F("And jump the bastards")); break;
             }
             
             break;
 
     }
-
-    printSentence(sentencePtr);
 }
 //======================================================================
 void DialogManager::printSingleSentence(const __FlashStringHelper * stringSentence, int8 extraPadX, bool enableSound)

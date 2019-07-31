@@ -68,48 +68,44 @@ void Map::drawTile(levels::Tile tile, const short & x, const short & y, Arduboy2
     short screenY = y - scroll_y;
     if(screenX > -TILE_LENGTH && screenX <= SCREEN_WIDTH && screenY > -TILE_LENGTH && screenY <= SCREEN_HEIGHT)
     {
-        const uint8_t * bitmap;
-
         switch(tile)
         {
             case levels::Tile::WALL:
-                bitmap = tiles::WALL;
+                arduboy->drawBitmap(screenX, screenY, tiles::WALL, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::WALL_BACK:
-                 bitmap = tiles::WALL_BACK;
+                arduboy->drawBitmap(screenX, screenY, tiles::WALL_BACK, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::DOOR_UP:
-                 bitmap = tiles::DOOR_UP;
+                arduboy->drawBitmap(screenX, screenY, tiles::DOOR_UP, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::BRICK:
-                 bitmap = tiles::BRICK;
+                arduboy->drawBitmap(screenX, screenY, tiles::BRICK, TILE_LENGTH, TILE_LENGTH);
                 break;   
             case levels::Tile::DOOR_HOUSE_1:
                 //to texture
-                 return;
+            break;
             case levels::Tile::FIRTREE_UPLEFT:
-                 bitmap = tiles::FIRTREE_UPLEFT;
+                arduboy->drawBitmap(screenX, screenY, tiles::FIRTREE_UPLEFT, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::FIRTREE_UPRIGHT:
-                 bitmap = tiles::FIRTREE_UPRIGHT;
+                arduboy->drawBitmap(screenX, screenY, tiles::FIRTREE_UPRIGHT, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::FIRTREE_DOWNLEFT:
-                 bitmap = tiles::FIRTREE_DOWNLEFT;
+                arduboy->drawBitmap(screenX, screenY, tiles::FIRTREE_DOWNLEFT, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::FIRTREE_DOWNRIGHT:
-                 bitmap = tiles::FIRTREE_DOWNRIGHT;
+                arduboy->drawBitmap(screenX, screenY, tiles::FIRTREE_DOWNRIGHT, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::DIRT:
-                 bitmap = tiles::DIRT;
+                arduboy->drawBitmap(screenX, screenY, tiles::DIRT, TILE_LENGTH, TILE_LENGTH);
                 break;
             case levels::Tile::_TRIGGER_END_LEVEL:
                 static int circleSize = 0;
                 circleSize = (circleSize + 1) % (TILE_LENGTH / 2);
                 arduboy->drawCircle(screenX, screenY, circleSize);
-                return;
+                break;
         }
-
-        arduboy->drawBitmap(screenX, screenY, bitmap, TILE_LENGTH, TILE_LENGTH);
     }
 }
 

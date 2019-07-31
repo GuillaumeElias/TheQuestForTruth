@@ -3,6 +3,7 @@
 */
 
 #include <Arduboy2.h>
+
 #include "src/Game.h"
 
 Game game;
