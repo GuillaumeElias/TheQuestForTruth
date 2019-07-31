@@ -1,6 +1,7 @@
 #include "DialogManager.h"
 #include "drawable/Map.h"
 #include "ItemsManager.h"
+#include "SoundManager.h"
 
 namespace
 {
@@ -26,6 +27,7 @@ DialogManager::DialogManager()
     , currentLineIndex(0)
     , currentTrigger(nullptr)
     , extraTextPaddingX(0)
+    , sound(false)
 {
     
 }
@@ -36,6 +38,8 @@ void DialogManager::printTextForTrigger(Trigger * trigger)
     currentTrigger = trigger;
     currentLineIndex = 0;
     printNextLineForTrigger();
+    SoundManager::instance()->stopMusic();
+    sound = true;
 }
 
 //======================================================================
@@ -46,40 +50,36 @@ void DialogManager::printNextLineForTrigger()
     switch(currentTrigger->id)
     {
         case 1:
-            currentNbOfLines = 4;
+            currentNbOfLines = 2;
             switch(currentLineIndex)
             {
-                case 0: printSentence(F("He did it again.")); break;
-                case 1: printSentence(F("It is really bad.")); break;
-                case 2: printSentence(F("Go accross the hill.")); break;
-                case 3: printSentence(F("You will see.")); break;
+                case 0: printSentence(F("Hello")); break;
+                case 1: printSentence(F("My name is Bill")); break;
             }
 
         break;
 
         case 2:
-            currentNbOfLines = 4;
+            currentNbOfLines = 3;
             extraTextPaddingX = 68;
 
             switch(currentLineIndex)
             {
-                case 0: extraTextPaddingX = -5; printSentence(F("Hello.")); break;
-                case 1: printSentence(F("This is the Village.")); break;
-                case 2: printSentence(F("Beware of the ghosts.")); break;
-                case 3: printSentence(F("They are everywhere.")); break;
+                case 0: extraTextPaddingX = -5; printSentence(F("Hello")); break;
+                case 1: printSentence(F("This is the Village")); break;
+                case 2: printSentence(F("My house is nearby")); break;
             }
 
         break;
 
         case 3:
-            currentNbOfLines = 5;
+            currentNbOfLines = 3;
+            extraTextPaddingX = 60;
             switch(currentLineIndex)
             {
-                case 0: printSentence(F("Those big balls.")); break;
-                case 1: printSentence(F("I hate them.")); break;
-                case 2: extraTextPaddingX = 60; printSentence(F("Grab the pepper spray.")); break;
-                case 3: extraTextPaddingX = 60; printSentence(F("And jump the bastards!")); break;
-                case 4: printSentence(F("Yeay!")); break;
+                case 0: printSentence(F("Mind those big balls")); break;
+                case 1: printSentence(F("Grab the pepper spray")); break;
+                case 2: printSentence(F("And jump the bastards")); break;
             }
             
             break;
@@ -87,21 +87,22 @@ void DialogManager::printNextLineForTrigger()
     }
 }
 //======================================================================
-void DialogManager::printSingleSentence(__FlashStringHelper * stringSentence, int8 extraPadX)
+void DialogManager::printSingleSentence(const __FlashStringHelper * stringSentence, int8 extraPadX, bool enableSound)
 {
-    printSingleSentence( reinterpret_cast<PGM_P>(stringSentence),  extraPadX);
+    printSingleSentence( reinterpret_cast<PGM_P>(stringSentence),  extraPadX, enableSound);
 }
 
 //======================================================================
-void DialogManager::printSingleSentence(PGM_P stringSentence, int8 extraPadX)
+void DialogManager::printSingleSentence(PGM_P stringSentence, int8 extraPadX, bool enableSound)
 {
     extraTextPaddingX = extraPadX;
     currentTrigger = nullptr;
     printSentence(stringSentence);
+    sound = enableSound;
 }
 
 //======================================================================
-void DialogManager::printSentence(__FlashStringHelper * sentenceString)
+void DialogManager::printSentence(const __FlashStringHelper * sentenceString)
 {
     printSentence( reinterpret_cast<PGM_P>(sentenceString) );
 }
@@ -137,19 +138,25 @@ void DialogManager::draw(Arduboy2 * arduboy)
             {
                 currentSentenceSize = 0;
                 currentLetterPosition = 0;
-
                 if(currentLineIndex < currentNbOfLines)
                 {
                     currentLineIndex++;
                     printNextLineForTrigger();
                 }
+
                 return;
+            }
+            else if(currentLineIndex >= currentNbOfLines - 1 && sound)
+            {
+                SoundManager::instance()->resumeMusic();
+                sound = false;
             }
         }
         else
         {
             currentLetterPosition++;
             letterFrameCounter = 0;
+            if(sound) SoundManager::instance()->playSound(LETTER);
         }
     }
 

@@ -4,6 +4,7 @@
 Game::Game()
     : map( player.getPos() )
     , entitiesManager( &arduboy )
+    , soundManager( &arduboy )
     , mode( GameMode::CINEMATIC )
 {
     
@@ -18,11 +19,11 @@ void Game::init()
     arduboy.systemButtons();
     arduboy.audio.begin();
     arduboy.waitNoButtons();
-    arduboy.clear();
 
     map.startLevel();
     player.levelStart();
     entitiesManager.spawnEntities( &map );
+    soundManager.startMusic(69, 6, 22, 64);
 }
 
 //==========================================================
@@ -76,15 +77,18 @@ void Game::update()
                 mode = PLAY;
                 dialogManager.printTextForTrigger(entitiesManager.getTriggerForEvent(event));
             }
-            else if(arduboy.pressed( DOWN_BUTTON )) //menu triggered
+            else if(arduboy.pressed( DOWN_BUTTON ) && !leftHouseTimer) //menu triggered
             {
                 mode = GameMode::MENU;
+                soundManager.stopMusic();
             }
             else if(arduboy.pressed( UP_BUTTON ) && map.checkPlayerIsOnADoor()) //up key pressed
             {
                 mode = GameMode::HOUSE;
                 boxView.reset();
             }
+
+            if(leftHouseTimer > 0) leftHouseTimer--;
         }
         break;
 
@@ -94,6 +98,15 @@ void Game::update()
 
             if(menu.getSelectedOption() == MenuOption::GO)
             {
+                if(menu.isInGame())
+                {
+                    soundManager.resumeMusic();
+                }
+                else
+                {
+                    soundManager.startMusicForLevel();
+                }
+                
                 mode = GameMode::PLAY;
                 menu.setInGame(true);
                 menu.clearSelectedOption();
@@ -106,6 +119,7 @@ void Game::update()
             if( boxView.update(&arduboy) == false)
             {
                 mode = GameMode::PLAY;
+                leftHouseTimer = 50;
             }
             break;
 
@@ -115,6 +129,7 @@ void Game::update()
             if( boxView.updateCinematic(&arduboy) == false)
             {
                 mode = GameMode::MENU;
+                //arduboy.setFrameRate(120);
             }
             break;
     }

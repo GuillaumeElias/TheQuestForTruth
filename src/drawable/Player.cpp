@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../ItemsManager.h"
+#include "../SoundManager.h"
 
 PROGMEM static const byte BITMAP_A_RIGHT[] = {0x1c, 0x22, 0xc1, 0xe1, 0x92, 0x9c, 0x80, 0x80, 
   0x80, 0x00, 0x00, 0xff, 0x01, 0x02, 0x04, 0x08, 
@@ -109,10 +110,12 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
         {
             jumping = true;
             yVelocity = -PLAYER_JUMP_VELOCITY;
+            SoundManager::instance()->startNoteBurst();
         }
         else if(arduboy->pressed( B_BUTTON ) && ItemsManager::instance()->hasItem(1))
         {
             fire();
+            SoundManager::instance()->playSound(PLAYER_FIRE);
         }
 
         //Player animation
@@ -202,6 +205,7 @@ void Player::takeHit()
 {
     if(!beingHit)
     {
+        SoundManager::instance()->playSound(Sound::PLAYER_HIT);
         beingHit = true;
         life--;
     }
@@ -214,7 +218,7 @@ int8 Player::getLife() const
 }
 
 //==========================================================
-bool Player::isFalling() const
+bool Player::isFalling()
 {
     short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
     short playerY = pos.y + PLAYER_HEIGHT + extraY;
@@ -241,7 +245,7 @@ bool Player::checkCollisionWithMap(const short & playerX, const short & playerY)
 }
 
 //==========================================================
-bool Player::somethingIsAbove() const
+bool Player::somethingIsAbove()
 {
     return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities(pos);
 }
@@ -249,7 +253,13 @@ bool Player::somethingIsAbove() const
 //===========================================================
 bool Player::checkCollisionWithEntities(const Position & position)
 {
-    return EntitiesManager::instance()->collisionCheck(position) != FREE;
+    const CollisionCheckResult result = EntitiesManager::instance()->collisionCheck(position);
+    if(result == HIT_ENEMY)
+    {
+        takeHit();
+        return true;
+    }
+    return result != FREE;
 }
 
 //===========================================================

@@ -10,7 +10,7 @@ private:
 public:
     Singleton() 
     { 
-        Instance = this; 
+        Instance = static_cast<T*>(this); 
     }
     static T* instance();
 };

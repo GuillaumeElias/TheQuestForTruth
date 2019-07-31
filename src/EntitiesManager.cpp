@@ -2,6 +2,7 @@
 #include "DialogManager.h"
 #include "ItemsManager.h"
 #include "Utils.h"
+#include "SoundManager.h"
 
 //==========================================================
 EntitiesManager::EntitiesManager(Arduboy2 * ardu)
@@ -14,7 +15,7 @@ EntitiesManager::EntitiesManager(Arduboy2 * ardu)
 }
 
 //==========================================================
-void EntitiesManager::drawEntities() const
+void EntitiesManager::drawEntities()
 {
     for(int8 i=0; i < enemies_number; i++)
     {
@@ -107,7 +108,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
     {
         if(enemies[i].checkEnemyCollision(enemies[i].getPos(), ppos, false))
         {
-            return HIT_ENEMY;
+            return enemies[i].isParalysed() ? HIT_ENEMY_INOFFENSIVE : HIT_ENEMY;
         }
     }
 
@@ -125,6 +126,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
         itemToBePickedUp = Item();
 
         DialogManager::instance()->printSingleSentence(F("You found\nan item"));
+        SoundManager::instance()->playSound(HAPPY_SOUND);
     }
 
     return FREE;
@@ -169,6 +171,7 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
                     break;
                 case 19:
                     triggerEvent = END_LEVEL;
+                    SoundManager::instance()->playSound(HAPPY_SOUND);
                     break;
             }
         }
@@ -193,7 +196,7 @@ void EntitiesManager::startNewLevel()
 }
 
 //==========================================================
-Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event) const
+Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event)
 {
     switch(event)
     {

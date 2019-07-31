@@ -14,7 +14,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
     public: 
         EntitiesManager(Arduboy2 * arduboy);
 
-        void drawEntities() const;
+        void drawEntities();
         void spawnEntities(Map * map);
         void moveEntities();
 
@@ -25,7 +25,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         TriggerEvent popTriggerEvent();
         void startNewLevel();
 
-        Trigger * getTriggerForEvent(const TriggerEvent & event) const;
+        Trigger * getTriggerForEvent(const TriggerEvent & event);
 
     private:
         void clearEntities();

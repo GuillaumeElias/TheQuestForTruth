@@ -20,12 +20,13 @@ class Menu
         Menu();
         void update(Arduboy2 * arduboy);
         void setInGame(bool inGame);
+        bool isInGame() const;
         const MenuOption getSelectedOption() const;
         void clearSelectedOption();
     private:
        void displayClues(Arduboy2 * arduboy);
        void displayInventory(Arduboy2 * arduboy);
-       void printFromProgmem(Arduboy2 * arduboy, char * textInProgMem);
+       void printFromProgmem(Arduboy2 * arduboy, const char * textInProgMem);
        inline short getNbItems() const;
        
        MenuOption selectedOption;

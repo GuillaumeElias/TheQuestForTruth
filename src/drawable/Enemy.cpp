@@ -270,6 +270,12 @@ bool Enemy::isAlive() const
 }
 
 //==========================================================
+bool Enemy::isParalysed() const
+{
+    return paralysedCounter > 0;
+}
+
+//==========================================================
 void Enemy::shakeEnemyForParalysis()
 {
     if(paralysedCounter > 0)

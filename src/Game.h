@@ -6,6 +6,7 @@
 #include "EntitiesManager.h"
 #include "DialogManager.h"
 #include "ItemsManager.h"
+#include "SoundManager.h"
 #include "Menu.h"
 #include "BoxView.h"
 #include "drawable/Player.h"
@@ -36,9 +37,11 @@ class Game
         EntitiesManager entitiesManager;
         DialogManager dialogManager;
         ItemsManager itemsManager;
+        SoundManager soundManager;
         BoxView boxView;
 
         GameMode mode;
+        int8 leftHouseTimer; //avoids mistakenly going to the menu when backing down from a house
 };
 
 #endif

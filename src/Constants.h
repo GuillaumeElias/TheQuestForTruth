@@ -18,6 +18,7 @@ typedef enum __attribute__ ((packed))
 {
     FREE,
     HIT_ENEMY,
+    HIT_ENEMY_INOFFENSIVE,
     HIT_CHARACTER,
     HIT_TRIGGER,
     HIT_ITEM
@@ -48,7 +49,7 @@ static const short PLAYER_HEIGHT = 20;
 static const short PLAYER_WIDTH = 9;
 static const short PLAYER_LIFE = 5;
 static const short PLAYER_ANIM_NB_FRAMES = 30;
-static const short PLAYER_HIT_NB_FRAMES = 10;
+static const short PLAYER_HIT_NB_FRAMES = 30;
 static const short PLAYER_MOVE = 1;
 static const float PLAYER_JUMP_VELOCITY = 2.0f;
 static const float PLAYER_Y_VELOCITY_INC = 0.1f;
@@ -73,5 +74,11 @@ static const short DIALOG_LETTER_NBFRAMES = 6;
 static const short DIALOG_SENTENCE_END_NBFRAMES = 50;
 static const short PEPPER_SPRAY_RANGE_X = TILE_LENGTH;
 static const short PEPPER_SPRAY_RANGE_Y = TILE_LENGTH * 2;
+
+template <typename T, short N>
+constexpr short arraysize(T(&)[N])
+{
+    return N;
+}
 
 #endif

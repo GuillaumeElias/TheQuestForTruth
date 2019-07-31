@@ -1,12 +1,6 @@
 #ifndef _LEVELS_H_
 #define _LEVELS_H_
 
-template <typename T, short N>
-constexpr short arraysize(T(&)[N])
-{
-    return N;
-}
-
 namespace levels
 {
     typedef enum __attribute__ ((packed))
@@ -40,7 +34,9 @@ namespace levels
     {
         Tile tile;
         byte count; // FF -> end of row
+        //Cell(byte t, byte c) : tile(static_cast<Tile>(t)), count(c){} //commenting that out fixes fpermissive issues but mysteriously increases pgm size
     };
+    static_assert (sizeof(Cell) == 2, "Size of Cell is not correct");
 
     union CellValue
     {
