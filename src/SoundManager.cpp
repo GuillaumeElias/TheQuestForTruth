@@ -39,7 +39,6 @@ void SoundManager::startMusic(short baseNote, short speed, short noteDuration, s
     //TODO set sequenceRepeat to random
 
     //set up timer 1
-    noInterrupts();
     TCCR1A = 0;
     TCCR1B = 0b00001100;
     TIMSK1 = 0b00000010;
@@ -52,17 +51,14 @@ void SoundManager::startMusic(short baseNote, short speed, short noteDuration, s
     TCCR1B |= (1 << CS12) | (1 << CS10); 
 
     interrupts();
-
-    playNextNote();
 }
 
 
 //==========================================================
 void SoundManager::playSound(Sound sound)
 {
-    tones.noTone();
     tones.volumeMode(VOLUME_ALWAYS_HIGH);
-    currentSoundPlaying = 2;
+    currentSoundPlaying = 1;
 
     switch(sound){
         case PLAYER_HIT:
@@ -103,10 +99,7 @@ void SoundManager::startNoteBurst()
 //==========================================================
 void SoundManager::stopMusic()
 {
-    tones.noTone();
-
     //turn timer off
-    noInterrupts();
     TIMSK1 = 0x0; 
     interrupts();
 }
@@ -115,11 +108,8 @@ void SoundManager::stopMusic()
 void SoundManager::resumeMusic()
 {
     //turn timer back on
-    noInterrupts();
     TIMSK1 = 0b00000010;
     interrupts();
-
-    playNextNote();
 }
 
 //==========================================================
@@ -169,15 +159,8 @@ void SoundManager::playNextNote()
     }
     
     int noteMidi = currentBaseMidiNote + computePositionInChord();
-
-    if(noteMidi == 0)
-    {
-        tones.noTone();
-    }
-    else
-    {
-        playNote(noteMidi);
-    }
+    playNote(noteMidi);
+    
 }
 
 //==========================================================

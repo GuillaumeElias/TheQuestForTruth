@@ -3,12 +3,14 @@
 
 typedef int8_t int8;
 
-struct Position { 
+struct Position 
+{ 
     short x; short y;
     Position( short _x, short _y ) : x(_x) , y(_y) {}
 };
 
-struct Rectangle{
+struct Rectangle
+{
     Position pos;
     short width, height;
 };

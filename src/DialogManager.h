@@ -22,7 +22,6 @@ class DialogManager : public Singleton<DialogManager>, public Drawable
         void printSentence(const __FlashStringHelper * stringSentence);
         void printSentence(PGM_P stringSentence);
         void printNextLineForTrigger();
-        void reset();
         inline char getChar(short i);
 
         int8 currentSentenceSize, currentLetterPosition, currentLineIndex, currentNbOfLines;

@@ -19,7 +19,7 @@ class ItemsManager : public Singleton<ItemsManager>
 };
 
 PROGMEM static const char CLUE_PRE_TEXT[] = "You found a clue:";
-PROGMEM static const char CLUE_1[] = "That is nice.";
-PROGMEM static const char CLUE_2[] = "No one will know.";
+PROGMEM static const char CLUE_1[] = "That's nice";
+PROGMEM static const char CLUE_2[] = "No one will know";
 
 #endif

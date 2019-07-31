@@ -115,19 +115,10 @@ void DialogManager::printSentence(const __FlashStringHelper * sentenceString)
 //======================================================================
 void DialogManager::printSentence(PGM_P sentenceString)
 {
-    reset();
+    currentLetterPosition = 1;
 
     currentSentence = sentenceString;
     currentSentenceSize = getStringLength(sentenceString);
-}
-
-//======================================================================
-void DialogManager::reset()
-{
-    currentSentenceSize = 0;
-    currentLetterPosition = 1;
-    letterFrameCounter = 0;
-    currentSentence = nullptr;
 }
 
 //======================================================================
