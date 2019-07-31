@@ -3,7 +3,6 @@
 */
 
 #include <Arduboy2.h>
-#include "src/lib/MemoryFree.h"
 
 #include "src/Game.h"
 
@@ -16,9 +15,6 @@ void setup()
     randomSeed(analogRead(0));
 
     Serial.begin(9600); //TODO remove
-    
-    Serial.print("freeMemory()=");
-    Serial.println(freeMemory()); //TODO remove
 }
 
 //==========================================================

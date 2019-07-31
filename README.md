@@ -6,8 +6,7 @@ Game for Arduboy. In early development. The idea is to make a wacky platformer w
 
 - Arduboy2
 - ArduboyTones
-- MemoryFree
 
 ## License
 
-All of the files of this game (except the MemoryFree class) are under GNU LESSER GENERAL PUBLIC LICENSE. See LICENSE file for more information.
+All of the files of this game are under GNU LESSER GENERAL PUBLIC LICENSE. See LICENSE file for more information.

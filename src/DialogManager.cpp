@@ -53,8 +53,8 @@ void DialogManager::printNextLineForTrigger()
             currentNbOfLines = 2;
             switch(currentLineIndex)
             {
-                case 0: printSentence(F("Hello.")); break;
-                case 1: printSentence(F("My name is Bill.")); break;
+                case 0: printSentence(F("Hello")); break;
+                case 1: printSentence(F("My name is Bill")); break;
             }
 
         break;
@@ -65,20 +65,21 @@ void DialogManager::printNextLineForTrigger()
 
             switch(currentLineIndex)
             {
-                case 0: extraTextPaddingX = -5; printSentence(F("Hello.")); break;
-                case 1: printSentence(F("This is the Village.")); break;
-                case 2: printSentence(F("My house is nearby.")); break;
+                case 0: extraTextPaddingX = -5; printSentence(F("Hello")); break;
+                case 1: printSentence(F("This is the Village")); break;
+                case 2: printSentence(F("My house is nearby")); break;
             }
 
         break;
 
         case 3:
             currentNbOfLines = 3;
+            extraTextPaddingX = 60;
             switch(currentLineIndex)
             {
-                case 0: printSentence(F("Mind those big balls.")); break;
-                case 1: extraTextPaddingX = 60; printSentence(F("Grab the pepper spray.")); break;
-                case 2: extraTextPaddingX = 60; printSentence(F("And jump the bastards!")); break;
+                case 0: printSentence(F("Mind those big balls")); break;
+                case 1: printSentence(F("Grab the pepper spray")); break;
+                case 2: printSentence(F("And jump the bastards")); break;
             }
             
             break;
