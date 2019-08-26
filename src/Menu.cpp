@@ -31,30 +31,21 @@ Menu::Menu()
 //=============================================================
 void Menu::update(Arduboy2 * arduboy)
 {
+    if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
+    {
+        selectedOption = NONE;
+    }
+
     switch(selectedOption)
     {
         case ABOUT: 
-        break;
+            arduboy->println(F("Timmy O'Toole"));
+            return;
         case CLUES:
-
-            if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
-            {
-                selectedOption = NONE;
-            }
-            else
-            {
-                displayClues(arduboy);
-            }
+            displayClues(arduboy);
             return;
         case INVENTORY:
-            if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
-            {
-                selectedOption = NONE;
-            }
-            else
-            {
-                displayInventory(arduboy);
-            }
+            displayInventory(arduboy);
             return;
     }
 
@@ -132,47 +123,37 @@ void Menu::update(Arduboy2 * arduboy)
 //=============================================================
 void Menu::displayClues(Arduboy2 * arduboy)
 {
-    bool nothing = true;
-
     arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y);
 
     if((ItemsManager::instance()->getCluesFound() & 0b00000001))
     {
         arduboy->print(F("1 - "));
         printFromProgmem(arduboy, CLUE_1);
-        nothing = false;
     }
-
-    if((ItemsManager::instance()->getCluesFound() & 0b00000010))
+    else if((ItemsManager::instance()->getCluesFound() & 0b00000010))
     {
         arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y + LINE_HEIGHT);
         arduboy->print(F("2 - "));
         printFromProgmem(arduboy, CLUE_2);
-        nothing = false;
     }
-
-    if(nothing)
+    else
     {
-        arduboy->print(F("Nothing yet."));
+        arduboy->print(F("No clues yet"));
     }
 }
 
 //=============================================================
 void Menu::displayInventory(Arduboy2 * arduboy)
 {
-    bool nothing = true;
-
     arduboy->setCursor(INVENTORY_CURSOR_LEFT_X, INVENTORY_CURSOR_TOP_Y);
 
     if((ItemsManager::instance()->getItems() & 0b00000001))
     {
         arduboy->print(F("- Pepper spray"));
-        nothing = false;
-    }
-
-    if(nothing)
+    } 
+    else
     {
-        arduboy->print(F("No items yet."));
+        arduboy->print(F("No item yet"));
     }
 }
 
