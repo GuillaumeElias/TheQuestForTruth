@@ -19,6 +19,8 @@ namespace
     static const short NB_ITEMS_PREGAME = 2;
     static const short SELECTION_BALL_WIDTH = 5;
     static const short SELECTION_BALL_UP_PADDING = 3;
+
+    PROGMEM static const char NOTHING_YET_SENTENCE[] = "Nothing yet";
 }
 
 //=============================================================
@@ -127,18 +129,18 @@ void Menu::displayClues(Arduboy2 * arduboy)
 
     if((ItemsManager::instance()->getCluesFound() & 0b00000001))
     {
-        arduboy->print(F("1 - "));
+        arduboy->print(F("-"));
         printFromProgmem(arduboy, CLUE_1);
     }
     else if((ItemsManager::instance()->getCluesFound() & 0b00000010))
     {
         arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y + LINE_HEIGHT);
-        arduboy->print(F("2 - "));
+        arduboy->print(F("-"));
         printFromProgmem(arduboy, CLUE_2);
     }
     else
     {
-        arduboy->print(F("No clues yet"));
+        printFromProgmem(arduboy, NOTHING_YET_SENTENCE);
     }
 }
 
@@ -149,11 +151,11 @@ void Menu::displayInventory(Arduboy2 * arduboy)
 
     if((ItemsManager::instance()->getItems() & 0b00000001))
     {
-        arduboy->print(F("- Pepper spray"));
+        arduboy->print(F("-Pepper spray"));
     } 
     else
     {
-        arduboy->print(F("No item yet"));
+        printFromProgmem(arduboy, NOTHING_YET_SENTENCE);
     }
 }
 
