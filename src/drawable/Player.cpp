@@ -188,9 +188,17 @@ void Player::draw( Arduboy2 * arduboy )
         }
         else
         {
-            hitFrameCounter++;
+            ++hitFrameCounter;
+            if(hitFrameCounter < 2)
+            {
+                arduboy->invert(true);
+            }
+            else
+            {
+                arduboy->invert(false);
+            }
         }
-    }
+    } 
 
     if(firing)
     {
