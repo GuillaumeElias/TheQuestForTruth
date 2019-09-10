@@ -33,7 +33,7 @@ Menu::Menu()
 //=============================================================
 void Menu::update(Arduboy2 * arduboy)
 {
-    if( arduboy->justPressed(A_BUTTON) || arduboy->justPressed(B_BUTTON) )
+    if( arduboy->justPressed(B_BUTTON) )
     {
         selectedOption = NONE;
     }

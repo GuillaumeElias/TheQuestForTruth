@@ -218,6 +218,12 @@ int8 Player::getLife() const
 }
 
 //==========================================================
+void Player::setLife(int8 life)
+{
+    this->life = life;
+}
+
+//==========================================================
 bool Player::isFalling()
 {
     short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it

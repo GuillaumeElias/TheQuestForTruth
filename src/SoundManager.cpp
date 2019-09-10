@@ -81,6 +81,10 @@ void SoundManager::playSound(Sound sound)
             break;
         case LETTER:
             tones.tone(1760,5);
+            break;
+        case DEATH:
+            currentSoundPlaying = 5;
+            tones.tone(120, 200, 110, 200, 100 , 200);
     }
 }
 

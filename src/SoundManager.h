@@ -14,7 +14,8 @@ typedef enum __attribute__ ((packed))
     UP,
     DOWN,
     OK,
-    LETTER
+    LETTER,
+    DEATH
 } Sound;
 
 typedef enum __attribute__ ((packed))

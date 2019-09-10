@@ -87,6 +87,14 @@ void Game::update()
                 mode = GameMode::HOUSE;
                 boxView.reset();
             }
+            
+            if(player.getLife() <= 0)
+            {
+                map.startLevel();
+                player.setLife(PLAYER_LIFE);
+                player.levelStart();
+                SoundManager::instance()->playSound(DEATH);
+            }
 
             if(leftHouseTimer > 0) leftHouseTimer--;
         }

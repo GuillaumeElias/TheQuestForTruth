@@ -23,6 +23,7 @@ class Player : public Drawable, public Movable, public Singleton<Player>
         inline Position & getPos() {return pos; }
 
         int8 getLife() const;
+        void setLife(int8 life);
     private:
 
         bool isFalling();
