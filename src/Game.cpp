@@ -93,6 +93,7 @@ void Game::update()
                 map.startLevel();
                 player.setLife(PLAYER_LIFE);
                 player.levelStart();
+                entitiesManager.startNewLevel();
                 SoundManager::instance()->playSound(DEATH);
             }
 

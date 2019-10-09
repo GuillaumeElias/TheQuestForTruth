@@ -130,7 +130,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
             }
         }
     }
-    else if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
+    if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
     {
         if(checkEnemyCollision(Player::instance()->getPos(), {pos.x, pos.y}, true))
         {
