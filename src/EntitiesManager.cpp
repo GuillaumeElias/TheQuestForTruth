@@ -207,6 +207,21 @@ Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event)
 }
 
 //==========================================================
+int8 EntitiesManager::countNumberOfLiveEnemies() const
+{
+    int8 count = 0;
+    for(short i=0; i < enemies_number; ++i)
+    {
+        if(enemies[i].isAlive())
+        {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+//==========================================================
 void EntitiesManager::clearEntities()
 {
     for(short i=0; i < enemies_number; i++)

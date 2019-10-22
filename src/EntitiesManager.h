@@ -26,6 +26,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         void startNewLevel();
 
         Trigger * getTriggerForEvent(const TriggerEvent & event);
+        int8 countNumberOfLiveEnemies() const;
 
     private:
         void clearEntities();
