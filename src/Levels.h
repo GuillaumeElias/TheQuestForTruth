@@ -96,6 +96,22 @@ namespace levels
     {
         {0,48}, {0,0xFF},
         {0,48}, {0,0xFF},
+        {0,1}, {99,1}, {0,46}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {1,8}, {0,6}, {1,22}, {0,12}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {0,37}, {1,3}, {0,8}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {0,13}, {52,1}, {0,34}, {0,0xFF},
+        {0,48}, {0,0xFF},
+        {0,1}, {4,47}, {4,0xFF}
+    };
+    PROGMEM static const Cell LEVEL_4[] =
+    {
+        {0,48}, {0,0xFF},
+        {0,48}, {0,0xFF},
         {0,10}, {1,16}, {0,22}, {0,0xFF},
         {0,25}, {1,1}, {0,22}, {0,0xFF},
         {0,5}, {4,1}, {0,1}, {4,2}, {0,16}, {1,1}, {0,22}, {0,0xFF},
@@ -105,20 +121,21 @@ namespace levels
         {0,19}, {1,1}, {0,2}, {52,2}, {0,1}, {1,1}, {0,22}, {0,0xFF},
         {0,9}, {4,1}, {0,2}, {4,2}, {0,5}, {1,1}, {0,2}, {52,2}, {0,1}, {1,1}, {0,22}, {0,0xFF},
         {0,19}, {1,2}, {0,4}, {1,1}, {0,22}, {0,0xFF},
-        {0,2}, {4,3}, {0,18}, {52,1}, {0,1}, {1,1}, {0,22}, {0,0xFF},
+        {0,2}, {4,3}, {0,18}, {52,1}, {0,1}, {1,1}, {0,13}, {63,1}, {0,6}, {99,1}, {0,0xFF},
         {0,25}, {1,1}, {0,22}, {0,0xFF}
     };
 
     static short getLevelSize(short level)
     {
-        switch(level)
+        switch (level)
         {
             case 0: return arraysize(LEVEL_0);
             case 1: return arraysize(LEVEL_1);
             case 2: return arraysize(LEVEL_2);
             case 3: return arraysize(LEVEL_3);
+            case 4: return arraysize(LEVEL_4);
+            default: return 0;
         }
-        return 0;
     }
 
     static Cell getCell(short level, short index)
@@ -130,6 +147,7 @@ namespace levels
             case 1:  cv = {pgm_read_word(&LEVEL_1[index])}; break;
             case 2:  cv = {pgm_read_word(&LEVEL_2[index])}; break;
             case 3:  cv = {pgm_read_word(&LEVEL_3[index])}; break;
+            case 4:  cv = {pgm_read_word(&LEVEL_4[index])}; break;
         }
 
         return cv.c;

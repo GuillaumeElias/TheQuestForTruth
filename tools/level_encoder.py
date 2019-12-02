@@ -71,6 +71,9 @@ encoded_str = encode_level(LEVEL3)
 print ("PROGMEM static const Cell LEVEL_3[] =")
 print (encoded_str)
 
+encoded_str = encode_level(LEVEL4)
+print ("PROGMEM static const Cell LEVEL_4[] =")
+print (encoded_str)
 
 
 
