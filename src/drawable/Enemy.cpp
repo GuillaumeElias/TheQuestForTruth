@@ -88,7 +88,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
     if(paralysedCounter != 0)
     { 
         shakeEnemyForParalysis();
-        return;
+        return NO_EVENT;
     }
 
     if(walkFrameSkipped > ENEMY_WALK_FRAME_SKIP)
