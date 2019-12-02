@@ -209,6 +209,13 @@ short Map::getCurrentLevel() const
 }
 
 //=============================================================
+void Map::reset()
+{
+    current_level = 0;
+}
+
+
+//=============================================================
 levels::Tile Map::getTile(short level, short i, short j) const
 {
     short colCount = 0;

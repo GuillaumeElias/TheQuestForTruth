@@ -18,7 +18,8 @@ typedef enum __attribute__ ((packed))
     MENU,
     ANIM,
     HOUSE,
-    CINEMATIC
+    CINEMATIC,
+    END
 } GameMode;
 
 class Game

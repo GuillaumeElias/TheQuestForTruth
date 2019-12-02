@@ -60,9 +60,18 @@ void Game::update()
             TriggerEvent event = entitiesManager.popTriggerEvent();
             if(event == TriggerEvent::END_LEVEL) //next level triggered
             {
-                map.startNextLevel();
-                entitiesManager.startNewLevel();
-                player.levelStart();
+                if(map.getCurrentLevel() == 4) //last level
+                {
+                    map.reset();
+                    dialogManager.printSingleSentence(F("BRAVO"));
+                    mode = END;
+                }
+                else
+                {
+                    map.startNextLevel();
+                    entitiesManager.startNewLevel();
+                    player.levelStart();
+                }
             }
             else if(event == TriggerEvent::START_ANIM) //start animation
             {
@@ -138,8 +147,20 @@ void Game::update()
             if( boxView.updateCinematic(&arduboy) == false)
             {
                 mode = GameMode::MENU;
-                //arduboy.setFrameRate(120);
             }
+            break;
+
+
+        /****************************END*****************************/
+        case END:
+
+            if( arduboy.pressed( A_BUTTON ))
+            {
+                mode = GameMode::MENU;
+            }
+            
+            dialogManager.draw( &arduboy );
+
             break;
     }
 
