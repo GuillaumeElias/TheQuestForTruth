@@ -69,8 +69,6 @@ void EntitiesManager::spawnEntities(Map * map)
         {
             if(levels::getTileEnemyType(c.tile) >= 0)
             {
-                Serial.print("spawn enemy type:");
-                Serial.println(levels::getTileEnemyType(c.tile));
                 enemies[enemies_number].spawn( { x, y }, levels::getTileEnemyType(c.tile));
                 enemies_number++;
             }
@@ -176,7 +174,6 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
             }
         }
     }
- 
 }
 
 //==========================================================
