@@ -125,21 +125,22 @@ void Menu::update(Arduboy2 * arduboy)
 //=============================================================
 void Menu::displayClues(Arduboy2 * arduboy)
 {
-    arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y);
+    short lineY = CLUES_CURSOR_TOP_Y;
+    for(short clueId=0; clueId < NUMBER_OF_CLUES; ++clueId)
+    {
+        if(ItemsManager::instance()->hasClue( clueId ))
+        {
+            arduboy->setCursor(CLUES_CURSOR_LEFT_X, lineY); 
+            arduboy->print(F("-"));
+            printFromProgmem(arduboy, (PGM_P)pgm_read_word(&(ALL_CLUES[clueId])));
 
-    if((ItemsManager::instance()->getCluesFound() & 0b00000001))
-    {
-        arduboy->print(F("-"));
-        printFromProgmem(arduboy, CLUE_1);
+            lineY += LINE_HEIGHT;
+        }
     }
-    else if((ItemsManager::instance()->getCluesFound() & 0b00000010))
+
+    if(lineY == CLUES_CURSOR_TOP_Y)
     {
-        arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y + LINE_HEIGHT);
-        arduboy->print(F("-"));
-        printFromProgmem(arduboy, CLUE_2);
-    }
-    else
-    {
+        arduboy->setCursor(CLUES_CURSOR_LEFT_X, CLUES_CURSOR_TOP_Y); 
         printFromProgmem(arduboy, NOTHING_YET_SENTENCE);
     }
 }
@@ -162,7 +163,9 @@ void Menu::displayInventory(Arduboy2 * arduboy)
 //=============================================================
 void Menu::printFromProgmem(Arduboy2 * arduboy, const char * textInProgMem)
 {
-    char tBuffer[strlen_P(textInProgMem)];
+    PGM_P p = (PGM_P)pgm_read_word(&(textInProgMem));
+
+    char tBuffer[strlen_P(p)];
     strcpy_P(tBuffer, textInProgMem);
     arduboy->print(tBuffer);
 }

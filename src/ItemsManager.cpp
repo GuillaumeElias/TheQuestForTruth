@@ -35,3 +35,9 @@ bool ItemsManager::hasItem(int8 itemId) const
 {
     return items & (1 << (itemId - 1));
 }
+
+//====================================================================
+bool ItemsManager::hasClue(int8 clueId) const
+{
+    return cluesFound & (1 << clueId);
+}
