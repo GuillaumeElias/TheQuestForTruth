@@ -177,7 +177,7 @@ short Map::getCurrentDoorNumber() const
     levels::Tile tile = getTile(current_level, tile_i, tile_j);
 
     short doorNb = tile - levels::Tile::DOOR_HOUSE_0;
-    if(doorNb > 2)
+    if(doorNb > 3)
     {
         return -1;
     }

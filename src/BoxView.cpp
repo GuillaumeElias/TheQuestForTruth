@@ -19,10 +19,13 @@ namespace
     //HOUSE MODE
     static const short NB_INSTRUCTIONS_NOTHING = DIALOG_LETTER_NBFRAMES * 8 + DIALOG_SENTENCE_END_NBFRAMES;  //depends on number of letters in "Nothing."
     static const short NB_INSTRUCTIONS_CLUE_PRE = DIALOG_LETTER_NBFRAMES * 17 + DIALOG_SENTENCE_END_NBFRAMES;
-    static const short NB_INSTRUCTIONS_CLUE_1 = DIALOG_LETTER_NBFRAMES * 13 + DIALOG_SENTENCE_END_NBFRAMES;
-    static const short NB_INSTRUCTIONS_CLUE_2 = DIALOG_LETTER_NBFRAMES * 17 + DIALOG_SENTENCE_END_NBFRAMES;
+    static const short NB_INSTRUCTIONS_CLUE_1 = DIALOG_LETTER_NBFRAMES * 7 + DIALOG_SENTENCE_END_NBFRAMES;
+    static const short NB_INSTRUCTIONS_CLUE_2 = DIALOG_LETTER_NBFRAMES * 11 + DIALOG_SENTENCE_END_NBFRAMES;
+    static const short NB_INSTRUCTIONS_CLUE_3 = DIALOG_LETTER_NBFRAMES * 10 + DIALOG_SENTENCE_END_NBFRAMES;
     static const short END_INSTRUCTIONS_CLUE_1 = NB_INSTRUCTIONS_CLUE_1 + NB_INSTRUCTIONS_CLUE_PRE;
     static const short END_INSTRUCTIONS_CLUE_2 = NB_INSTRUCTIONS_CLUE_2 + NB_INSTRUCTIONS_CLUE_PRE;
+    static const short END_INSTRUCTIONS_CLUE_3 = NB_INSTRUCTIONS_CLUE_3 + NB_INSTRUCTIONS_CLUE_PRE;
+
 }
 
 //====================================================================
@@ -71,7 +74,8 @@ bool BoxView::update(Arduboy2 * arduboy)
     {
         if( inscructionNb == 1 && frameCount > NB_INSTRUCTIONS_NOTHING || 
             inscructionNb == 2 && frameCount > END_INSTRUCTIONS_CLUE_1 ||
-            inscructionNb == 3 && frameCount > END_INSTRUCTIONS_CLUE_2 )
+            inscructionNb == 3 && frameCount > END_INSTRUCTIONS_CLUE_2 ||
+            inscructionNb == 4 && frameCount > END_INSTRUCTIONS_CLUE_3 )
         {
             inscructionNb = 0;
             frameCount = 0;
@@ -84,6 +88,10 @@ bool BoxView::update(Arduboy2 * arduboy)
         else if(inscructionNb == 3 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {
             DialogManager::instance()->printSingleSentence(CLUE_2, 20);
+        }
+        else if(inscructionNb == 4 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
+        {
+            DialogManager::instance()->printSingleSentence(CLUE_3, 20);
         }
 
         DialogManager::instance()->draw( arduboy );
@@ -123,31 +131,22 @@ bool BoxView::update(Arduboy2 * arduboy)
         aY < 4 && bY < 4  &&
         aX > 4 && dX + 4 < SCREEN_WIDTH)
         {
-            switch( Map::instance()->getCurrentDoorNumber() )
+            short itemId = Map::instance()->getCurrentDoorNumber();
+            switch( itemId )
             {
                 case 0:
                     DialogManager::instance()->printSingleSentence(F("Nothing."));
                     inscructionNb = 1;
 
                     break;
-                case 1:
 
-                    if((ItemsManager::instance()->getCluesFound() & 0b00000001) == false)
+                default:
+                    if(ItemsManager::instance()->hasItem(itemId) == false)
                     {
                         DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, 24);
-                        ItemsManager::instance()->foundClue(1);
-                        inscructionNb = 2;
+                        ItemsManager::instance()->foundClue(itemId);
+                        inscructionNb = itemId + 1;
                     }
-                    
-                    break;
-                case 2:
-                    if((ItemsManager::instance()->getCluesFound() & 0b00000010) == false)
-                    {
-                        DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, 24);
-                        ItemsManager::instance()->foundClue(2);
-                        inscructionNb = 3;
-                    }
-                    break;
             }
         }
     }
