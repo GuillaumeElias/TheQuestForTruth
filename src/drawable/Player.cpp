@@ -56,7 +56,7 @@ void Player::levelStart()
 TriggerEvent Player::move( Arduboy2 * arduboy )
 {
     short newY = pos.y, newX = pos.x;
-    bool falling = isFalling();
+    bool falling = fall();
 
     //handle jump
     if(jumping)
@@ -71,25 +71,6 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
         {
             jumping = false;
             yVelocity = -yVelocity;
-        }
-    }
-    //handle falling
-    else if( falling )
-    {
-        if(yVelocity < PLAYER_FALL_MAX_VELOCITY)
-        {
-            yVelocity += PLAYER_Y_VELOCITY_INC;
-        }
-    }
-    else
-    {
-        if(yVelocity > 1.01f) //TODO cope with high velocity collision in less ugly way
-        {
-            yVelocity = 1.0f;
-        }
-        else
-        {
-            yVelocity = 0;
         }
     }
 
@@ -232,14 +213,40 @@ void Player::setLife(int8 life)
 }
 
 //==========================================================
-bool Player::isFalling()
+bool Player::fall()
 {
-    short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
-    short playerY = pos.y + PLAYER_HEIGHT + extraY;
+    if(yVelocity < 0) return false; //don't apply gravity if the player is jumping (which is not really how it works in the real world, I know)
 
-    return playerY < LEVEL_HEIGHT * TILE_LENGTH
-        && !checkCollisionWithMap(pos.x, pos.y + extraY)
-        && !checkCollisionWithEntities({pos.x, pos.y + extraY});
+    short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
+
+    bool falling;
+    /*do
+    {
+        extraY--;*/
+        falling = !somethingIsBelow(extraY);
+    /*}while(falling && extraY >= 1);*/
+
+    if(falling)
+    {
+        if(yVelocity < PLAYER_FALL_MAX_VELOCITY)
+        {
+            yVelocity += PLAYER_Y_VELOCITY_INC;
+        }
+    }
+    else
+    {
+        if(yVelocity > 1.01f)
+        {
+            yVelocity = 1.0f;
+        }
+        else
+        {
+            yVelocity = 0;
+        }
+    }
+
+
+    return falling;
 }
 
 //==========================================================
@@ -256,6 +263,14 @@ bool Player::checkCollisionWithMap(const short & playerX, const short & playerY)
         }
     }
     return false;
+}
+
+//==========================================================
+bool Player::somethingIsBelow(const short & extraY)
+{
+    return pos.y + PLAYER_HEIGHT + extraY >= LEVEL_HEIGHT * TILE_LENGTH
+        || checkCollisionWithMap(pos.x, pos.y + extraY)
+        || checkCollisionWithEntities({pos.x, pos.y + extraY});
 }
 
 //==========================================================
