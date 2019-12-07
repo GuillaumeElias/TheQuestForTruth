@@ -126,13 +126,13 @@ void Menu::update(Arduboy2 * arduboy)
 void Menu::displayClues(Arduboy2 * arduboy)
 {
     short lineY = CLUES_CURSOR_TOP_Y;
-    for(short clueId=0; clueId < NUMBER_OF_CLUES; ++clueId)
+    for(short clueId=1; clueId <= NUMBER_OF_CLUES; ++clueId)
     {
         if(ItemsManager::instance()->hasClue( clueId ))
         {
             arduboy->setCursor(CLUES_CURSOR_LEFT_X, lineY); 
             arduboy->print(F("-"));
-            printFromProgmem(arduboy, (PGM_P)pgm_read_word(&(ALL_CLUES[clueId])));
+            printFromProgmem(arduboy, (PGM_P)pgm_read_word(&(ALL_CLUES[clueId - 1])));
 
             lineY += LINE_HEIGHT;
         }

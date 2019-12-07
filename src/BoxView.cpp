@@ -81,17 +81,9 @@ bool BoxView::update(Arduboy2 * arduboy)
             frameCount = 0;
             DialogManager::instance()->printSingleSentence(F(""));
         }
-        else if(inscructionNb == 2 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
+        else if(frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {
-            DialogManager::instance()->printSingleSentence(CLUE_1, 20);
-        }
-        else if(inscructionNb == 3 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
-        {
-            DialogManager::instance()->printSingleSentence(CLUE_2, 20);
-        }
-        else if(inscructionNb == 4 && frameCount == NB_INSTRUCTIONS_CLUE_PRE)
-        {
-            DialogManager::instance()->printSingleSentence(CLUE_3, 20);
+            DialogManager::instance()->printSingleSentence((PGM_P)pgm_read_word(&ALL_CLUES[inscructionNb - 2]), 20);
         }
 
         DialogManager::instance()->draw( arduboy );
@@ -131,8 +123,8 @@ bool BoxView::update(Arduboy2 * arduboy)
         aY < 4 && bY < 4  &&
         aX > 4 && dX + 4 < SCREEN_WIDTH)
         {
-            short itemId = Map::instance()->getCurrentDoorNumber();
-            switch( itemId )
+            short clueId = Map::instance()->getCurrentDoorNumber();
+            switch( clueId )
             {
                 case 0:
                     DialogManager::instance()->printSingleSentence(F("Nothing."));
@@ -141,11 +133,11 @@ bool BoxView::update(Arduboy2 * arduboy)
                     break;
 
                 default:
-                    if(ItemsManager::instance()->hasItem(itemId) == false)
+                    if(ItemsManager::instance()->hasClue(clueId) == false)
                     {
                         DialogManager::instance()->printSingleSentence(CLUE_PRE_TEXT, 24);
-                        ItemsManager::instance()->foundClue(itemId);
-                        inscructionNb = itemId + 1;
+                        ItemsManager::instance()->foundClue(clueId);
+                        inscructionNb = clueId + 1;
                     }
             }
         }
