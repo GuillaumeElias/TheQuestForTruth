@@ -55,7 +55,7 @@ void Player::levelStart()
 //==========================================================
 TriggerEvent Player::move( Arduboy2 * arduboy )
 {
-    short newY = pos.y, newX = pos.x;
+    short oldY = pos.y, oldX = pos.x;
     bool falling = fall();
 
     //handle jump
@@ -80,12 +80,12 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
         if( arduboy->pressed( RIGHT_BUTTON ) )
         {
             facingRight = true;
-            newX += PLAYER_MOVE;
+            pos.x += PLAYER_MOVE;
         }
         else if( arduboy->pressed(LEFT_BUTTON) )
         {
             facingRight = false;
-            newX -= PLAYER_MOVE;
+            pos.x -= PLAYER_MOVE;
         }
         if( !jumping && !falling && arduboy->justPressed( A_BUTTON )) //jump only works when on the ground
         {
@@ -108,10 +108,10 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
     }
 
     //if no collision -> apply new position
-    if( !checkCollisionWithMap(newX, newY - 1) && !checkCollisionWithEntities({newX, newY}))
+    if( checkCollisionWithMap(pos.x, pos.y - 1) || checkCollisionWithEntities({pos.x, pos.y}))
     {
-        pos.x = newX;
-        pos.y = newY;
+        pos.x = oldX;
+        pos.y = oldY;
     }
 
     pos.y += yVelocity; //apply velocity to player position regardless of collision (y collision is already handled)
@@ -276,7 +276,7 @@ bool Player::somethingIsBelow(const short & extraY)
 //==========================================================
 bool Player::somethingIsAbove()
 {
-    return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities(pos);
+    return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities({pos.x, pos.y + yVelocity});
 }
 
 //===========================================================
