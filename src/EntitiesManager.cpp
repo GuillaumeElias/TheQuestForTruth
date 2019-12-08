@@ -153,6 +153,9 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
         {
             switch(triggers[i].id)
             {
+                case 5:
+                    triggerEvent = START_ANIM;
+                    getCharacterWithId(63)->moveDistance(-30);
                 case 1:
                 case 3:
                 case 4:

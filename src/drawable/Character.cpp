@@ -204,6 +204,8 @@ TriggerEvent Character::getTriggerEventForCharacterMovement() const
     {
         case levels::Tile::_CHARACTER_2:
             return TriggerEvent::START_DIALOG_2;
+        case levels::Tile::_CHARACTER_3:
+            return TriggerEvent::STOP_ANIM;
         default:
             return TriggerEvent::NO_EVENT;
     }

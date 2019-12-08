@@ -94,6 +94,13 @@ void DialogManager::printNextLineForTrigger()
             }
             
             break;
+        case 5:
+            currentNbOfLines = 2;
+            switch(currentLineIndex)
+            {
+                case 0: sentencePtr = F("I saw you"); break; 
+                case 1: extraTextPaddingX = 68; sentencePtr = F("with those big balls"); break;
+            }
     }
 
     if(currentLineIndex < currentNbOfLines) 
