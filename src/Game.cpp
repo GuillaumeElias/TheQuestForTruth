@@ -97,7 +97,7 @@ void Game::update()
                 boxView.reset();
             }
             
-            if(player.getLife() <= 0 || (map.getCurrentLevel() >= 2 && entitiesManager.countNumberOfLiveEnemies() == 0))
+            if(player.getLife() <= 0 || (map.getCurrentLevel() >= 2 && entitiesManager.countNumberOfLiveEnemiesOfType(2) == 0))
             {
                 map.startLevel();
                 player.setLife(PLAYER_LIFE);

@@ -215,6 +215,12 @@ const Position & Enemy::getPos() const
 }
 
 //==========================================================
+int8 Enemy::getType() const
+{
+    return type;
+}
+
+//==========================================================
 bool Enemy::checkEnemyCollision(const Position & enemyPosition, const Position & playerPosition, bool damageOn)
 {
     //TODO redo that more accurately

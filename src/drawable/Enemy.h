@@ -17,6 +17,7 @@ class Enemy : public Drawable, public Movable
         void draw( Arduboy2 * arduboy ) override;
         
         const Position & getPos() const;
+        int8 getType() const;
 
         bool checkEnemyCollision(const Position & playerPosition, const Position & enemyPosition, bool damageOn);
         void onHit( const HitType & hitType );

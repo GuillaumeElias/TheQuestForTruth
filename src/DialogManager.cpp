@@ -84,6 +84,16 @@ void DialogManager::printNextLineForTrigger()
             }
             
             break;
+
+        case 4:
+            currentNbOfLines = 1;
+            extraTextPaddingX = -6;
+            switch(currentLineIndex)
+            {
+                case 0: sentencePtr = F("you again?"); break;
+            }
+            
+            break;
     }
 
     if(currentLineIndex < currentNbOfLines) 

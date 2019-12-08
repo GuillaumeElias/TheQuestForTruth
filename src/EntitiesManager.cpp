@@ -154,6 +154,8 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
             switch(triggers[i].id)
             {
                 case 1:
+                case 3:
+                case 4:
                     DialogManager::instance()->printTextForTrigger(&triggers[i]);
                     triggers[i].triggered = true;
                     break;
@@ -162,10 +164,6 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
                     getCharacterWithId(62)->moveDistance(-50);
         
                     triggerEvent = START_ANIM;
-                    break;
-                case 3:
-                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
-                    triggers[i].triggered = true;
                     break;
                 case 19:
                     triggerEvent = END_LEVEL;
@@ -204,12 +202,12 @@ Trigger * EntitiesManager::getTriggerForEvent(const TriggerEvent & event)
 }
 
 //==========================================================
-int8 EntitiesManager::countNumberOfLiveEnemies() const
+int8 EntitiesManager::countNumberOfLiveEnemiesOfType(int8 type) const
 {
     int8 count = 0;
     for(short i=0; i < enemies_number; ++i)
     {
-        if(enemies[i].isAlive())
+        if(enemies[i].getType() == type && enemies[i].isAlive())
         {
             count++;
         }
