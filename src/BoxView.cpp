@@ -79,7 +79,6 @@ bool BoxView::update(Arduboy2 * arduboy)
         {
             inscructionNb = 0;
             frameCount = 0;
-            DialogManager::instance()->printSingleSentence(F(""));
         }
         else if(frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {

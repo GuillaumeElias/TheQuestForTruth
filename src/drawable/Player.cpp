@@ -253,7 +253,7 @@ bool Player::checkCollisionWithMap(const short & playerX, const short & playerY)
 //==========================================================
 bool Player::somethingIsAbove()
 {
-    return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities({pos.x, pos.y + yVelocity});
+    return checkCollisionWithMap(pos.x, pos.y) || checkCollisionWithEntities({pos.x, pos.y - 1});
 }
 
 //===========================================================
