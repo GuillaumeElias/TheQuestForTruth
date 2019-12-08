@@ -63,6 +63,11 @@ void Game::update()
                 if(map.getCurrentLevel() == 4) //last level
                 {
                     map.reset();
+                    map.startLevel();
+                    player.levelStart();
+                    menu.setInGame(false);
+                    entitiesManager.startNewLevel();
+                    soundManager.stopMusic();
                     dialogManager.printSingleSentence(F("BRAVO"));
                     mode = END;
                 }
