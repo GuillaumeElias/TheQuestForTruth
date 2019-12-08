@@ -56,7 +56,7 @@ void Player::levelStart()
 TriggerEvent Player::move( Arduboy2 * arduboy )
 {
     short oldY = pos.y, oldX = pos.x;
-    bool falling = fall();
+    bool falling = isFalling();
 
     //handle jump
     if(jumping)
@@ -72,6 +72,18 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
             jumping = false;
             yVelocity = -yVelocity;
         }
+    }
+    //handle falling
+    else if( falling )
+    {
+        if(yVelocity < PLAYER_FALL_MAX_VELOCITY)
+        {
+            yVelocity += PLAYER_Y_VELOCITY_INC;
+        }
+    }
+    else
+    {
+        yVelocity = 0;
     }
 
     //Check buttons
@@ -213,40 +225,13 @@ void Player::setLife(int8 life)
 }
 
 //==========================================================
-bool Player::fall()
+bool Player::isFalling()
 {
-    if(yVelocity < 0) return false; //don't apply gravity if the player is jumping (which is not really how it works in the real world, I know)
+    short playerY = pos.y + PLAYER_HEIGHT + 1;
 
-    short extraY = (yVelocity > 1.01f) ? ceil(yVelocity) : 1; //"below" Y depends on yVelocity //TODO find better way to handle it
-
-    bool falling;
-    /*do
-    {
-        extraY--;*/
-        falling = !somethingIsBelow(extraY);
-    /*}while(falling && extraY >= 1);*/
-
-    if(falling)
-    {
-        if(yVelocity < PLAYER_FALL_MAX_VELOCITY)
-        {
-            yVelocity += PLAYER_Y_VELOCITY_INC;
-        }
-    }
-    else
-    {
-        if(yVelocity > 1.01f)
-        {
-            yVelocity = 1.0f;
-        }
-        else
-        {
-            yVelocity = 0;
-        }
-    }
-
-
-    return falling;
+    return playerY < LEVEL_HEIGHT * TILE_LENGTH
+        && !checkCollisionWithMap(pos.x, pos.y + 1)
+        && !checkCollisionWithEntities({pos.x, pos.y + 2}); //+2 because of enemy shake
 }
 
 //==========================================================
@@ -263,14 +248,6 @@ bool Player::checkCollisionWithMap(const short & playerX, const short & playerY)
         }
     }
     return false;
-}
-
-//==========================================================
-bool Player::somethingIsBelow(const short & extraY)
-{
-    return pos.y + PLAYER_HEIGHT + extraY >= LEVEL_HEIGHT * TILE_LENGTH
-        || checkCollisionWithMap(pos.x, pos.y + extraY)
-        || checkCollisionWithEntities({pos.x, pos.y + extraY});
 }
 
 //==========================================================

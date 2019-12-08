@@ -26,8 +26,7 @@ class Player : public Drawable, public Movable, public Singleton<Player>
         void setLife(int8 life);
     private:
 
-        bool fall();
-        bool somethingIsBelow(const short & extraY);
+        bool isFalling();
         bool somethingIsAbove();
         bool checkCollisionWithMap(const short & playerX, const short & playerY) const;
         bool checkCollisionWithEntities(const Position & position); //return true if there is a collision
