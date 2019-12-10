@@ -84,7 +84,8 @@ void EntitiesManager::spawnEntities(Map * map)
                 triggers[trigger_number].id = levels::getTileTriggerId(c.tile);
                 triggers[trigger_number].triggered = false;
                 trigger_number++;
-            }else if(levels::getTileItemId(c.tile) >= 0)
+            }
+            else if(levels::getTileItemId(c.tile) >= 0)
             {
                 int8 itemId = levels::getTileItemId(c.tile);
                 itemToBePickedUp.spawn(itemId, { x, y } );
@@ -151,16 +152,16 @@ void EntitiesManager::triggerCheckAndExecute(const Position & ppos)
 
         if( rectangleCollision({ppos, PLAYER_WIDTH, PLAYER_HEIGHT}, {triggers[i].pos, TRIGGER_WIDTH, TRIGGER_HEIGHT}) )
         {
-            switch(triggers[i].id)
+            int8 id = triggers[i].id;
+            switch(id)
             {
                 case 5:
+                case 6:
                     triggerEvent = START_ANIM;
-                    getCharacterWithId(63)->moveDistance(-30);
-                case 1:
-                case 3:
-                case 4:
-                    DialogManager::instance()->printTextForTrigger(&triggers[i]);
+                    getCharacterWithId(63)->moveDistance(id == 5 ? -40 : 40);
+                default:
                     triggers[i].triggered = true;
+                    if(id != 6) DialogManager::instance()->printTextForTrigger(&triggers[i]);
                     break;
                 case 2:
                     triggers[i].triggered = true;

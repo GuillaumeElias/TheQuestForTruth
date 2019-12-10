@@ -82,8 +82,8 @@ void Map::drawTile(levels::Tile tile, const short & x, const short & y, Arduboy2
             case levels::Tile::BRICK:
                 arduboy->drawBitmap(screenX, screenY, tiles::BRICK, TILE_LENGTH, TILE_LENGTH);
                 break;   
-            case levels::Tile::DOOR_HOUSE_1:
-                //to texture
+            default:
+                //no texture
             break;
             case levels::Tile::FIRTREE_UPLEFT:
                 arduboy->drawBitmap(screenX, screenY, tiles::FIRTREE_UPLEFT, TILE_LENGTH, TILE_LENGTH);

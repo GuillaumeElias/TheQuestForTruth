@@ -39,7 +39,7 @@ def encode_level(level):
                 count += 1
 
         if(count > 1):
-            encoded_string += Cell(number, count).tostr()
+            encoded_string += Cell(number, count - 1).tostr()
            
         encoded_string += "{{{0},0xFF}}".format(number)
 
