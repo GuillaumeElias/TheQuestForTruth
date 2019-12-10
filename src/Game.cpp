@@ -75,6 +75,7 @@ void Game::update()
                 {
                     map.startNextLevel();
                     entitiesManager.startNewLevel();
+                    soundManager.startMusic();
                     player.levelStart();
                 }
             }
