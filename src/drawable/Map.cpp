@@ -147,13 +147,20 @@ void Map::startNextLevel()
 }
 
 //=============================================================
-bool Map::checkCollision(const short& x, const short& y, const short& w, const short& h) const
+bool Map::checkCollision(short x, short y, short w, short h) const
 {
-    return checkCollisionForPoint(x, y) || checkCollisionForPoint(x + w, y) ||  checkCollisionForPoint(x, y + h) ||  checkCollisionForPoint(x + w, y + h);
+    return checkCollisionForPoint(x             , y         )   //1
+        || checkCollisionForPoint(x + w / 2     , y         )   //2      1-----2-----3
+        || checkCollisionForPoint(x + w         , y         )   //3      |           |
+        || checkCollisionForPoint(x             , y + h / 2 )   //4      4           7
+        || checkCollisionForPoint(x             , y + h     )   //5      |           |
+        || checkCollisionForPoint(x + w / 2     , y + h     )   //6      5-----6-----8
+        || checkCollisionForPoint(x + w         , y + h / 2 )   //7
+        || checkCollisionForPoint(x + w         , y + h     );  //8
 }
 
 //=============================================================
-bool Map::checkCollisionForPoint(const short& x, const short& y) const
+bool Map::checkCollisionForPoint(short x, short y) const
 {
     short tile_i = y / TILE_LENGTH;
     short tile_j = x / TILE_LENGTH;
