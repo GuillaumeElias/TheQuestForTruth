@@ -132,7 +132,7 @@ const CollisionCheckResult EntitiesManager::collisionCheck(const Position & ppos
 }
 
 //==========================================================
-void EntitiesManager::fireCollisionCheck(const Position & pos, const short & rangeX, const short & rangeY, const HitType & hitType)
+void EntitiesManager::fireCollisionCheck(const Position & pos, short rangeX, short rangeY, const HitType & hitType)
 {
     for(short i=0; i < enemies_number; i++)
     {

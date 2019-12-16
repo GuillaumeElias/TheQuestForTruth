@@ -27,7 +27,7 @@ class Map : public Drawable, public Singleton<Map>
         short getCurrentLevel() const;
         void reset();
     private:
-        void drawTile(levels::Tile tile, const short & screenX, const short & screenY, Arduboy2 * arduboy);
+        void drawTile(levels::Tile tile, short screenX, short screenY, Arduboy2 * arduboy);
         levels::Tile getTile(short level, short i, short j) const;
 
         const Position & playerPosition;

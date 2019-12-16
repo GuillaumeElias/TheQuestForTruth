@@ -235,7 +235,7 @@ bool Player::isFalling()
 }
 
 //==========================================================
-bool Player::checkCollisionWithMap(const short & playerX, const short & playerY) const
+bool Player::checkCollisionWithMap(short playerX, short playerY) const
 {
     for(int x=playerX; x <= playerX + PLAYER_WIDTH; x+=3)
     {

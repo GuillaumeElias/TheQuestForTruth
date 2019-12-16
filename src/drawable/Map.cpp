@@ -62,7 +62,7 @@ void Map::draw(Arduboy2 * arduboy)
 }
 
 //=============================================================
-void Map::drawTile(levels::Tile tile, const short & x, const short & y, Arduboy2 * arduboy)
+void Map::drawTile(levels::Tile tile, short x, short y, Arduboy2 * arduboy)
 {
     short screenX = x - scroll_x;
     short screenY = y - scroll_y;

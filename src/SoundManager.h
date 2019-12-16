@@ -45,7 +45,7 @@ class SoundManager : public Singleton<SoundManager>
     private:
         void gotoNextSequence();
         int8 computePositionInChord();
-        void playNote(const short & midiNote);
+        void playNote(short midiNote);
 
         void setSpeed(int8 speed);
         ArduboyTones tones;

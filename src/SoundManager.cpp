@@ -168,7 +168,7 @@ void SoundManager::playNextNote()
 }
 
 //==========================================================
-void SoundManager::playNote(const short & midiNote)
+void SoundManager::playNote(short midiNote)
 {
     uint16_t noteHz = 440 * pow(2, ((midiNote - 69)/12.0));
     tones.tone(noteHz, noteDuration);

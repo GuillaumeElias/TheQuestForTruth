@@ -29,7 +29,7 @@ namespace
         py = p1.y + dy;
     }
 
-    bool withinNRange(const Position & p1, const Position & p2, const short & range)
+    bool withinNRange(const Position & p1, const Position & p2, short range)
     {
         int dx = p1.x - p2.x;
         int dy = p1.y - p1.y;

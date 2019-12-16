@@ -19,7 +19,7 @@ class EntitiesManager : public Singleton<EntitiesManager>
         void moveEntities();
 
         const CollisionCheckResult collisionCheck(const Position & pos);
-        void fireCollisionCheck(const Position & pos, const short & rangeX, const short & rangeY, const HitType & hitType);
+        void fireCollisionCheck(const Position & pos, short rangeX, short rangeY, const HitType & hitType);
         void triggerCheckAndExecute(const Position & pos);
 
         TriggerEvent popTriggerEvent();

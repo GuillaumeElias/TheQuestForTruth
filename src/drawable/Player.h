@@ -28,7 +28,7 @@ class Player : public Drawable, public Movable, public Singleton<Player>
 
         bool isFalling();
         bool somethingIsAbove();
-        bool checkCollisionWithMap(const short & playerX, const short & playerY) const;
+        bool checkCollisionWithMap(short playerX, short playerY) const;
         bool checkCollisionWithEntities(const Position & position); //return true if there is a collision
         void fire();
         void drawMuzzleSparkles(Arduboy2 * arduboy);
