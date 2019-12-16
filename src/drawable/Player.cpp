@@ -99,11 +99,14 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
             facingRight = false;
             pos.x -= PLAYER_MOVE;
         }
-        if( !jumping && !falling && arduboy->justPressed( A_BUTTON )) //jump only works when on the ground
+        if( arduboy->justPressed( A_BUTTON )) //jump only works when on the ground
         {
-            jumping = true;
-            yVelocity = -PLAYER_JUMP_VELOCITY;
-            SoundManager::instance()->startNoteBurst();
+            if(!jumping && !falling)
+            {
+                jumping = true;
+                yVelocity = -PLAYER_JUMP_VELOCITY;
+                SoundManager::instance()->startNoteBurst();
+            }
         }
         else if(arduboy->pressed( B_BUTTON ) && ItemsManager::instance()->hasItem(1))
         {

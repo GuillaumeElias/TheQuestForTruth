@@ -52,6 +52,7 @@ Enemy::Enemy()
     : pos(0,0)
     , initPos(0,0)
     , life(0)
+    , shake(0)
     , displaySpriteA( true )
     , facingRight( true )
     , goBackToInitPos( false )
@@ -193,6 +194,11 @@ void Enemy::draw( Arduboy2 * arduboy )
     short screenX = pos.x - Map::instance()->getScrollX();
     short screenY = pos.y - Map::instance()->getScrollY(); 
 
+    if(paralysedCounter > 0)
+    {
+        screenY += shake;
+    }
+
     if(life < 0)
     {
         arduboy->drawCircle(screenX + getWidth() / 2, screenY + getHeight() / 2, abs(life / 3));
@@ -299,11 +305,11 @@ void Enemy::shakeEnemyForParalysis()
     {
         if(paralysedCounter % 2)
         {
-            pos.y--;
+            shake--;
         }
-        else if(pos.y + getHeight() < LEVEL_HEIGHT * TILE_LENGTH)
+        else
         {
-            pos.y++;
+            shake++;
         }
     
         paralysedCounter--;

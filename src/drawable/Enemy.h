@@ -32,6 +32,7 @@ class Enemy : public Drawable, public Movable
 
         int8 type;
         int8 life;
+        int8 shake;
         Position pos;
         Position initPos;
         
