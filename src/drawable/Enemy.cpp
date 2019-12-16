@@ -113,7 +113,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         short newPosY = 0;
         movePosition1TowardsPosition2(pos, initPos, newPosX, newPosY, ENEMY_GO_BACK_MOVE);
 
-        if(Map::instance()->checkCollision(newPosX, newPosY, width, height ) )
+        if(checkMapCollision(newPosX, newPosY, width, height ) )
         {
             goBackToInitPos = false;
         }
@@ -140,7 +140,7 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         short newPosY = 0;
         movePosition1TowardsPosition2(pos, playerPos, newPosX, newPosY, ENEMY_FOLLOW_MOVE);
         
-        if(Map::instance()->checkCollision(newPosX, newPosY, width, height ) )
+        if(checkMapCollision(newPosX, newPosY, width, height ) )
         {
             goBackToInitPos = true;
         }
@@ -161,13 +161,13 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         int8 diffX = pos.x - initPos.x;
         if(diffX > ENEMY_WALK_MAX 
             || checkEnemyCollision({pos.x + ENEMY_MOVE, pos.y}, playerPos, true) 
-            || Map::instance()->checkCollision(pos.x + ENEMY_MOVE, pos.y, width, height ) )
+            || checkMapCollision(pos.x + ENEMY_MOVE, pos.y, width, height ) )
         {
             facingRight = false;
         }
         else if(diffX < -ENEMY_WALK_MAX 
             || checkEnemyCollision({pos.x - ENEMY_MOVE, pos.y}, playerPos, true)
-            || Map::instance()->checkCollision(pos.x - ENEMY_MOVE, pos.y, width, height ) )
+            || checkMapCollision(pos.x - ENEMY_MOVE, pos.y, width, height ) )
         {
             facingRight = true;
         }
@@ -238,6 +238,13 @@ bool Enemy::checkEnemyCollision(const Position & enemyPosition, const Position &
     }
     return false;
 }
+
+//==========================================================
+bool Enemy::checkMapCollision(short x, short y, short width, short height) const
+{
+    return Map::instance()->checkCollision(x + ENEMY_MOVE, y, width, height );
+}
+
 
 //==========================================================
 void Enemy::onHit( const HitType & type )

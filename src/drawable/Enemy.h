@@ -28,6 +28,7 @@ class Enemy : public Drawable, public Movable
         bool isParalysed() const;
     private:
         void shakeEnemyForParalysis();
+        bool checkMapCollision(short x, short y, short width, short height) const;
 
         int8 type;
         int8 life;
