@@ -85,6 +85,9 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
 {
     if(life <= 0) return NO_EVENT;
 
+    short width = getWidth();
+    short height = getHeight();
+
     if(paralysedCounter != 0)
     { 
         shakeEnemyForParalysis();
@@ -101,21 +104,16 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         return NO_EVENT; //only move every n frames
     }
 
-    short distancePlayerX = Player::instance()->getPos().x - pos.x;
+    Position &playerPos = Player::instance()->getPos();
+    short distancePlayerX = playerPos.x - pos.x;
 
     if(goBackToInitPos)
     {
-        if(checkEnemyCollision(Player::instance()->getPos(), {pos.x, pos.y}, true))
-        {
-            life = -ENEMY_DEATH_TICKS;
-            return NO_EVENT;
-        }
-
         short newPosX = 0;
         short newPosY = 0;
         movePosition1TowardsPosition2(pos, initPos, newPosX, newPosY, ENEMY_GO_BACK_MOVE);
 
-        if(Map::instance()->checkCollision(newPosX, newPosY, getWidth(), getHeight() ) )
+        if(Map::instance()->checkCollision(newPosX, newPosY, width, height ) )
         {
             goBackToInitPos = false;
         }
@@ -129,20 +127,20 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
                 goBackToInitPos = false;
             }
         }
-    }
-    if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
-    {
-        if(checkEnemyCollision(Player::instance()->getPos(), {pos.x, pos.y}, true))
+
+        if(checkEnemyCollision(pos, playerPos, true))
         {
             life = -ENEMY_DEATH_TICKS;
             return NO_EVENT;
         }
-
+    }
+    if(type == 2 && abs(distancePlayerX) < FOLLOW_PLAYER_DISTANCE) //PLAYER IS NEARBY
+    {
         short newPosX = 0;
         short newPosY = 0;
-        movePosition1TowardsPosition2(pos, Player::instance()->getPos(), newPosX, newPosY, ENEMY_FOLLOW_MOVE);
+        movePosition1TowardsPosition2(pos, playerPos, newPosX, newPosY, ENEMY_FOLLOW_MOVE);
         
-        if(Map::instance()->checkCollision(newPosX, newPosY, getWidth(), getHeight() ) )
+        if(Map::instance()->checkCollision(newPosX, newPosY, width, height ) )
         {
             goBackToInitPos = true;
         }
@@ -151,19 +149,25 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
             pos.x = newPosX;
             pos.y = newPosY;
         }
+
+        if(checkEnemyCollision(pos, playerPos, true))
+        {
+            life = -ENEMY_DEATH_TICKS;
+            return NO_EVENT;
+        }
     }
     else //NORMAL PATROL MOVE
     {
         int8 diffX = pos.x - initPos.x;
         if(diffX > ENEMY_WALK_MAX 
-            || checkEnemyCollision(Player::instance()->getPos(), {pos.x + ENEMY_MOVE, pos.y}, true) 
-            || Map::instance()->checkCollision(pos.x + ENEMY_MOVE, pos.y, getWidth(), getHeight() ) )
+            || checkEnemyCollision({pos.x + ENEMY_MOVE, pos.y}, playerPos, true) 
+            || Map::instance()->checkCollision(pos.x + ENEMY_MOVE, pos.y, width, height ) )
         {
             facingRight = false;
         }
         else if(diffX < -ENEMY_WALK_MAX 
-            || checkEnemyCollision(Player::instance()->getPos(), {pos.x - ENEMY_MOVE, pos.y}, true)
-            || Map::instance()->checkCollision(pos.x - ENEMY_MOVE, pos.y, getWidth(), getHeight() ) )
+            || checkEnemyCollision({pos.x - ENEMY_MOVE, pos.y}, playerPos, true)
+            || Map::instance()->checkCollision(pos.x - ENEMY_MOVE, pos.y, width, height ) )
         {
             facingRight = true;
         }
