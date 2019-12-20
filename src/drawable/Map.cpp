@@ -1,6 +1,8 @@
 #include "Map.h"
 #include "../Tiles.h"
 
+static const short LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT * TILE_LENGTH;
+
 //=============================================================
 Map::Map(const Position & playerPos)
     : playerPosition(playerPos)
@@ -15,39 +17,15 @@ Map::Map(const Position & playerPos)
 //=============================================================
 void Map::draw(Arduboy2 * arduboy)
 {
-    //SNOW FLAKES
-    ++snowflakes_frame_count;
-    bool move_snowflakes = false;
-    if(snowflakes_frame_count >= SNOWFLAKES_FRAME_MOVE)
+    //COMPUTE SCROLL_Y BASED ON PLAYER POSITION
+    scroll_y = playerPosition.y + PLAYER_HEIGHT - MID_HEIGHT;
+    if(scroll_y < 0)
     {
-        snowflakes_frame_count = 0;
-        move_snowflakes = true;
+        scroll_y = 0;
     }
-
-    for(short i = 0; i < SNOWFLAKES_NUMBER; i ++)
+    else if(scroll_y + SCREEN_HEIGHT > LEVEL_HEIGHT_PIXELS)
     {
-        arduboy->drawPixel(snowflakes[i].x, snowflakes[i].y);
-    
-        if(move_snowflakes)
-        {
-            snowflakes[i].y++;
-
-            short rand = random(0,4);
-            if(rand == 0)
-            {
-                snowflakes[i].x--;
-            }
-            else if(rand == 1)
-            {
-                snowflakes[i].x++;
-            }
-
-            if(snowflakes[i].y >= SCREEN_HEIGHT)
-            {
-                snowflakes[i].y = random(0,SCREEN_WIDTH);
-                snowflakes[i].y = 0;
-            }
-        }
+        scroll_y = LEVEL_HEIGHT_PIXELS - SCREEN_HEIGHT;
     }
 
     //COMPUTE SCROLL_X BASED ON PLAYER POSITION
@@ -61,17 +39,10 @@ void Map::draw(Arduboy2 * arduboy)
         scroll_x = level_width * TILE_LENGTH - SCREEN_WIDTH;
     }
 
-    //COMPUTE SCROLL_Y BASED ON PLAYER POSITION
-    scroll_y = playerPosition.y + PLAYER_HEIGHT - MID_HEIGHT;
-    if(scroll_y < 0)
-    {
-        scroll_y = 0;
-    }
-    else if(scroll_y + SCREEN_HEIGHT > LEVEL_HEIGHT * TILE_LENGTH)
-    {
-        scroll_y = LEVEL_HEIGHT * TILE_LENGTH - SCREEN_HEIGHT;
-    }
+    // DRAW SNOWFLAKES
+    drawSnowflakes(scroll_x, scroll_y, arduboy);
 
+    //DRAW TILES
     short x = 0;
     short y = 0;
 
@@ -146,6 +117,56 @@ void Map::drawTile(levels::Tile tile, short x, short y, Arduboy2 * arduboy)
 }
 
 //=============================================================
+void Map::drawSnowflakes(short scrollX, short scrollY, Arduboy2 * arduboy)
+{
+    ++snowflakes_frame_count;
+    bool move_snowflakes = false;
+    if(snowflakes_frame_count >= SNOWFLAKES_FRAME_MOVE)
+    {
+        snowflakes_frame_count = 0;
+        move_snowflakes = true;
+    }
+
+    for(short i = 0; i < SNOWFLAKES_NUMBER; i ++)
+    {
+        if(snowflakes[i].visible)
+        {
+            if(getTile(current_level, snowflakes[i].pos.y / TILE_LENGTH, snowflakes[i].pos.x / TILE_LENGTH) == levels::Tile::VOID)
+            {
+                if(arduboy != nullptr)
+                    arduboy->drawPixel(snowflakes[i].pos.x - scroll_x, snowflakes[i].pos.y - scroll_y);
+            }
+            else
+            {
+                snowflakes[i].visible = false; //the snow flake will still be falling but it will not be visible (most code-size efficient solution)
+            }
+        }
+
+        if(move_snowflakes)
+        {
+            snowflakes[i].pos.y++;
+
+            short rand = random(0,4);
+            if(rand == 0)
+            {
+                snowflakes[i].pos.x--;
+            }
+            else if(rand == 1)
+            {
+                snowflakes[i].pos.x++;
+            }
+
+            if(snowflakes[i].pos.y >= LEVEL_HEIGHT_PIXELS)
+            {
+                snowflakes[i].pos.x = random(0, level_width * TILE_LENGTH);
+                snowflakes[i].pos.y = 0;
+                snowflakes[i].visible = true;
+            }
+        }
+    }
+}
+
+//=============================================================
 void Map::startLevel()
 {
     level_length = levels::getLevelSize(current_level);
@@ -174,10 +195,16 @@ void Map::startLevel()
         }
     }
 
-    for(short i = 0; i< SNOWFLAKES_NUMBER; i ++)
+    for(short i = 0; i< SNOWFLAKES_NUMBER; ++i)
     {
-        snowflakes[i].x = random(0, SCREEN_WIDTH);
-        snowflakes[i].y = random(0, SCREEN_HEIGHT);
+        snowflakes[i].pos.x = random(0, level_width * TILE_LENGTH);
+        snowflakes[i].pos.y = random(0, LEVEL_HEIGHT_PIXELS);
+        snowflakes[i].visible = true;
+    }
+
+    for(short i=0; i < 254; ++i) //forces snow to fall until it reaches ground at least once
+    {
+        drawSnowflakes(0, 0, nullptr);
     }
 }
 

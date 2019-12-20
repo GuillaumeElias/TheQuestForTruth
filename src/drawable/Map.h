@@ -8,6 +8,14 @@
 #include "../abstract/Singleton.h"
 #include "../Levels.h"
 
+//COLLISION CHECK RESULT
+typedef struct __attribute__ ((packed))
+{
+    Position pos;
+    bool visible;
+} Snowflake;
+
+
 class Map : public Drawable, public Singleton<Map>
 {
     public:
@@ -28,6 +36,7 @@ class Map : public Drawable, public Singleton<Map>
         void reset();
     private:
         void drawTile(levels::Tile tile, short screenX, short screenY, Arduboy2 * arduboy);
+        void drawSnowflakes(short scrollX, short scrollY, Arduboy2 * arduboy);
         levels::Tile getTile(short level, short i, short j) const;
 
         const Position & playerPosition;
@@ -37,7 +46,7 @@ class Map : public Drawable, public Singleton<Map>
         short level_length, level_width;
 
         byte level_row_indexes[LEVEL_HEIGHT];
-        Position snowflakes[SNOWFLAKES_NUMBER];
+        Snowflake snowflakes[SNOWFLAKES_NUMBER];
         int8 snowflakes_frame_count;
 };
 

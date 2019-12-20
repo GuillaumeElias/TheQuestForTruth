@@ -14,7 +14,7 @@ namespace
     static const short ENEMY_GO_BACK_MOVE = 2;
     static const short HIT_IMMUNE_TIME = 50;
 
-    void movePosition1TowardsPosition2(const Position & p1, const Position & p2, short & px, short & py, const short & move)
+    void movePosition1TowardsPosition2(const Position & p1, const Position & p2, short & px, short & py, short move)
     {
         short dx = p2.x - p1.x;
         short dy = p2.y - p1.y;
@@ -29,7 +29,7 @@ namespace
         py = p1.y + dy;
     }
 
-    bool withinNRange(const Position & p1, const Position & p2, short range)
+    bool withinNRange(const Position p1, const Position & p2, short range)
     {
         int dx = p1.x - p2.x;
         int dy = p1.y - p1.y;
