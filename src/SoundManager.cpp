@@ -1,4 +1,5 @@
 #include "SoundManager.h"
+#include "drawable/Map.h"
 
 
 //==========================================================
@@ -22,7 +23,12 @@ SoundManager::SoundManager(Arduboy2 * arduboy)
 //==========================================================
 void SoundManager::startMusicForLevel()
 {
-    //TODO set rhytm based on level feel
+    /*switch(Map::instance()->getCurrentLevel())
+    {
+        case 0:
+        case 1:
+    } TODO finish off
+    */
     startMusic();
 }
 
@@ -105,7 +111,7 @@ void SoundManager::stopMusic()
 {
     //turn timer off
     TIMSK1 = 0x0; 
-    interrupts();
+    //interrupts();
 }
 
 //==========================================================
@@ -113,7 +119,7 @@ void SoundManager::resumeMusic()
 {
     //turn timer back on
     TIMSK1 = 0b00000010;
-    interrupts();
+    //interrupts();
 }
 
 //==========================================================

@@ -128,7 +128,7 @@ void Game::update()
                 }
                 else
                 {
-                    soundManager.startMusicForLevel();
+                    soundManager.startMusic();
                 }
                 
                 mode = GameMode::PLAY;
@@ -157,7 +157,7 @@ void Game::update()
             break;
 
 
-        /****************************END*****************************/
+        /****************************END*********************************/
         case END:
 
             if( arduboy.pressed( A_BUTTON ))
