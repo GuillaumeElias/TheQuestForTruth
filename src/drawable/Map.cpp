@@ -129,17 +129,9 @@ void Map::drawSnowflakes(short scrollX, short scrollY, Arduboy2 * arduboy)
 
     for(short i = 0; i < SNOWFLAKES_NUMBER; i ++)
     {
-        if(snowflakes[i].visible)
+        if(snowflakes[i].visible && arduboy != nullptr)
         {
-            if(getTile(current_level, snowflakes[i].pos.y / TILE_LENGTH, snowflakes[i].pos.x / TILE_LENGTH) == levels::Tile::VOID)
-            {
-                if(arduboy != nullptr)
-                    arduboy->drawPixel(snowflakes[i].pos.x - scroll_x, snowflakes[i].pos.y - scroll_y);
-            }
-            else
-            {
-                snowflakes[i].visible = false; //the snow flake will still be falling but it will not be visible (most code-size efficient solution)
-            }
+            arduboy->drawPixel(snowflakes[i].pos.x - scroll_x, snowflakes[i].pos.y - scroll_y);
         }
 
         if(move_snowflakes)
@@ -156,7 +148,11 @@ void Map::drawSnowflakes(short scrollX, short scrollY, Arduboy2 * arduboy)
                 snowflakes[i].pos.x++;
             }
 
-            if(snowflakes[i].pos.y >= LEVEL_HEIGHT_PIXELS)
+            if(getTile(current_level, snowflakes[i].pos.y / TILE_LENGTH, snowflakes[i].pos.x / TILE_LENGTH) != levels::Tile::VOID)
+            {
+                snowflakes[i].visible = false;
+            }
+            else if(snowflakes[i].pos.y >= LEVEL_HEIGHT_PIXELS)
             {
                 snowflakes[i].pos.x = random(0, level_width * TILE_LENGTH);
                 snowflakes[i].pos.y = 0;
@@ -202,7 +198,7 @@ void Map::startLevel()
         snowflakes[i].visible = true;
     }
 
-    for(short i=0; i < 254; ++i) //forces snow to fall until it reaches ground at least once
+    for(short i=0; i < 400; ++i) //forces snow to fall until it reaches ground at least once
     {
         drawSnowflakes(0, 0, nullptr);
     }
