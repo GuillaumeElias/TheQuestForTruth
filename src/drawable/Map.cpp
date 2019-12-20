@@ -8,12 +8,48 @@ Map::Map(const Position & playerPos)
     , scroll_x(0)
     , scroll_y(0)
     , level_length(0)
+    , snowflakes_frame_count(0)
 {
 }
 
 //=============================================================
 void Map::draw(Arduboy2 * arduboy)
 {
+    //SNOW FLAKES
+    ++snowflakes_frame_count;
+    bool move_snowflakes = false;
+    if(snowflakes_frame_count >= SNOWFLAKES_FRAME_MOVE)
+    {
+        snowflakes_frame_count = 0;
+        move_snowflakes = true;
+    }
+
+    for(short i = 0; i < SNOWFLAKES_NUMBER; i ++)
+    {
+        arduboy->drawPixel(snowflakes[i].x, snowflakes[i].y);
+    
+        if(move_snowflakes)
+        {
+            snowflakes[i].y++;
+
+            short rand = random(0,4);
+            if(rand == 0)
+            {
+                snowflakes[i].x--;
+            }
+            else if(rand == 1)
+            {
+                snowflakes[i].x++;
+            }
+
+            if(snowflakes[i].y >= SCREEN_HEIGHT)
+            {
+                snowflakes[i].y = random(0,SCREEN_WIDTH);
+                snowflakes[i].y = 0;
+            }
+        }
+    }
+
     //COMPUTE SCROLL_X BASED ON PLAYER POSITION
     scroll_x = playerPosition.x - MID_WIDTH;
     if(scroll_x < 0)
@@ -136,6 +172,12 @@ void Map::startLevel()
         {
             level_width += c.count;
         }
+    }
+
+    for(short i = 0; i< SNOWFLAKES_NUMBER; i ++)
+    {
+        snowflakes[i].x = random(0, SCREEN_WIDTH);
+        snowflakes[i].y = random(0, SCREEN_HEIGHT);
     }
 }
 

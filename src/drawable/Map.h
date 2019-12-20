@@ -37,6 +37,8 @@ class Map : public Drawable, public Singleton<Map>
         short level_length, level_width;
 
         byte level_row_indexes[LEVEL_HEIGHT];
+        Position snowflakes[SNOWFLAKES_NUMBER];
+        int8 snowflakes_frame_count;
 };
 
 #endif
