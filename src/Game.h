@@ -43,6 +43,7 @@ class Game
 
         GameMode mode;
         int8 leftHouseTimer; //avoids mistakenly going to the menu when backing down from a house
+        bool warningShown;
 };
 
 #endif

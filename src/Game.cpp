@@ -71,6 +71,14 @@ void Game::update()
                     dialogManager.printSingleSentence(F("BRAVO"));
                     mode = END;
                 }
+                else if(map.getCurrentLevel() == 1 && itemsManager.getCluesFound() != 0b00000011)
+                {
+                    if(warningShown == false)
+                    {
+                        dialogManager.printSingleSentence(F("no clue"));
+                        warningShown = true;
+                    }
+                }
                 else
                 {
                     map.startNextLevel();
