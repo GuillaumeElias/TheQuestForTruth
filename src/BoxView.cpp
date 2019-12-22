@@ -79,6 +79,7 @@ bool BoxView::update(Arduboy2 * arduboy)
         {
             inscructionNb = 0;
             frameCount = 0;
+            return false;
         }
         else if(frameCount == NB_INSTRUCTIONS_CLUE_PRE)
         {
@@ -90,7 +91,7 @@ bool BoxView::update(Arduboy2 * arduboy)
     }
     else
     {
-        if((aY > 24 && dY < 40) || dY < bY || cY < aY)
+        if((aY > 14 && bY > 14) || dY < bY || cY < aY)
         {
             return false;
         }
@@ -119,8 +120,7 @@ bool BoxView::update(Arduboy2 * arduboy)
         }
 
         if(checkClue && 
-        aY < 4 && bY < 4  &&
-        aX > 4 && dX + 4 < SCREEN_WIDTH)
+        aY < 4 && bY < 4  && dX + 4 < SCREEN_WIDTH)
         {
             short clueId = Map::instance()->getCurrentDoorNumber();
             switch( clueId )

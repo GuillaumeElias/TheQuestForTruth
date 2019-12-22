@@ -55,7 +55,7 @@ void DialogManager::printNextLineForTrigger()
             switch(currentLineIndex)
             {
                 case 0: sentencePtr = F("Hello"); break;
-                case 1: sentencePtr = F("My name is Bill"); break;
+                case 1: sentencePtr = F("Merry Christmas"); break;
             }
 
         break;
