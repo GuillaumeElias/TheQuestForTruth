@@ -151,7 +151,7 @@ void DialogManager::draw(Arduboy2 * arduboy)
             {
                 currentSentenceSize = 0;
                 currentLetterPosition = 0;
-                if(currentLineIndex < currentNbOfLines)
+                if(currentTrigger != nullptr && currentLineIndex < currentNbOfLines)
                 {
                     currentLineIndex++;
                     printNextLineForTrigger();
