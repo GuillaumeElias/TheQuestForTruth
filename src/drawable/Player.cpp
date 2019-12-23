@@ -122,8 +122,8 @@ TriggerEvent Player::move( Arduboy2 * arduboy )
         }
     }
 
-    //if no collision -> apply new position
-    if( checkCollisionWithMap(pos.x, pos.y - 1) || checkCollisionWithEntities({pos.x, pos.y}))
+    //if collision -> revert to old position
+    if( pos.x < 0 || checkCollisionWithMap(pos.x, pos.y - 1) || checkCollisionWithEntities({pos.x, pos.y}))
     {
         pos.x = oldX;
         pos.y = oldY;

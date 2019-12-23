@@ -59,6 +59,7 @@ static const float PLAYER_Y_VELOCITY_INC = 0.1f;
 static const float PLAYER_FALL_MAX_VELOCITY = 2.0f;
 static const short TILE_LENGTH = 10;
 static const short TILE_SCREEN_Y_OFFSET = SCREEN_HEIGHT % TILE_LENGTH;
+static const short LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT * TILE_LENGTH;
 static const short MAX_ENEMIES_PER_LEVEL = 5;
 static const short CHARACTER_MOVE = 1;
 static const short ENEMY_MOVE = 1;

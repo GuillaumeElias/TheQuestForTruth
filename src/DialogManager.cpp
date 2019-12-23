@@ -67,8 +67,8 @@ void DialogManager::printNextLineForTrigger()
             switch(currentLineIndex)
             {
                 case 0: extraTextPaddingX = -5; sentencePtr = F("Hello"); break;
-                case 1: sentencePtr = F("This is the Village"); break;
-                case 2: sentencePtr = F("My house is nearby"); break;
+                case 1: sentencePtr = F("There are two clues"); break;
+                case 2: sentencePtr = F("hidden in the village"); break;
             }
 
         break;

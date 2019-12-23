@@ -1,8 +1,6 @@
 #include "Map.h"
 #include "../Tiles.h"
 
-static const short LEVEL_HEIGHT_PIXELS = LEVEL_HEIGHT * TILE_LENGTH;
-
 //=============================================================
 Map::Map(const Position & playerPos)
     : playerPosition(playerPos)
