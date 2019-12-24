@@ -1,4 +1,5 @@
-/** This file is part of TheQuestForTruth project for Arduboy by Guillaume Elias
+/** 
+ * This file is part of TheQuestForTruth project for the Arduboy platform by Guillaume Elias
  * You can reuse it in accordance with the GNU LESSER GENERAL PUBLIC LICENSE (see LICENSE) 
  **/
 
