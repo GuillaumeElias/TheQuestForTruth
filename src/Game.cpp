@@ -68,7 +68,7 @@ void Game::update()
                     menu.setInGame(false);
                     entitiesManager.startNewLevel();
                     soundManager.stopMusic();
-                    dialogManager.printSingleSentence(F("BRAVO"));
+                    dialogManager.printSingleSentence(F("END OF TOME 1"));
                     mode = END;
                 }
                 else if(map.getCurrentLevel() == 1 && itemsManager.getCluesFound() != 0b00000011)
@@ -168,7 +168,7 @@ void Game::update()
         /****************************END*********************************/
         case END:
 
-            if( arduboy.pressed( A_BUTTON ))
+            if( arduboy.pressed( B_BUTTON ))
             {
                 mode = GameMode::MENU;
             }
