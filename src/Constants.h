@@ -80,6 +80,7 @@ static const short PEPPER_SPRAY_RANGE_X = TILE_LENGTH;
 static const short PEPPER_SPRAY_RANGE_Y = TILE_LENGTH * 2;
 static const short SNOWFLAKES_NUMBER = 50;
 static const short SNOWFLAKES_FRAME_MOVE = 10;
+static const short NB_NOTES_IN_SEQUENCE = 5;
 
 template <typename T, short N>
 constexpr short arraysize(T(&)[N])

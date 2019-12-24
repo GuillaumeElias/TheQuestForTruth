@@ -20,14 +20,14 @@ typedef enum __attribute__ ((packed))
 
 typedef enum __attribute__ ((packed))
 {
-    MAJOR_THIRD     = 0b10000000, //if not set -> minor
+    MINOR_THIRD     = 0b10000000, //if not set -> major
     MINOR_7TH       = 0b01000000,
-    MAJOR_7TH       = 0b00100000, //if neither minor or major 7th -> octave
-    SUS_2           = 0b00010000,
-    SUS_4           = 0b00001000,
-    DIMINISHED_5TH  = 0b00000100,
-    AUGMENTED_5TH   = 0b00000010,
-    SIXTH           = 0b00000001,
+    SUS_2           = 0b00100000,
+    SUS_4           = 0b00010000,
+    SIXTH           = 0b00001000,
+    ADD_2           = 0b00000100, //if neither add_2, add_4 or add_5 -> octave
+    ADD_4           = 0b00000010,
+    ADD_5           = 0b00000001
 } ChordModesMasks;
 
 class SoundManager : public Singleton<SoundManager>
@@ -62,8 +62,6 @@ class SoundManager : public Singleton<SoundManager>
 
         int8 noteDuration;
         int8 sequenceRepeat;
-        int8 nbNotesInSequence;
-
 };
 
 #endif

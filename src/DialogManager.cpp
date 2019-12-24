@@ -62,7 +62,7 @@ void DialogManager::printNextLineForTrigger()
 
         case 2:
             currentNbOfLines = 3;
-            extraTextPaddingX = 68;
+            extraTextPaddingX = 69;
 
             switch(currentLineIndex)
             {

@@ -14,7 +14,6 @@ SoundManager::SoundManager(Arduboy2 * arduboy)
     , currentOrderInChord(0)
     , noteDuration(24)
     , sequenceRepeat(4)
-    , nbNotesInSequence(4)
 {
     pinMode(PIN_SPEAKER_1, OUTPUT);
     tones.volumeMode(VOLUME_ALWAYS_NORMAL);
@@ -28,7 +27,8 @@ void SoundManager::startMusicForLevel()
         case 0:
         case 1:
     } TODO finish off
-    */
+    
+    nbNotesInSequence = random(3,8);*/
     startMusic();
 }
 
@@ -111,7 +111,6 @@ void SoundManager::stopMusic()
 {
     //turn timer off
     TIMSK1 = 0x0; 
-    //interrupts();
 }
 
 //==========================================================
@@ -119,7 +118,6 @@ void SoundManager::resumeMusic()
 {
     //turn timer back on
     TIMSK1 = 0b00000010;
-    //interrupts();
 }
 
 //==========================================================
@@ -153,7 +151,7 @@ void SoundManager::playNextNote()
     }
     
     
-    if(currentOrderInChord >= nbNotesInSequence - 1)
+    if(currentOrderInChord >= NB_NOTES_IN_SEQUENCE - 1)
     {
         currentSeqTick++;
         if(currentSeqTick >= sequenceRepeat)
@@ -187,7 +185,7 @@ void SoundManager::gotoNextSequence()
     {
         currentSequence = 0;
         currentChordModes = 0x00;
-        currentBaseMidiNote = random(24, 74);
+        currentBaseMidiNote = random(46, 74);
     }
     else
     {
@@ -195,7 +193,8 @@ void SoundManager::gotoNextSequence()
 
         short randomBit = random(0,7);
 
-        if(random(0,3) == 0)
+        short randUpToThree = random(0,3);
+        if(randUpToThree == 0)
         {
             currentChordModes = 0; //reset modes every 1/3
         }
@@ -206,7 +205,7 @@ void SoundManager::gotoNextSequence()
 
         if(currentSequence % 2)
         {
-            currentBaseMidiNote += random(0,3) * 2 - 3;
+            currentBaseMidiNote += randUpToThree * 2 - 3;
         }
     }
     currentSeqTick = 0;
@@ -223,18 +222,18 @@ int8 SoundManager::computePositionInChord()
         case 1: //third
             if(currentChordModes & SUS_2) return 2;
             if(currentChordModes & SUS_4) return 5;
-            if(currentChordModes & MAJOR_THIRD) return 4;
-            return 3;
+            return 4;
 
         case 2: //fifth
-            if(currentChordModes & DIMINISHED_5TH) return 6;
-            if(currentChordModes & AUGMENTED_5TH) return 8;
             return 7;
-
         case 3: //seventh or octave
             if(currentChordModes & SIXTH) return 9;
             if(currentChordModes & MINOR_7TH) return 10;
-            if(currentChordModes & MAJOR_7TH) return 11;
+            return 11;
+        case 4:
+            if(currentChordModes & ADD_2) return 14;
+            if(currentChordModes & ADD_4) return 16;
+            if(currentChordModes & ADD_5) return 17;
             return 12;
     }
 }
