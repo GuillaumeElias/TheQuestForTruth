@@ -1,3 +1,7 @@
+/** This file is part of TheQuestForTruth project for Arduboy by Guillaume Elias
+ * You can reuse it in accordance with the GNU LESSER GENERAL PUBLIC LICENSE (see LICENSE) 
+ **/
+
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 

@@ -1,3 +1,7 @@
+/** This file is part of TheQuestForTruth project for Arduboy by Guillaume Elias
+ * You can reuse it in accordance with the GNU LESSER GENERAL PUBLIC LICENSE (see LICENSE) 
+ **/
+
 #include "SoundManager.h"
 #include "drawable/Map.h"
 
@@ -20,26 +24,12 @@ SoundManager::SoundManager(Arduboy2 * arduboy)
 }
 
 //==========================================================
-void SoundManager::startMusicForLevel()
-{
-    /*switch(Map::instance()->getCurrentLevel())
-    {
-        case 0:
-        case 1:
-    } TODO finish off
-    
-    nbNotesInSequence = random(3,8);*/
-    startMusic();
-}
-
-//==========================================================
 void SoundManager::startMusic(short baseNote, short speed, short noteDuration, short sequenceRepeat)
 {
 
     this->currentBaseMidiNote = baseNote;
     this->currentOrderInChord = 0;
     this->noteDuration = noteDuration;
-    //this->nbSequences = numberOfSequences;
     this->currentSpeed = speed;
     this->currentSeqTick = 0;
     this->sequenceRepeat = sequenceRepeat;

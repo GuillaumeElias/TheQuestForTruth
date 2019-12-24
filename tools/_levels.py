@@ -1,6 +1,7 @@
 #########################################################################################
 # LEVELS (UNENCODED)                                                                    #
 # Run level_encoder.py to generate the C++ code with the encoded levels                 #
+# This file is part of TheQuestForTruthProject by Guillaume Elias (LGPL)                #
 #########################################################################################
 
 LEVEL0 = [  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],

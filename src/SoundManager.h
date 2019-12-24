@@ -35,7 +35,6 @@ class SoundManager : public Singleton<SoundManager>
     public:
         SoundManager(Arduboy2 * arduboy);
         void init();
-        void startMusicForLevel();
         void startMusic(short baseNote = 69, short speed = 10, short noteDuration = 24, short sequenceRepeat = 4);
         void resumeMusic();
         void playSound(Sound sound);

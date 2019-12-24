@@ -1,6 +1,7 @@
 #########################################################################################
 # LEVEL ENCODER                                                                         #
 # This tool converts a level statically-defined with 2D arrays into a RLE-encoded array #
+# This file is part of TheQuestForTruthProject by Guillaume Elias (LGPL)                #
 #########################################################################################
 
 from _levels import *
