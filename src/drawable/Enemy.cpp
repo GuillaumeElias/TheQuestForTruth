@@ -141,13 +141,16 @@ TriggerEvent Enemy::move( Arduboy2 * arduboy )
         short newPosY = 0;
         movePosition1TowardsPosition2(pos, playerPos, newPosX, newPosY, ENEMY_FOLLOW_MOVE);
         
-        if(checkMapCollision(newPosX, newPosY, width, height ) )
+        goBackToInitPos = true;
+
+        if(!checkMapCollision(newPosX, pos.y, width, height ) )
         {
-            goBackToInitPos = true;
-        }
-        else
-        {
+            goBackToInitPos = false;
             pos.x = newPosX;
+        }
+        if(!checkMapCollision(pos.x, newPosY, width, height ) )
+        {
+            goBackToInitPos = false;
             pos.y = newPosY;
         }
 
