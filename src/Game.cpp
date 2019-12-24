@@ -23,7 +23,7 @@ void Game::init()
     map.startLevel();
     player.levelStart();
     entitiesManager.spawnEntities( &map );
-    soundManager.startMusic(69, 6, 22, 64);
+    soundManager.startMusic(69, 6, 22, 8);
 }
 
 //==========================================================
@@ -136,7 +136,7 @@ void Game::update()
                 }
                 else
                 {
-                    soundManager.startMusic();
+                    soundManager.startMusic(69, 8, 22, 5);
                 }
                 
                 mode = GameMode::PLAY;

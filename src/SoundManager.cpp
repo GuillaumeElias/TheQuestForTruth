@@ -5,7 +5,7 @@
 //==========================================================
 SoundManager::SoundManager(Arduboy2 * arduboy)
     : tones(arduboy->audio.enabled)
-    , nbSequences(9)
+    , nbSequences(10)
     , currentSeqTick(0)
     , currentSequence(0)
     , currentSoundPlaying(0)
@@ -33,16 +33,16 @@ void SoundManager::startMusicForLevel()
 }
 
 //==========================================================
-void SoundManager::startMusic(short baseNote, short speed, short noteDuration, short numberOfSequences)
+void SoundManager::startMusic(short baseNote, short speed, short noteDuration, short sequenceRepeat)
 {
 
     this->currentBaseMidiNote = baseNote;
     this->currentOrderInChord = 0;
     this->noteDuration = noteDuration;
-    this->nbSequences = numberOfSequences;
+    //this->nbSequences = numberOfSequences;
     this->currentSpeed = speed;
     this->currentSeqTick = 0;
-    //TODO set sequenceRepeat to random
+    this->sequenceRepeat = sequenceRepeat;
 
     //set up timer 1
     TCCR1A = 0;
